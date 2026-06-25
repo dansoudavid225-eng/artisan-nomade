@@ -24,3 +24,4 @@ Thumbs.db
 *.log
 logs/
 .github/workflows/deploy-pages.yml
+.github/workflows/deploy-pages.yml
