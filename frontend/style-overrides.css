@@ -1,0 +1,766 @@
+/* ================================================================
+   ARTISAN NOMADE – REDESIGN v5
+   Nouveau langage visuel : Corail Profond + Or Bruni + Nuit Encre
+   Typographie : Cormorant Garamond (display) + DM Sans (corps)
+   Signature : bordures irrégulières inspirées perles, grain texture
+================================================================ */
+
+/* ---- IMPORT NOUVELLES POLICES ---- */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap');
+
+/* ---- PALETTE REDESIGNÉE ---- */
+:root {
+  /* Corail africain – couleur principale chaude */
+  --corail:       #C85A3A;
+  --corail-light: #E07A58;
+  --corail-dark:  #8C3B22;
+
+  /* Or bruni – accent métallique */
+  --or:           #B8921A;
+  --or-light:     #D4AE50;
+  --or-dark:      #7A5F0A;
+
+  /* Terres – fond et profondeur */
+  --terre:        #1E130A;
+  --terre-light:  #3A2110;
+  --ivoire:       #F7EFE0;
+  --ivoire-dark:  #EAD9C2;
+  --ivoire-warm:  #F2E6CC;
+
+  /* Nuit encre */
+  --nuit:         #0A0604;
+  --blanc:        #FDFAF5;
+  --gris:         #9A8878;
+  --vert:         #25D366;
+
+  /* Grain texture SVG */
+  --grain: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+
+  --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --shadow: 0 24px 64px rgba(30,19,10,0.18);
+  --shadow-sm: 0 8px 24px rgba(30,19,10,0.12);
+
+  /* THÈME JOUR */
+  --bg-page:    var(--blanc);
+  --text-page:  var(--terre);
+  --surface:    var(--ivoire-warm);
+  --surface-alt: var(--blanc);
+  --accent-band: var(--terre);
+  --card-bg:    var(--blanc);
+  --card-border: var(--ivoire-dark);
+  --title-color: var(--terre);
+}
+
+[data-theme="dark"] {
+  --bg-page:    var(--nuit);
+  --text-page:  var(--ivoire);
+  --surface:    #140d07;
+  --surface-alt: #0e0905;
+  --accent-band: #050301;
+  --card-bg:    #1a1108;
+  --card-border: rgba(184,146,26,0.15);
+  --title-color: var(--ivoire);
+}
+
+/* ---- CORPS ---- */
+body {
+  font-family: 'DM Sans', 'Josefin Sans', sans-serif;
+  background-image: var(--grain);
+}
+
+/* ---- LOADER REDESIGNÉ ---- */
+.loader-bead {
+  background: var(--corail) !important;
+}
+.loader-bead:nth-child(2) {
+  background: var(--or-light) !important;
+}
+.loader-text {
+  color: var(--or) !important;
+  letter-spacing: 6px !important;
+  font-size: 1.2rem !important;
+}
+
+/* ---- NAVBAR REDESIGNÉE ---- */
+.nav-link:hover,
+.nav-link.active-page {
+  color: var(--corail-light) !important;
+}
+.nav-link::after {
+  background: var(--corail) !important;
+}
+
+/* ---- HERO PRINCIPAL ---- */
+.hs-content .hs-title em {
+  color: var(--corail-light) !important;
+  font-style: italic;
+}
+.hs-cap-tag {
+  background: var(--corail) !important;
+  color: #fff !important;
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  padding: 4px 12px;
+  text-transform: uppercase;
+}
+
+/* ---- BOUTONS ---- */
+.btn-primary {
+  background: var(--corail) !important;
+  letter-spacing: 2px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  border-radius: 2px;
+}
+.btn-primary::before {
+  background: var(--corail-dark) !important;
+}
+.btn-primary:hover {
+  box-shadow: 0 10px 30px rgba(200,90,58,0.45) !important;
+}
+
+.btn-ghost {
+  border-color: rgba(248,240,230,0.6) !important;
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  font-family: 'DM Sans', sans-serif;
+  border-radius: 2px;
+}
+
+/* ---- PROGRESS BAR & DOTS ---- */
+.scroll-progress {
+  background: var(--corail) !important;
+}
+.hs-dot-prog {
+  background: var(--corail) !important;
+}
+.gallery-dot.active {
+  background: var(--corail) !important;
+}
+.dot.active {
+  background: var(--corail) !important;
+}
+
+/* ---- STATS ---- */
+.stats {
+  background: var(--terre) !important;
+  border-top: 2px solid var(--corail-dark) !important;
+}
+.stat-number {
+  color: var(--corail-light) !important;
+  font-family: 'Cormorant Garamond', serif !important;
+  font-size: 3.5rem !important;
+  font-weight: 300 !important;
+}
+.stat-unit {
+  color: var(--or-light) !important;
+}
+.stat-item p {
+  color: var(--ivoire-dark) !important;
+  font-size: 0.72rem !important;
+  letter-spacing: 2px !important;
+}
+.stat-divider {
+  background: rgba(200,90,58,0.3) !important;
+}
+
+/* ---- SECTION TAGS ---- */
+.section-tag {
+  color: var(--corail) !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-weight: 500 !important;
+  letter-spacing: 3px !important;
+}
+.section-tag.light {
+  color: var(--corail-light) !important;
+}
+.title-line {
+  background: var(--corail) !important;
+  height: 1.5px !important;
+  width: 40px !important;
+  margin: 20px auto 0 !important;
+}
+
+/* ---- TITRES DE SECTIONS ---- */
+.section-title em {
+  color: var(--corail) !important;
+  font-style: italic !important;
+}
+
+/* ---- PRODUCT CARDS REDESIGN ---- */
+.product-card {
+  border-radius: 0 !important;
+  border-top: 2px solid transparent !important;
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+.product-card:hover {
+  border-top-color: var(--corail) !important;
+  transform: translateY(-10px) !important;
+  box-shadow: var(--shadow) !important;
+}
+.product-badge {
+  background: var(--corail) !important;
+  color: #fff !important;
+  font-family: 'DM Sans', sans-serif !important;
+  border-radius: 0 !important;
+  font-size: 0.58rem !important;
+  letter-spacing: 2px !important;
+}
+.btn-add {
+  background: var(--corail) !important;
+  color: #fff !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 0.7rem !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+  border: none !important;
+  padding: 10px 24px !important;
+  cursor: pointer !important;
+  border-radius: 1px !important;
+}
+.btn-whatsapp {
+  background: none !important;
+  border: 1px solid var(--corail) !important;
+  color: var(--corail) !important;
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+}
+.btn-whatsapp:hover {
+  background: var(--vert) !important;
+  border-color: var(--vert) !important;
+  color: #fff !important;
+}
+.product-price {
+  color: var(--corail) !important;
+  font-family: 'Cormorant Garamond', serif !important;
+  font-size: 1rem !important;
+  font-weight: 400 !important;
+}
+.product-info h3 {
+  font-family: 'Cormorant Garamond', serif !important;
+  font-size: 1.1rem !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.5px !important;
+}
+
+/* ---- FILTER BAR ---- */
+.filter-btn {
+  border-radius: 0 !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 0.68rem !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+}
+.filter-btn.active,
+.filter-btn:hover {
+  border-color: var(--corail) !important;
+  color: var(--corail) !important;
+  background: rgba(200,90,58,0.06) !important;
+}
+
+/* ---- SERVICE CARDS ---- */
+.service-icon {
+  color: var(--corail) !important;
+  font-size: 1.8rem !important;
+  margin-bottom: 16px !important;
+}
+.service-card {
+  border-radius: 0 !important;
+  border-bottom: 2px solid transparent !important;
+  transition: all 0.4s ease !important;
+}
+.service-card:hover {
+  border-bottom-color: var(--corail) !important;
+  transform: translateY(-4px) !important;
+}
+
+/* ---- AVIS CLIENTS ---- */
+.stars {
+  color: var(--corail) !important;
+  font-size: 1rem !important;
+}
+.author-avatar {
+  background: var(--corail) !important;
+  font-family: 'Cormorant Garamond', serif !important;
+  font-size: 1.1rem !important;
+  border-radius: 50% !important;
+}
+.avis-card {
+  border-radius: 0 !important;
+  border-left: 3px solid var(--corail) !important;
+}
+
+/* ---- NEWSLETTER ---- */
+.newsletter-section {
+  background: var(--terre) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+.newsletter-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(200,90,58,0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+.newsletter-tag {
+  color: var(--corail-light) !important;
+  letter-spacing: 4px !important;
+  font-family: 'DM Sans', sans-serif !important;
+}
+.newsletter-title em {
+  color: var(--corail-light) !important;
+}
+.newsletter-bead {
+  background: var(--corail) !important;
+  border-radius: 50% !important;
+}
+.newsletter-btn {
+  background: var(--corail) !important;
+  font-family: 'DM Sans', sans-serif !important;
+  letter-spacing: 2px !important;
+  border-radius: 0 !important;
+}
+.newsletter-btn:hover {
+  background: var(--corail-dark) !important;
+}
+.newsletter-input {
+  border-radius: 0 !important;
+  border: 1px solid rgba(200,90,58,0.3) !important;
+}
+.newsletter-input:focus {
+  border-color: var(--corail) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(200,90,58,0.15) !important;
+}
+
+/* ---- CONTACT FORM ---- */
+.contact-form input:focus,
+.contact-form select:focus,
+.contact-form textarea:focus {
+  border-color: var(--corail) !important;
+  box-shadow: 0 0 0 3px rgba(200,90,58,0.12) !important;
+}
+.form-success {
+  color: var(--corail-light) !important;
+}
+
+/* ---- FOOTER REDESIGNÉ ---- */
+.footer {
+  background: var(--nuit) !important;
+  border-top: 1px solid rgba(200,90,58,0.2) !important;
+}
+.footer h4 {
+  color: var(--corail-light) !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 0.7rem !important;
+  letter-spacing: 3px !important;
+  text-transform: uppercase !important;
+}
+.footer-bottom {
+  border-top: 1px solid rgba(200,90,58,0.15) !important;
+}
+
+/* ---- WHATSAPP FLOAT ---- */
+.whatsapp-float {
+  background: var(--vert) !important;
+  box-shadow: 0 4px 20px rgba(37,211,102,0.4) !important;
+  border-radius: 50% !important;
+}
+
+/* ---- BACK TO TOP ---- */
+.back-top {
+  background: var(--corail) !important;
+  border-radius: 2px !important;
+}
+
+/* ---- SLIDER DOTS ---- */
+.hero-slide-dot.active {
+  background: var(--corail) !important;
+  width: 24px !important;
+  border-radius: 3px !important;
+}
+.hero-slide-dot {
+  background: rgba(255,255,255,0.4) !important;
+  border-radius: 50% !important;
+  width: 8px !important;
+  height: 8px !important;
+}
+
+/* ---- PAGE HERO (pages internes) ---- */
+.page-hero {
+  background: var(--terre) !important;
+}
+.page-hero::before {
+  background: radial-gradient(ellipse at 60% 50%, rgba(200,90,58,0.1) 0%, transparent 70%),
+    repeating-linear-gradient(45deg, transparent, transparent 30px, rgba(200,90,58,0.025) 30px, rgba(200,90,58,0.025) 31px) !important;
+}
+.page-hero-tag {
+  color: var(--corail-light) !important;
+}
+.page-hero-title em {
+  color: var(--corail) !important;
+}
+.ph-bead {
+  background: var(--corail) !important;
+}
+
+/* ---- LIGHTBOX ---- */
+#lightbox .lb-close,
+#lightbox .lb-prev,
+#lightbox .lb-next {
+  color: var(--corail-light) !important;
+}
+#lightbox .lb-counter {
+  color: var(--corail-light) !important;
+}
+
+/* ---- SCROLLBAR ---- */
+::-webkit-scrollbar-thumb {
+  background: var(--corail) !important;
+  border-radius: 2px !important;
+}
+
+/* ---- GALERIE SLIDER DOTS ---- */
+.gallery-btn {
+  background: var(--corail) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 50% !important;
+}
+
+/* ---- SLIDER CONTROLS ---- */
+.slider-btn {
+  background: none !important;
+  border: 1px solid var(--corail) !important;
+  color: var(--corail) !important;
+  border-radius: 50% !important;
+  transition: all 0.3s ease !important;
+}
+.slider-btn:hover {
+  background: var(--corail) !important;
+  color: #fff !important;
+}
+
+/* ---- SUIVI COMMANDE ---- */
+.track-step.done .step-icon { background: var(--corail) !important; }
+.track-step.active .step-icon { border-color: var(--corail) !important; color: var(--corail) !important; }
+.track-line-fill { background: var(--corail) !important; }
+
+/* ---- SOCIAL LINKS ---- */
+.social-link.whatsapp { background: var(--vert) !important; }
+.social-link.facebook { background: #1877F2 !important; }
+.social-link.instagram { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888) !important; }
+
+/* ================================================================
+   NOUVEAUX COMPOSANTS POUR LE BACKEND
+================================================================ */
+
+/* ---- BOUTON COMMANDER VIA API ---- */
+.btn-order-api {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--corail);
+  color: #fff;
+  padding: 12px 28px;
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+.btn-order-api:hover {
+  background: var(--corail-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(200,90,58,0.4);
+}
+
+/* ---- MODAL COMMANDE ---- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10,6,4,0.85);
+  backdrop-filter: blur(8px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+.modal-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+.modal-box {
+  background: var(--bg-page);
+  max-width: 560px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 0;
+  border-top: 3px solid var(--corail);
+  transform: translateY(30px);
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  border-radius: 2px;
+}
+.modal-overlay.open .modal-box {
+  transform: translateY(0);
+}
+.modal-header {
+  background: var(--terre);
+  padding: 24px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-header h3 {
+  font-family: 'Cormorant Garamond', serif;
+  color: var(--ivoire);
+  font-size: 1.3rem;
+  font-weight: 300;
+  margin: 0;
+}
+.modal-header .modal-product-name {
+  color: var(--corail-light);
+  font-style: italic;
+}
+.modal-close {
+  background: none;
+  border: none;
+  color: var(--gris);
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: color 0.3s;
+}
+.modal-close:hover { color: var(--corail-light); }
+
+.modal-body {
+  padding: 32px;
+}
+.modal-form-group {
+  margin-bottom: 20px;
+}
+.modal-form-group label {
+  display: block;
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gris);
+  margin-bottom: 8px;
+  font-family: 'DM Sans', sans-serif;
+}
+.modal-form-group input,
+.modal-form-group select,
+.modal-form-group textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--card-border);
+  background: var(--surface);
+  color: var(--text-page);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  border-radius: 1px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.modal-form-group input:focus,
+.modal-form-group select:focus,
+.modal-form-group textarea:focus {
+  outline: none;
+  border-color: var(--corail);
+  box-shadow: 0 0 0 3px rgba(200,90,58,0.12);
+}
+.modal-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 480px) {
+  .modal-form-row { grid-template-columns: 1fr; }
+}
+.modal-submit {
+  width: 100%;
+  padding: 16px;
+  background: var(--corail);
+  color: #fff;
+  border: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 2px;
+  margin-top: 8px;
+}
+.modal-submit:hover:not(:disabled) {
+  background: var(--corail-dark);
+}
+.modal-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.modal-success {
+  text-align: center;
+  padding: 40px 32px;
+}
+.modal-success .success-icon {
+  font-size: 3rem;
+  color: var(--corail);
+  margin-bottom: 16px;
+}
+.modal-success h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  font-weight: 300;
+  color: var(--title-color);
+  margin-bottom: 8px;
+}
+.modal-success .reference-code {
+  font-size: 1.4rem;
+  color: var(--corail);
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  letter-spacing: 3px;
+  background: var(--surface);
+  padding: 12px 24px;
+  display: inline-block;
+  margin: 16px 0;
+  border: 1px solid var(--corail);
+}
+.modal-success p {
+  color: var(--gris);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+/* ---- ANIMATION NOTIFICATION ---- */
+@keyframes slideInTop {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.toast-notification {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  background: var(--terre);
+  border-left: 3px solid var(--corail);
+  color: var(--ivoire);
+  padding: 16px 20px;
+  font-size: 0.85rem;
+  max-width: 320px;
+  z-index: 3000;
+  animation: slideInTop 0.4s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ============================================================
+   GALERIE "NOS CRÉATIONS EN IMAGES" (page d'accueil)
+   Le balisage (.gallery-slider-wrap / .gallery-slider / .gallery-slide)
+   n'avait AUCUNE règle de mise en page ailleurs dans le CSS : les 10
+   images s'empilaient les unes sous les autres à pleine résolution,
+   ce qui rendait la section démesurément grande. Ce bloc en fait un
+   vrai carrousel horizontal à hauteur fixe (1/2/3 visibles selon
+   l'écran, comme attendu par le script de index.html).
+   ============================================================ */
+.gallery-slider-wrap {
+  position: relative;
+  overflow: hidden;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 52px;
+}
+.gallery-slider {
+  display: flex;
+  gap: 20px;
+  transition: transform 0.5s cubic-bezier(.4,0,.2,1);
+  will-change: transform;
+}
+.gallery-slide {
+  position: relative;
+  flex: 0 0 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--terre);
+}
+.gallery-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+.gallery-slide-caption {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 16px 16px 12px;
+  background: linear-gradient(to top, rgba(13,8,5,0.88), rgba(13,8,5,0));
+  color: var(--ivoire);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+/* 2 visibles dès 640px — doit correspondre à getVisible() dans index.html */
+@media (min-width: 640px) {
+  .gallery-slide { flex: 0 0 calc((100% - 20px) / 2); }
+}
+/* 3 visibles dès 1024px — doit correspondre à getVisible() dans index.html */
+@media (min-width: 1024px) {
+  .gallery-slide { flex: 0 0 calc((100% - 40px) / 3); }
+}
+
+.gallery-btn-prev, .gallery-btn-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 5;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.gallery-btn-prev { left: 0; }
+.gallery-btn-next { right: 0; }
+
+.gallery-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+}
+.gallery-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--ivoire-dark);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: background 0.25s, width 0.25s;
+}
+.gallery-dot.active {
+  width: 22px;
+  border-radius: 4px;
+}
+@media (max-width: 639px) {
+  .gallery-slider-wrap { padding: 0 38px; }
+  .gallery-btn-prev, .gallery-btn-next { width: 34px; height: 34px; font-size: 0.75rem; }
+}

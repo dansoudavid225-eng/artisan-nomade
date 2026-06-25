@@ -1,0 +1,282 @@
+[
+  {
+    "id": "pr-001",
+    "nom": "Parure Royale Bleue & Or",
+    "categorie": "parure",
+    "image": "photos/p17.jpg",
+    "prix": 21500
+  },
+  {
+    "id": "pr-002",
+    "nom": "Parure Saphir Royal",
+    "categorie": "parure",
+    "image": "photos/p28.jpg",
+    "prix": 18500
+  },
+  {
+    "id": "pr-003",
+    "nom": "Parure Nuit & Cristal",
+    "categorie": "parure",
+    "image": "photos/p06.jpg",
+    "prix": 26500
+  },
+  {
+    "id": "pr-004",
+    "nom": "Parure Ivoire Tissée",
+    "categorie": "parure",
+    "image": "photos/p16.jpg",
+    "prix": 25500
+  },
+  {
+    "id": "pr-005",
+    "nom": "Parure Perles & Rubis",
+    "categorie": "parure",
+    "image": "photos/p04.jpg",
+    "prix": 25000
+  },
+  {
+    "id": "pr-006",
+    "nom": "Parure Or & Nacre",
+    "categorie": "parure",
+    "image": "photos/p14.jpg",
+    "prix": 22000
+  },
+  {
+    "id": "pr-007",
+    "nom": "Grand Collier Corail Doré",
+    "categorie": "collier",
+    "image": "slide1.jpg",
+    "prix": 8500
+  },
+  {
+    "id": "pr-008",
+    "nom": "Collier Corail Royal",
+    "categorie": "collier",
+    "image": "C1.jpg",
+    "prix": 15500
+  },
+  {
+    "id": "pr-009",
+    "nom": "Collier Corail Royal",
+    "categorie": "collier",
+    "image": "C2.jpg",
+    "prix": 8000
+  },
+  {
+    "id": "pr-010",
+    "nom": "Collier Corail Royal",
+    "categorie": "collier",
+    "image": "C3.jpg",
+    "prix": 16000
+  },
+  {
+    "id": "pr-011",
+    "nom": "Collier Corail Royal",
+    "categorie": "collier",
+    "image": "C4.jpg",
+    "prix": 13500
+  },
+  {
+    "id": "pr-012",
+    "nom": "Collier Corail Royal",
+    "categorie": "collier",
+    "image": "C5.jpg",
+    "prix": 7500
+  },
+  {
+    "id": "pr-013",
+    "nom": "Collier Corail Royal",
+    "categorie": "collier",
+    "image": "photos/p08.jpg",
+    "prix": 7000
+  },
+  {
+    "id": "pr-014",
+    "nom": "Collier Corail Royal",
+    "categorie": "collier",
+    "image": "photos/p08.jpg",
+    "prix": 8000
+  },
+  {
+    "id": "pr-015",
+    "nom": "Collection Éclats de Couleurs",
+    "categorie": "bracelet",
+    "image": "bracelet1.jpg",
+    "prix": 4000
+  },
+  {
+    "id": "pr-016",
+    "nom": "Bracelets Azur & Nacre",
+    "categorie": "bracelet",
+    "image": "bracelet2.jpg",
+    "prix": 4000
+  },
+  {
+    "id": "pr-017",
+    "nom": "Bracelets \"Made with Love\"",
+    "categorie": "bracelet",
+    "image": "bracelet3.jpg",
+    "prix": 6500
+  },
+  {
+    "id": "pr-018",
+    "nom": "Bracelet Amour Rouge & Or",
+    "categorie": "bracelet",
+    "image": "bracelet4-alt.jpg",
+    "prix": 2500
+  },
+  {
+    "id": "pr-019",
+    "nom": "Parure Émeraude & Or",
+    "categorie": "bracelet",
+    "image": "bracelet4.jpg",
+    "prix": 6500
+  },
+  {
+    "id": "pr-020",
+    "nom": "Bracelet Bois Arc-en-Ciel",
+    "categorie": "bracelet",
+    "image": "bracelet5.jpg",
+    "prix": 4000
+  },
+  {
+    "id": "pr-021",
+    "nom": "Bracelet Damier Tissé",
+    "categorie": "bracelet",
+    "image": "photos/p20.jpg",
+    "prix": 6500
+  },
+  {
+    "id": "pr-022",
+    "nom": "Parure Émeraude Florale",
+    "categorie": "bracelet",
+    "image": "photos/p25.jpg",
+    "prix": 5500
+  },
+  {
+    "id": "pr-023",
+    "nom": "Bracelet Bois Multicolore",
+    "categorie": "bracelet",
+    "image": "photos/p26.jpg",
+    "prix": 4000
+  },
+  {
+    "id": "pr-024",
+    "nom": "Parure Pêche & Cristal",
+    "categorie": "bracelet",
+    "image": "photos/p27.jpg",
+    "prix": 6000
+  },
+  {
+    "id": "pr-025",
+    "nom": "Boucles Cascade Nacre",
+    "categorie": "boucle",
+    "image": "b2.jpg",
+    "prix": 7500
+  },
+  {
+    "id": "pr-026",
+    "nom": "Boucles Grappes de Nacre",
+    "categorie": "boucle",
+    "image": "b5.jpg",
+    "prix": 5000
+  },
+  {
+    "id": "pr-027",
+    "nom": "Boucles Nacre & Onyx",
+    "categorie": "boucle",
+    "image": "b4.jpg",
+    "prix": 3000
+  },
+  {
+    "id": "pr-028",
+    "nom": "Boucles Fleurs Noir & Blanc",
+    "categorie": "boucle",
+    "image": "B3.jpg",
+    "prix": 4000
+  },
+  {
+    "id": "pr-029",
+    "nom": "Boucle Créole Nacre",
+    "categorie": "boucle",
+    "image": "photos/p01.jpg",
+    "prix": 6000
+  },
+  {
+    "id": "pr-030",
+    "nom": "Boucles Anneaux Bicolores",
+    "categorie": "boucle",
+    "image": "photos/p15.jpg",
+    "prix": 5500
+  },
+  {
+    "id": "pr-031",
+    "nom": "Collection Boucles Cristal",
+    "categorie": "boucle",
+    "image": "photos/p21.jpg",
+    "prix": 5000
+  },
+  {
+    "id": "pr-032",
+    "nom": "Boucles Cascade Florale",
+    "categorie": "boucle",
+    "image": "photos/p22.jpg",
+    "prix": 4000
+  },
+  {
+    "id": "pr-033",
+    "nom": "Boucles Fleur Corail",
+    "categorie": "boucle",
+    "image": "photos/p23.jpg",
+    "prix": 4500
+  },
+  {
+    "id": "pr-034",
+    "nom": "Boucles Chaîne Turquoise & Or",
+    "categorie": "boucle",
+    "image": "photos/p24.jpg",
+    "prix": 5500
+  },
+  {
+    "id": "pr-035",
+    "nom": "Boucles Velours & Cauris",
+    "categorie": "boucle",
+    "image": "photos/p30.jpg",
+    "prix": 3500
+  },
+  {
+    "id": "pr-036",
+    "nom": "Créoles Arc-en-Ciel",
+    "categorie": "boucle",
+    "image": "photos/p32.jpg",
+    "prix": 3500
+  },
+  {
+    "id": "pr-037",
+    "nom": "Créoles Rondes Festives",
+    "categorie": "boucle",
+    "image": "photos/p33.jpg",
+    "prix": 6000
+  },
+  {
+    "id": "pr-038",
+    "nom": "Ensemble Kente",
+    "categorie": "accessoire",
+    "image": "photos/p29.jpg",
+    "prix": 5500
+  },
+  {
+    "id": "pr-039",
+    "nom": "Porte-Clés Perles Nacre",
+    "categorie": "accessoire",
+    "image": "photos/p34.jpg",
+    "prix": 9500
+  },
+  {
+    "id": "pr-040",
+    "nom": "Créoles Tressées Bleu & Or",
+    "categorie": "accessoire",
+    "image": "photos/p31.jpg",
+    "prix": 9500
+  }
+]

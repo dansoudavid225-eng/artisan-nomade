@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Artisan Nomade – Contact</title>
+  <meta name="description" content="Contactez Artisan Nomade à Porto-Novo, Bénin : commandes personnalisées, partenariats, livraison internationale."/>
+  <link rel="icon" href="logo.png"/>
+  <!-- Open Graph / Partage réseaux sociaux -->
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://artisannomade.com/contact.html"/>
+  <meta property="og:title" content="Contact – Artisan Nomade"/>
+  <meta property="og:description" content="Contactez Artisan Nomade : commandes personnalisées, partenariats, livraison internationale depuis Porto-Novo."/>
+  <meta property="og:image" content="https://artisannomade.com/logo.png"/>
+  <meta property="og:locale" content="fr_FR"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Contact – Artisan Nomade"/>
+  <meta name="twitter:description" content="Contactez Artisan Nomade : commandes personnalisées, partenariats, livraison internationale depuis Porto-Novo."/>
+  <meta name="twitter:image" content="https://artisannomade.com/logo.png"/>
+  <link rel="sitemap" type="application/xml" href="sitemap.xml"/>
+  <link rel="canonical" href="https://artisannomade.com/contact.html"/>
+  <meta name="robots" content="index, follow"/>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style-overrides.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@200;300;400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+  <div class="loader" id="loader">
+    <div class="loader-inner"><div class="loader-bead"></div><div class="loader-bead"></div><div class="loader-bead"></div></div>
+    <p class="loader-text">Contact</p>
+  </div>
+
+  <script src="navbar.js"></script>
+
+  <div class="page-hero">
+    <div class="page-hero-content">
+      <p class="page-hero-tag">Parlons-nous</p>
+      <h1 class="page-hero-title"><em>Contactez</em>-nous</h1>
+    </div>
+    <div class="page-hero-beads">
+      <div class="ph-bead"></div><div class="ph-bead"></div><div class="ph-bead"></div>
+    </div>
+  </div>
+
+  <section class="section-block dark">
+    <div class="contact-container">
+      <div class="contact-info reveal">
+        <p class="section-tag light">Nos coordonnées</p>
+        <h2 class="section-title light">On est <em>là pour vous</em></h2>
+        <div class="contact-details">
+          <div class="contact-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <div><strong>Adresse</strong><p>Porto-Novo Oganla, Bénin</p></div>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-phone"></i>
+            <div><strong>Téléphone</strong><p>+229 01 97 99 85 46</p></div>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-envelope"></i>
+            <div><strong>Email</strong><p>artisannomade1@gmail.com</p></div>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-clock"></i>
+            <div><strong>Horaires</strong><p>Lun – Sam : 8h00 – 18h00</p></div>
+          </div>
+        </div>
+        <div class="social-links">
+          <a href="https://wa.me/2290197998546" class="social-link whatsapp" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://www.facebook.com/artisannomade" class="social-link facebook" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://www.instagram.com/artisannomade" class="social-link instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+        </div>
+        <div style="margin-top:32px;">
+          <a href="https://wa.me/2290197998546" class="btn-primary" target="_blank" rel="noopener noreferrer" style="display:inline-flex;">
+            <i class="fab fa-whatsapp"></i> Discuter sur WhatsApp
+          </a>
+        </div>
+      </div>
+
+      <div class="contact-form-wrap reveal">
+        <!-- Formspree : remplacez YOUR_FORM_ID par votre ID sur formspree.io -->
+        <form class="contact-form" id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cf-name">Nom complet</label>
+              <input id="cf-name" type="text" name="name" placeholder="Votre nom" required/>
+            </div>
+            <div class="form-group">
+              <label for="cf-email">Email</label>
+              <input id="cf-email" type="email" name="email" placeholder="votre@email.com" required/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="cf-tel">Téléphone (optionnel)</label>
+            <input id="cf-tel" type="tel" name="telephone" placeholder="+229 ..."/>
+          </div>
+          <div class="form-group">
+            <label for="cf-sujet">Sujet</label>
+            <select id="cf-sujet" name="sujet">
+              <option>Commande personnalisée</option>
+              <option>Partenariat</option>
+              <option>Livraison internationale</option>
+              <option>Publication partenaire</option>
+              <option>Autre</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="cf-message">Message</label>
+            <textarea id="cf-message" name="message" rows="6" placeholder="Décrivez votre demande..." required></textarea>
+          </div>
+          <!-- Anti-spam honeypot -->
+          <input type="text" name="_gotcha" style="display:none"/>
+          <input type="hidden" name="_subject" value="Nouveau message – Artisan Nomade"/>
+          <button type="submit" class="btn-primary full" id="cf-submit">
+            <i class="fas fa-paper-plane"></i> Envoyer le message
+          </button>
+          <div class="form-success" id="form-success">
+            <i class="fas fa-check-circle"></i> Message envoyé ! Nous vous répondrons sous 24h.
+          </div>
+          <div class="form-error" id="form-error">
+            <i class="fas fa-exclamation-circle"></i> Une erreur s'est produite. Veuillez réessayer ou nous contacter via WhatsApp.
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section-block light">
+    <div class="section-header reveal">
+      <p class="section-tag">Questions fréquentes</p>
+      <h2 class="section-title">FAQ</h2>
+      <div class="title-line"></div>
+    </div>
+    <div style="max-width:700px; margin:0 auto; display:flex; flex-direction:column; gap:20px;">
+      <div class="service-card reveal" style="text-align:left;">
+        <h3 style="margin-bottom:10px;">Comment passer une commande ?</h3>
+        <p>Contactez-nous via WhatsApp ou le formulaire ci-dessus. Nous vous guidons dans le choix et la personnalisation de votre création.</p>
+      </div>
+      <div class="service-card reveal" style="text-align:left;">
+        <h3 style="margin-bottom:10px;">Quel est le délai de fabrication ?</h3>
+        <p>Selon la complexité de la pièce, le délai varie de quelques jours à 4 semaines. Nous vous informons dès le devis.</p>
+      </div>
+      <div class="service-card reveal" style="text-align:left;">
+        <h3 style="margin-bottom:10px;">Livrez-vous à l'international ?</h3>
+        <p>Oui, nous livrons dans plus de 30 pays. Les frais et délais varient selon la destination. Contactez-nous pour un devis.</p>
+      </div>
+      <div class="service-card reveal" style="text-align:left;">
+        <h3 style="margin-bottom:10px;">Comment fonctionne le paiement ?</h3>
+        <p>Nous acceptons le paiement par Mobile Money (MTN, Moov). Un acompte est demandé à la commande, le solde à la livraison.</p>
+      </div>
+      <div class="service-card reveal" style="text-align:left;">
+        <h3 style="margin-bottom:10px;">Comment suivre ma commande ?</h3>
+        <p>Gardez la référence reçue par WhatsApp (ex : AN-2025-0042) et écrivez-nous directement sur <a href="https://wa.me/2290197998546" target="_blank" rel="noopener noreferrer" style="color:var(--or);">WhatsApp</a> en l'indiquant : on vous donne l'avancement en quelques minutes.</p>
+      </div>
+    </div>
+  </section>
+
+  <script src="footer.js"></script>
+  <script src="api.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

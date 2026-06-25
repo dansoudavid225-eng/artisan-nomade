@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Artisan Nomade – Suivi de commande</title>
+  <meta name="description" content="Suivez l'avancement de votre commande Artisan Nomade en temps réel."/>
+  <link rel="icon" href="logo.png"/>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style-overrides.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@200;300;400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+  <div class="loader" id="loader">
+    <div class="loader-inner"><div class="loader-bead"></div><div class="loader-bead"></div><div class="loader-bead"></div></div>
+    <p class="loader-text">Suivi commande</p>
+  </div>
+
+  <script src="navbar.js"></script>
+
+  <!-- HERO -->
+  <div class="tracking-hero page-hero">
+    <div class="page-hero-content">
+      <p class="page-hero-tag">Votre commande</p>
+      <h1 class="page-hero-title">Suivi de <em>commande</em></h1>
+    </div>
+    <div class="page-hero-beads">
+      <div class="ph-bead"></div><div class="ph-bead"></div><div class="ph-bead"></div>
+    </div>
+  </div>
+
+  <div class="tracking-form-section">
+
+    <!-- SAISIE RÉFÉRENCE -->
+    <div id="tracking-search" class="reveal">
+      <p class="section-tag" style="margin-bottom:8px;">Retrouvez votre commande</p>
+      <h2 class="section-title" style="margin-bottom:24px;">Entrez votre <em>référence</em></h2>
+      <div class="title-line" style="margin-bottom:32px;"></div>
+      <div class="tracking-input-wrap">
+        <input class="tracking-input" id="ref-input" type="text"
+               placeholder="Ex : AN-2025-0042" maxlength="20" autocomplete="off"
+               aria-label="Numéro de commande"/>
+        <button class="btn-primary" id="ref-search-btn" onclick="searchOrder()">
+          <i class="fas fa-search"></i> Rechercher
+        </button>
+      </div>
+      <p style="font-size:0.8rem;color:var(--gris);margin-bottom:40px;">
+        Votre référence se trouve dans le message WhatsApp de confirmation reçu après votre commande.
+      </p>
+    </div>
+
+    <!-- RÉSULTAT SUIVI -->
+    <div id="tracking-result" style="display:none;">
+      <div id="order-ref-display" class="order-ref-badge"></div>
+
+      <div class="tracking-steps" id="tracking-steps">
+        <!-- Rempli dynamiquement par JS -->
+      </div>
+
+      <!-- CTA WhatsApp -->
+      <div style="margin-top:40px; padding:24px; background:var(--surface); border-radius:8px; border:1px solid var(--card-border); text-align:center;">
+        <p style="font-size:0.85rem; color:var(--gris); margin-bottom:16px;">
+          Une question sur votre commande ?
+        </p>
+        <a id="wa-order-link" href="#" class="btn-primary" target="_blank" rel="noopener noreferrer">
+          <i class="fab fa-whatsapp"></i> Contacter sur WhatsApp
+        </a>
+      </div>
+
+      <div style="text-align:center; margin-top:24px;">
+        <button class="btn-ghost" onclick="resetSearch()" style="font-size:0.8rem;">
+          <i class="fas fa-arrow-left"></i> Nouvelle recherche
+        </button>
+      </div>
+    </div>
+
+    <!-- PAS TROUVÉ -->
+    <div id="tracking-empty" class="tracking-empty" style="display:none;">
+      <i class="fas fa-search" style="font-size:2rem; color:var(--or); opacity:0.4; display:block; margin-bottom:16px;"></i>
+      <p style="margin-bottom:8px; font-weight:400;">Référence introuvable</p>
+      <p style="font-size:0.82rem; margin-bottom:24px;">
+        Vérifiez le numéro reçu par WhatsApp ou contactez-nous directement.
+      </p>
+      <a href="https://wa.me/2290197998546" class="btn-primary" target="_blank" rel="noopener noreferrer">
+        <i class="fab fa-whatsapp"></i> Nous contacter
+      </a>
+      <div style="margin-top:16px;">
+        <button class="btn-ghost" onclick="resetSearch()" style="font-size:0.8rem;">Réessayer</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- COMMENT ÇA MARCHE -->
+  <section class="section-block light">
+    <div class="section-header reveal">
+      <p class="section-tag">Processus</p>
+      <h2 class="section-title">Comment fonctionne <em>le suivi ?</em></h2>
+      <div class="title-line"></div>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-icon"><i class="fab fa-whatsapp"></i></div>
+        <h3>1. Commande</h3>
+        <p>Vous commandez via WhatsApp. Nous vous envoyons une référence unique (ex : AN-2025-0042).</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon"><i class="fas fa-paint-brush"></i></div>
+        <h3>2. Fabrication</h3>
+        <p>Nos artisanes créent votre bijou. Nous vous tenons informé(e) à chaque étape clé.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon"><i class="fas fa-box"></i></div>
+        <h3>3. Expédition</h3>
+        <p>Votre commande est emballée avec soin et confiée à notre partenaire logistique.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon"><i class="fas fa-star"></i></div>
+        <h3>4. Livraison</h3>
+        <p>Vous recevez votre création unique. Un message de confirmation vous est envoyé.</p>
+      </div>
+    </div>
+  </section>
+
+  <script src="footer.js"></script>
+  <script src="api.js"></script>
+  <script src="main.js"></script>
+
+  <script>
+  // ============================================
+  // DONNÉES DE DÉMONSTRATION
+  // En production : remplacer par un appel API
+  // ============================================
+  const DEMO_ORDERS = {
+    'AN-2025-0042': {
+      product: 'Parure Royale Bleue & Or',
+      client: 'Marie D.',
+      steps: [
+        { label: 'Commande reçue',     icon: 'fas fa-check',          done: true,  date: '10 juin 2025' },
+        { label: 'Paiement confirmé',  icon: 'fas fa-credit-card',    done: true,  date: '10 juin 2025' },
+        { label: 'En fabrication',     icon: 'fas fa-paint-brush',    active: true,date: 'En cours…' },
+        { label: 'Contrôle qualité',   icon: 'fas fa-search',         done: false, date: '' },
+        { label: 'Expédié',            icon: 'fas fa-shipping-fast',  done: false, date: '' },
+        { label: 'Livré',              icon: 'fas fa-star',           done: false, date: '' },
+      ]
+    },
+    'AN-2025-0031': {
+      product: 'Bracelets Cristal Multicolores',
+      client: 'Kofi A.',
+      steps: [
+        { label: 'Commande reçue',     icon: 'fas fa-check',          done: true,  date: '2 juin 2025' },
+        { label: 'Paiement confirmé',  icon: 'fas fa-credit-card',    done: true,  date: '2 juin 2025' },
+        { label: 'En fabrication',     icon: 'fas fa-paint-brush',    done: true,  date: '4 juin 2025' },
+        { label: 'Contrôle qualité',   icon: 'fas fa-search',         done: true,  date: '7 juin 2025' },
+        { label: 'Expédié',            icon: 'fas fa-shipping-fast',  active: true,date: '9 juin 2025' },
+        { label: 'Livré',              icon: 'fas fa-star',           done: false, date: '' },
+      ]
+    },
+    'AN-2025-0018': {
+      product: 'Boucles Grappes de Nacre',
+      client: 'Sophie L.',
+      steps: [
+        { label: 'Commande reçue',     icon: 'fas fa-check',          done: true, date: '18 mai 2025' },
+        { label: 'Paiement confirmé',  icon: 'fas fa-credit-card',    done: true, date: '18 mai 2025' },
+        { label: 'En fabrication',     icon: 'fas fa-paint-brush',    done: true, date: '20 mai 2025' },
+        { label: 'Contrôle qualité',   icon: 'fas fa-search',         done: true, date: '24 mai 2025' },
+        { label: 'Expédié',            icon: 'fas fa-shipping-fast',  done: true, date: '26 mai 2025' },
+        { label: 'Livré',              icon: 'fas fa-star',           done: true, date: '30 mai 2025' },
+      ]
+    }
+  };
+
+  // Mapping statuts API vers étapes visuelles
+  const STATUT_STEPS = {
+    recu:           { idx: 0, label: 'Commande reçue' },
+    en_fabrication: { idx: 1, label: 'En cours de fabrication' },
+    pret:           { idx: 2, label: 'Prêt, contrôle qualité' },
+    expedie:        { idx: 3, label: 'Expédié' },
+    livre:          { idx: 4, label: 'Livré' },
+  };
+  const STEP_DEFS = [
+    { label: 'Commande reçue',          icon: 'fas fa-check' },
+    { label: 'En cours de fabrication', icon: 'fas fa-paint-brush' },
+    { label: 'Contrôle qualité',        icon: 'fas fa-search' },
+    { label: 'Expédié',                 icon: 'fas fa-shipping-fast' },
+    { label: 'Livré',                   icon: 'fas fa-home' },
+  ];
+
+  async function searchOrder() {
+    const ref = document.getElementById('ref-input').value.trim().toUpperCase();
+    const resultEl = document.getElementById('tracking-result');
+    const emptyEl  = document.getElementById('tracking-empty');
+    const searchEl = document.getElementById('tracking-search');
+    const stepsEl  = document.getElementById('tracking-steps');
+    const btn      = document.getElementById('ref-search-btn');
+
+    if (!ref) return;
+
+    resultEl.style.display = 'none';
+    emptyEl.style.display  = 'none';
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Recherche...';
+    btn.disabled = true;
+
+    let order = null;
+
+    // Essayer d'abord l'API backend
+    if (typeof API !== 'undefined') {
+      const result = await API.suivreCommande(ref);
+      if (result.ok && result.data.success) {
+        order = result.data.commande;
+      }
+    }
+
+    btn.innerHTML = '<i class="fas fa-search"></i> Rechercher';
+    btn.disabled = false;
+
+    // Fallback sur les démos si API indisponible
+    if (!order) {
+      const demo = DEMO_ORDERS[ref];
+      if (!demo) {
+        emptyEl.style.display = 'block';
+        return;
+      }
+      // Simuler structure API avec les données démo
+      order = {
+        reference: ref,
+        statutLabel: demo.steps.find(s => s.active)?.label || demo.steps.filter(s=>s.done).pop()?.label || 'Commande reçue',
+        statut: demo.steps.some(s => s.label === 'Livré' && s.done) ? 'livre' : 'en_fabrication',
+        produits: [{ nom: demo.product, quantite: 1 }],
+        historiqueStatut: demo.steps.filter(s=>s.done).map(s => ({ label: s.label, date: s.date })),
+        createdAt: new Date().toISOString(),
+        _isDemo: true,
+        _demoSteps: demo.steps,
+      };
+    }
+
+    // Affichage référence + produits
+    const prodNoms = order.produits?.map(p => p.nom).join(', ') || ref;
+    document.getElementById('order-ref-display').textContent = order.reference + '  •  ' + prodNoms;
+
+    // Lien WhatsApp avec référence pré-remplie
+    const msg = encodeURIComponent(`Bonjour ! Je voudrais des informations sur ma commande *${order.reference}*. Merci !`);
+    document.getElementById('wa-order-link').href = `https://wa.me/2290197998546?text=${msg}`;
+
+    // Construction des étapes
+    stepsEl.innerHTML = '';
+
+    if (order._isDemo) {
+      // Afficher les étapes démo telles quelles
+      order._demoSteps.forEach(step => {
+        const div = document.createElement('div');
+        div.className = 'tracking-step' + (step.done ? ' done' : '') + (step.active ? ' active' : '');
+        div.innerHTML = `
+          <div class="step-dot"><i class="${step.icon}"></i></div>
+          <div class="step-info">
+            <h4>${step.label}</h4>
+            ${step.date ? `<p class="step-date">${step.date}</p>` : '<p style="color:var(--gris);font-size:0.78rem;">En attente</p>'}
+          </div>`;
+        stepsEl.appendChild(div);
+      });
+    } else {
+      // Construire les étapes depuis la vraie commande
+      const currentStepIdx = STATUT_STEPS[order.statut]?.idx ?? 0;
+      STEP_DEFS.forEach((stepDef, i) => {
+        const done   = i < currentStepIdx;
+        const active = i === currentStepIdx;
+        // Trouver la date dans l'historique
+        const hist = order.historiqueStatut?.find(h => h.label?.includes(stepDef.label));
+        const dateStr = hist?.date ? new Date(hist.date).toLocaleDateString('fr-FR') : '';
+        const div = document.createElement('div');
+        div.className = 'tracking-step' + (done ? ' done' : '') + (active ? ' active' : '');
+        div.innerHTML = `
+          <div class="step-dot"><i class="${stepDef.icon}"></i></div>
+          <div class="step-info">
+            <h4>${stepDef.label}</h4>
+            ${dateStr ? `<p class="step-date">${dateStr}</p>` : (done || active) ? `<p class="step-date">Fait</p>` : '<p style="color:var(--gris);font-size:0.78rem;">En attente</p>'}
+          </div>`;
+        stepsEl.appendChild(div);
+      });
+    }
+
+    searchEl.style.display = 'none';
+    resultEl.style.display = 'block';
+    resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function resetSearch() {
+    document.getElementById('tracking-search').style.display = 'block';
+    document.getElementById('tracking-result').style.display = 'none';
+    document.getElementById('tracking-empty').style.display  = 'none';
+    document.getElementById('ref-input').value = '';
+    document.getElementById('ref-input').focus();
+  }
+
+  // Recherche sur Entrée
+  document.getElementById('ref-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') searchOrder();
+  });
+  </script>
+</body>
+</html>

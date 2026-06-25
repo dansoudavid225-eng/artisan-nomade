@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Artisan Nomade – Page introuvable</title>
+  <link rel="icon" href="logo.png"/>
+  <link rel="sitemap" type="application/xml" href="sitemap.xml"/>
+  <link rel="canonical" href="https://artisannomade.com/404.html"/>
+  <meta name="robots" content="index, follow"/>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style-overrides.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@200;300;400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    .error-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+      background: var(--bg-page);
+    }
+    .error-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(5rem, 20vw, 12rem);
+      color: var(--or);
+      line-height: 1;
+      opacity: 0.3;
+      font-weight: 300;
+    }
+    .error-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      color: var(--title-color);
+      margin: 16px 0 12px;
+    }
+    .error-desc {
+      color: var(--gris);
+      font-size: 0.95rem;
+      max-width: 400px;
+      margin-bottom: 36px;
+    }
+    .error-beads {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+    .error-bead {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--or);
+      animation: beadPulse 1.4s ease-in-out infinite;
+    }
+    .error-bead:nth-child(2) { animation-delay: 0.2s; background: var(--or-light); }
+    .error-bead:nth-child(3) { animation-delay: 0.4s; }
+  </style>
+</head>
+<body>
+  <script src="navbar.js"></script>
+  <div class="error-page">
+    <div class="error-number">404</div>
+    <div class="error-beads">
+      <div class="error-bead"></div>
+      <div class="error-bead"></div>
+      <div class="error-bead"></div>
+    </div>
+    <h1 class="error-title">Page <em>introuvable</em></h1>
+    <p class="error-desc">La page que vous cherchez n'existe pas ou a été déplacée. Retournez à l'accueil pour continuer votre exploration.</p>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;">
+      <a href="index.html" class="btn-primary">Retour à l'accueil</a>
+      <a href="boutique.html" class="btn-ghost">Voir la boutique</a>
+    </div>
+  </div>
+  <script src="footer.js"></script>
+  <script src="api.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

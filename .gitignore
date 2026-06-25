@@ -1,0 +1,25 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Environnement
+.env
+*.env.local
+
+# Données sensibles (commandes clients – NE PAS COMMITTER)
+backend/data/commandes.json
+backend/data/contacts.json
+backend/data/newsletter.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+logs/

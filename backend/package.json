@@ -1,0 +1,23 @@
+{
+  "name": "artisan-nomade-backend",
+  "version": "1.0.0",
+  "description": "Backend API pour Artisan Nomade – bijoux artisanaux Porto-Novo Bénin",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": ["artisan", "bénin", "bijoux", "api"],
+  "author": "Artisan Nomade",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.0",
+    "express-validator": "^7.0.0",
+    "helmet": "^7.0.0",
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.9.0",
+    "uuid": "^9.0.0"
+  }
+}

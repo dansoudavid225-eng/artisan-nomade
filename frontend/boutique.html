@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Artisan Nomade – Boutique</title>
+  <meta name="description" content="Découvrez nos bijoux artisanaux en perles : bracelets, colliers, boucles d'oreilles, parures complètes. Faits main au Bénin."/>
+  <link rel="icon" href="logo.png"/>
+  <!-- Open Graph / Partage réseaux sociaux -->
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://artisannomade.com/boutique.html"/>
+  <meta property="og:title" content="Boutique – Artisan Nomade"/>
+  <meta property="og:description" content="Découvrez notre collection de bijoux en perles : bracelets, colliers, boucles d'oreilles et parures. Faits main au Bénin."/>
+  <meta property="og:image" content="https://artisannomade.com/slide1.jpg"/>
+  <meta property="og:locale" content="fr_FR"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Boutique – Artisan Nomade"/>
+  <meta name="twitter:description" content="Découvrez notre collection de bijoux en perles : bracelets, colliers, boucles d'oreilles et parures. Faits main au Bénin."/>
+  <meta name="twitter:image" content="https://artisannomade.com/slide1.jpg"/>
+  <link rel="sitemap" type="application/xml" href="sitemap.xml"/>
+  <link rel="canonical" href="https://artisannomade.com/boutique.html"/>
+  <meta name="robots" content="index, follow"/>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style-overrides.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@200;300;400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+  <div class="loader" id="loader">
+    <div class="loader-inner"><div class="loader-bead"></div><div class="loader-bead"></div><div class="loader-bead"></div></div>
+    <p class="loader-text">Boutique</p>
+  </div>
+
+  <script src="navbar.js"></script>
+
+  <!-- HERO DIAPOSITIVES -->
+  <div class="hero" style="min-height:65vh;">
+    <div class="hero-slideshow" id="hero-slideshow">
+      <div class="hero-slide active">
+        <img src="slide1.jpg" alt="Parure royale bleue et or"/>
+        <div class="hero-slide-overlay"></div>
+        <div class="hero-slide-label">
+          <p class="hero-slide-label-tag">Parure complète</p>
+          <p class="hero-slide-label-title">Parure Royale Bleue &amp; Or</p>
+        </div>
+      </div>
+      <div class="hero-slide">
+        <img src="slide5.jpg" alt="Collier coral africain"/>
+        <div class="hero-slide-overlay"></div>
+        <div class="hero-slide-label">
+          <p class="hero-slide-label-tag">Collection corail</p>
+          <p class="hero-slide-label-title">Grand Collier Corail Doré</p>
+        </div>
+      </div>
+      <div class="hero-slide">
+        <img src="Slide4.jpg" alt="Bracelets cristal multicolores"/>
+        <div class="hero-slide-overlay"></div>
+        <div class="hero-slide-label">
+          <p class="hero-slide-label-tag">Bracelets cristal</p>
+          <p class="hero-slide-label-title">Collection Éclats de Couleurs</p>
+        </div>
+      </div>
+      <div class="hero-slide">
+        <img src="Slide3.jpg" alt="Sac et sandales kente africain"/>
+        <div class="hero-slide-overlay"></div>
+        <div class="hero-slide-label">
+          <p class="hero-slide-label-tag">Accessoires kente</p>
+          <p class="hero-slide-label-title">Ensemble Kente – Sac, Chapeau &amp; Sandales</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-bg"><div class="hero-pattern"></div></div>
+    <div class="hero-content" style="z-index:3;">
+      <p class="hero-tag reveal">Créations artisanales · Porto-Novo, Bénin</p>
+      <h1 class="hero-title reveal">
+        <span class="line">La</span>
+        <span class="line italic">Boutique</span>
+      </h1>
+      <p class="hero-desc reveal">Chaque bijou est tissé à la main, unique et porteur d'une histoire.</p>
+      <div class="hero-cta reveal">
+        <a href="#produits" class="btn-primary">Voir les créations</a>
+        <a href="https://wa.me/2290197998546" class="btn-ghost" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i> Commander</a>
+      </div>
+    </div>
+
+    <div class="hero-slide-dots" id="hero-dots"></div>
+    <div class="hero-slide-counter" id="hero-counter">01 / 04</div>
+    <div class="hero-scroll"><span>Défiler</span><div class="scroll-line"></div></div>
+  </div>
+
+  <!-- BOUTIQUE -->
+  <section class="section-block white" id="produits">
+    <div class="filter-bar reveal">
+      <button class="filter-btn active" data-filter="all">Tout</button>
+      <button class="filter-btn" data-filter="parure">Parures</button>
+      <button class="filter-btn" data-filter="collier">Colliers</button>
+      <button class="filter-btn" data-filter="bracelet">Bracelets</button>
+      <button class="filter-btn" data-filter="boucle">Boucles d'oreilles</button>
+      <button class="filter-btn" data-filter="accessoire">Accessoires</button>
+    </div>
+
+    <div class="products-grid" id="products-grid">
+
+      <!-- PARURES -->
+      <div class="product-card reveal" data-category="parure" data-product-id="pr-001">
+        <div class="product-img">
+          <img src="photos/p17.jpg" alt="Parure royale bleue et or" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+          <span class="product-badge">Bestseller</span>
+        </div>
+        <div class="product-info"><h3>Parure Royale Bleue &amp; Or</h3><p>Collier multicouches, bracelet et boucles – cristaux bleus et or</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="parure" data-product-id="pr-002">
+        <div class="product-img">
+          <img src="photos/p28.jpg" alt="Parure bleue saphir fond blanc" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Parure Saphir Royal</h3><p>Collier tissé, bracelet et boucles – cristaux bleus et dorures</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="parure" data-product-id="pr-003">
+        <div class="product-img">
+          <img src="photos/p06.jpg" alt="Parure noire et cristal transparente" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Parure Nuit &amp; Cristal</h3><p>Collier long, bracelet et boucles – perles noires et cristaux</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="parure" data-product-id="pr-004">
+        <div class="product-img">
+          <img src="photos/p16.jpg" alt="Parure blanche tissée sur fond rouge" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+          <span class="product-badge">Nouveau</span>
+        </div>
+        <div class="product-info"><h3>Parure Ivoire Tissée</h3><p>Collier, bracelet et boucles – perles blanches tissées main</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="parure" data-product-id="pr-005">
+        <div class="product-img">
+          <img src="photos/p04.jpg" alt="Parure blanche pendentif rouge cristal" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Parure Perles &amp; Rubis</h3><p>Collier perles blanches, pendentif rouge cristal et boucles assorties</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="parure" data-product-id="pr-006">
+        <div class="product-img">
+          <img src="photos/p14.jpg" alt="Parure collier et boucles or et blanc" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Parure Or &amp; Nacre</h3><p>Collier et boucles – perles dorées et nacre blanche alternées</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <!-- COLLIERS -->
+      <div class="product-card reveal" data-category="collier" data-product-id="pr-007">
+        <div class="product-img">
+          <img src="slide1.jpg" alt="Grand collier corail africain traditionnel" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+          <span class="product-badge">Traditionnel</span>
+        </div>
+        <div class="product-info"><h3>Grand Collier Corail Doré</h3><p>3 rangs, perles corail naturelles et sphères dorées</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="collier" data-product-id="pr-008">
+        <div class="product-img">
+          <img src="C1.jpg" alt="Collier corail rouge et or 2 rangs" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Collier Corail Royal</h3><p>2 rangs, perles corail cylindriques et médaillons dorés</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+      <div class="product-card reveal" data-category="collier" data-product-id="pr-009">
+        <div class="product-img">
+          <img src="C2.jpg" alt="Collier corail rouge et or 2 rangs" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Collier Corail Royal</h3><p>2 rangs, perles corail cylindriques et médaillons dorés</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+      <div class="product-card reveal" data-category="collier" data-product-id="pr-010">
+        <div class="product-img">
+          <img src="C3.jpg" alt="Collier corail rouge et or 2 rangs" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Collier Corail Royal</h3><p>2 rangs, perles corail cylindriques et médaillons dorés</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+      <div class="product-card reveal" data-category="collier" data-product-id="pr-011">
+        <div class="product-img">
+          <img src="C4.jpg" alt="Collier corail rouge et or 2 rangs" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Collier Corail Royal</h3><p>2 rangs, perles corail cylindriques et médaillons dorés</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+      <div class="product-card reveal" data-category="collier" data-product-id="pr-012">
+        <div class="product-img">
+          <img src="C5.jpg" alt="Collier corail rouge et or 2 rangs" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Collier Corail Royal</h3><p>2 rangs, perles corail cylindriques et médaillons dorés</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+      <div class="product-card reveal" data-category="collier" data-product-id="pr-013">
+        <div class="product-img">
+          <img src="photos/p08.jpg" alt="Collier corail rouge et or 2 rangs" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Collier Corail Royal</h3><p>2 rangs, perles corail cylindriques et médaillons dorés</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+      <div class="product-card reveal" data-category="collier" data-product-id="pr-014">
+        <div class="product-img">
+          <img src="photos/p08.jpg" alt="Collier corail rouge et or 2 rangs" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Collier Corail Royal</h3><p>2 rangs, perles corail cylindriques et médaillons dorés</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <!-- BRACELETS -->
+      <div class="product-card reveal" data-category="bracelet" data-product-id="pr-015">
+        <div class="product-img">
+          <img src="bracelet1.jpg" alt="Collection bracelets cristal multicolores" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+          <span class="product-badge">Collection</span>
+        </div>
+        <div class="product-info"><h3>Collection Éclats de Couleurs</h3><p>Bracelets cristal – noir, vert, rouge, bleu, turquoise, transparent</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="bracelet" data-product-id="pr-016">
+        <div class="product-img">
+          <img src="bracelet2.jpg" alt="Bracelets bleus et perlé avec perle nacre" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Bracelets Azur &amp; Nacre</h3><p>Duo – cristaux bleus dégradés et perle de nacre centrale</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="bracelet" data-product-id="pr-017">
+        <div class="product-img">
+          <img src="bracelet3.jpg" alt="Bracelets noirs made with love argent" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Bracelets "Made with Love"</h3><p>Duo – perles noires et strass argentés, charm cœur</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="bracelet" data-product-id="pr-018">
+        <div class="product-img">
+          <img src="bracelet4-alt.jpg" alt="Bracelet rouge blanc et or avec charm coeur" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Bracelet Amour Rouge &amp; Or</h3><p>Perles rouges, blanches et dorées – charm cœur émaillé</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="bracelet" data-product-id="pr-019">
+        <div class="product-img">
+          <img src="bracelet4.jpg" alt="Parure bracelet vert et boucles dorées" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Parure Émeraude &amp; Or</h3><p>Bracelet + boucles, perles vertes et dorées tissées main</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="bracelet" data-product-id="pr-020">
+        <div class="product-img">
+          <img src="bracelet5.jpg" alt="Bracelet bois naturel multicolore" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+          <span class="product-badge">Naturel</span>
+        </div>
+        <div class="product-info"><h3>Bracelet Bois Arc-en-Ciel</h3><p>Rondelles de bois naturel multicolores, éco-responsable</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="bracelet" data-product-id="pr-021">
+        <div class="product-img">
+          <img src="photos/p20.jpg" alt="Bracelet tissé noir et blanc zigzag" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Bracelet Damier Tissé</h3><p>Perles noires et blanches, motif zigzag tissé main</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="bracelet" data-product-id="pr-022">
+        <div class="product-img">
+          <img src="photos/p25.jpg" alt="Parure bracelet vert émeraude et boucles fleurs dorées" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Parure Émeraude Florale</h3><p>Bracelet vert émeraude + boucles fleurs dorées tissées main</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="bracelet" data-product-id="pr-023">
+        <div class="product-img">
+          <img src="photos/p26.jpg" alt="Bracelet bois naturel multicolore gros plan" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+          <span class="product-badge">Naturel</span>
+        </div>
+        <div class="product-info"><h3>Bracelet Bois Multicolore</h3><p>Rondelles bois naturel peintes – rouge, vert, jaune, violet, ocre</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="bracelet" data-product-id="pr-024">
+        <div class="product-img">
+          <img src="photos/p27.jpg" alt="Bracelet pêche doré et boucles cristal" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Parure Pêche &amp; Cristal</h3><p>Bracelet pêche doré + boucles pendantes en cristal</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <!-- BOUCLES D'OREILLES -->
+      <div class="product-card reveal" data-category="boucle" data-product-id="pr-025">
+        <div class="product-img">
+          <img src="b2.jpg" alt="Boucles perles blanches et or dégradé" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Boucles Cascade Nacre</h3><p>Trio de perles blanches dégradées, monture dorée</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="boucle" data-product-id="pr-026">
+        <div class="product-img">
+          <img src="b5.jpg" alt="Boucles perles blanches en forme goutte" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+          <span class="product-badge">Coup de cœur</span>
+        </div>
+        <div class="product-info"><h3>Boucles Grappes de Nacre</h3><p>Cascade de perles blanches multi-tailles, très élégantes</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="boucle" data-product-id="pr-027">
+        <div class="product-img">
+          <img src="b4.jpg" alt="Boucles perle blanche et cristal noir" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Boucles Nacre &amp; Onyx</h3><p>Perle blanche et cristal onyx noir – élégance minimaliste</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="boucle" data-product-id="pr-028">
+        <div class="product-img">
+          <img src="B3.jpg" alt="Boucles fleurs perles blanches et noires" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Boucles Fleurs Noir &amp; Blanc</h3><p>Fleurs tissées en perles blanches et noires</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="boucle" data-product-id="pr-029">
+        <div class="product-img">
+          <img src="photos/p01.jpg" alt="Boucle créole perles nacrées or" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Boucle Créole Nacre</h3><p>Cercle de perles nacrées sur monture dorée</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="boucle" data-product-id="pr-030">
+        <div class="product-img">
+          <img src="photos/p15.jpg" alt="Boucles anneaux perles blanches et dorées" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Boucles Anneaux Bicolores</h3><p>Anneau perles blanches et dorées, look moderne</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="boucle" data-product-id="pr-031">
+        <div class="product-img">
+          <img src="photos/p21.jpg" alt="Collection boucles perles cristal multicolores" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+          <span class="product-badge">Collection</span>
+        </div>
+        <div class="product-info"><h3>Collection Boucles Cristal</h3><p>8 couleurs disponibles – bleu, rouge, violet, rose, gris, ivoire…</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="boucle" data-product-id="pr-032">
+        <div class="product-img">
+          <img src="photos/p22.jpg" alt="Boucles cascade transparentes et perle rose" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Boucles Cascade Florale</h3><p>Perles roses et cristal transparent, style bohème</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="boucle" data-product-id="pr-033">
+        <div class="product-img">
+          <img src="photos/p23.jpg" alt="Boucles pendantes corail et cristal" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Boucles Fleur Corail</h3><p>Perles corail tissées en fleur avec cristal transparent</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="boucle" data-product-id="pr-034">
+        <div class="product-img">
+          <img src="photos/p24.jpg" alt="Boucles longues chaîne or et perles bleu turquoise" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Boucles Chaîne Turquoise &amp; Or</h3><p>Longues boucles – chaîne dorée et perles bleu turquoise</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="boucle" data-product-id="pr-035">
+        <div class="product-img">
+          <img src="photos/p30.jpg" alt="Boucles velours bordeaux cauris" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+          <span class="product-badge">Traditionnel</span>
+        </div>
+        <div class="product-info"><h3>Boucles Velours &amp; Cauris</h3><p>Velours bordeaux, coquillage cauris et perles rouges</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="boucle" data-product-id="pr-036">
+        <div class="product-img">
+          <img src="photos/p32.jpg" alt="Boucles créoles perles arc-en-ciel" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Créoles Arc-en-Ciel</h3><p>Demi-cercle de perles multicolores – joyeux et coloré</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="boucle" data-product-id="pr-037">
+        <div class="product-img">
+          <img src="photos/p33.jpg" alt="Boucles créoles rondes multicolores" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Créoles Rondes Festives</h3><p>Grand anneau de perles colorées, pièce gaie et originale</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <!-- ACCESSOIRES -->
+      <div class="product-card reveal" data-category="accessoire" data-product-id="pr-038">
+        <div class="product-img">
+          <img src="photos/p29.jpg" alt="Ensemble kente sac chapeau sandales africain" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+          <span class="product-badge">Unique</span>
+        </div>
+        <div class="product-info"><h3>Ensemble Kente</h3><p>Sac, chapeau de soleil et sandales – tissu kente africain</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="accessoire" data-product-id="pr-039">
+        <div class="product-img">
+          <img src="photos/p34.jpg" alt="Porte-clés perles nacre blanc tissé" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Porte-Clés Perles Nacre</h3><p>Cœur tissé en perles nacrées – parfait en cadeau</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+      <div class="product-card reveal" data-category="accessoire" data-product-id="pr-040">
+        <div class="product-img">
+          <img src="photos/p31.jpg" alt="Créoles tressées bleu et or" class="product-photo"/>
+          <div class="product-overlay"><button class="btn-add">Personnaliser</button></div>
+        </div>
+        <div class="product-info"><h3>Créoles Tressées Bleu &amp; Or</h3><p>Grandes créoles tressées, perles bleues et fil doré</p>
+          <div class="product-footer"><span class="product-price">Sur commande</span><button class="btn-whatsapp"><i class="fab fa-whatsapp"></i></button></div></div>
+      </div>
+
+    </div>
+
+    <div style="text-align:center; margin-top:60px;" class="reveal">
+      <p style="font-size:0.85rem; color:var(--gris); margin-bottom:16px;">Vous souhaitez une création sur mesure ?</p>
+      <a href="https://wa.me/2290197998546" class="btn-primary" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i> Commander via WhatsApp</a>
+    </div>
+  </section>
+
+
+  <!-- NEWSLETTER -->
+  <section class="newsletter-section">
+    <div class="newsletter-inner">
+      <div class="newsletter-beads">
+        <div class="newsletter-bead"></div>
+        <div class="newsletter-bead"></div>
+        <div class="newsletter-bead"></div>
+      </div>
+      <p class="newsletter-tag reveal">Restez connecté</p>
+      <h2 class="newsletter-title reveal">Rejoignez notre <em>liste VIP</em></h2>
+      <p class="newsletter-desc reveal">Nouveautés, offres exclusives et coulisses de l'atelier – directement dans votre boîte mail.</p>
+      <form class="newsletter-form reveal" id="newsletter-form" action="https://formspree.io/f/YOUR_NEWSLETTER_ID" method="POST">
+        <input type="hidden" name="_subject" value="Nouvelle inscription newsletter – Artisan Nomade"/>
+        <input type="text" name="_gotcha" style="display:none"/>
+        <input class="newsletter-input" type="email" name="email" placeholder="votre@email.com" required aria-label="Votre adresse email"/>
+        <button type="submit" class="newsletter-btn" id="nl-btn">S'abonner</button>
+      </form>
+      <div class="newsletter-success" id="nl-success">
+        <i class="fas fa-check-circle"></i> Merci ! Vous êtes maintenant abonné(e).
+      </div>
+      <p class="newsletter-privacy">🔒 Aucun spam. Désinscription en un clic.</p>
+    </div>
+  </section>
+  <script src="footer.js"></script>
+  <script src="api.js"></script>
+  <script src="main.js"></script>
+  <script>
+  (function() {
+    const slides = document.querySelectorAll('.hero-slide');
+    const counter = document.getElementById('hero-counter');
+    const dotsWrap = document.getElementById('hero-dots');
+    let current = 0;
+    const total = slides.length;
+    slides.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'hero-slide-dot' + (i === 0 ? ' active' : '');
+      dot.addEventListener('click', () => goTo(i));
+      dotsWrap.appendChild(dot);
+    });
+    function goTo(n) {
+      slides[current].classList.remove('active');
+      dotsWrap.children[current].classList.remove('active');
+      current = (n + total) % total;
+      slides[current].classList.add('active');
+      dotsWrap.children[current].classList.add('active');
+      counter.textContent = String(current + 1).padStart(2,'0') + ' / ' + String(total).padStart(2,'0');
+    }
+    let timer = setInterval(() => goTo(current + 1), 5000);
+    const ss = document.getElementById('hero-slideshow');
+    ss.addEventListener('mouseenter', () => clearInterval(timer));
+    ss.addEventListener('mouseleave', () => { timer = setInterval(() => goTo(current + 1), 5000); });
+  })();
+  </script>
+</body>
+</html>

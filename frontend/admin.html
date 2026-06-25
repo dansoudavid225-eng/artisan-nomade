@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Administration – Artisan Nomade</title>
+<meta name="robots" content="noindex, nofollow"/>
+<link rel="icon" href="logo.png"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Josefin+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+  :root{
+    --or:#C9A84C; --or-light:#E2C47A; --or-dark:#9B7A2E;
+    --terre:#2C1A0E; --terre-light:#4A2E18;
+    --ivoire:#F5EDD8; --ivoire-dark:#E8D8B4;
+    --nuit:#0D0805; --blanc:#FDFAF4; --gris:#8A7A6A;
+    --vert:#25D366; --bleu:#4A7A8C; --danger:#C85A3A;
+    --radius:10px;
+    --shadow:0 10px 30px rgba(44,26,14,0.10);
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Josefin Sans',sans-serif;
+    background:var(--ivoire);
+    color:var(--terre);
+    min-height:100vh;
+  }
+  h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--terre);}
+  a{color:inherit;}
+  ::-webkit-scrollbar{height:6px;width:6px;}
+  ::-webkit-scrollbar-thumb{background:var(--or);border-radius:4px;}
+
+  /* ---------- LOGIN ---------- */
+  #login-screen{
+    min-height:100vh;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(160deg,var(--terre) 0%,var(--nuit) 100%);
+    padding:24px;
+  }
+  .login-card{
+    background:var(--blanc);border-radius:var(--radius);padding:44px 36px;
+    width:100%;max-width:380px;box-shadow:var(--shadow);text-align:center;
+  }
+  .login-card img{width:56px;height:56px;object-fit:contain;margin-bottom:12px;}
+  .login-card h1{font-size:1.5rem;letter-spacing:1px;margin-bottom:4px;}
+  .login-card p.sub{color:var(--gris);font-size:0.85rem;margin-bottom:28px;}
+  .field{text-align:left;margin-bottom:18px;}
+  .field label{display:block;font-size:0.78rem;letter-spacing:0.5px;color:var(--terre-light);margin-bottom:6px;text-transform:uppercase;}
+  .field input{
+    width:100%;padding:12px 14px;border:1px solid var(--ivoire-dark);border-radius:6px;
+    font-family:inherit;font-size:0.95rem;background:var(--ivoire);color:var(--terre);
+    transition:border-color .2s;
+  }
+  .field input:focus{outline:none;border-color:var(--or);}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    width:100%;padding:13px 18px;border:none;border-radius:6px;
+    background:var(--terre);color:var(--ivoire);font-family:inherit;font-size:0.95rem;
+    letter-spacing:0.5px;cursor:pointer;transition:background .2s,opacity .2s;
+  }
+  .btn:hover{background:var(--terre-light);}
+  .btn:disabled{opacity:.6;cursor:not-allowed;}
+  .btn-sm{width:auto;padding:8px 14px;font-size:0.82rem;}
+  .btn-ghost{background:transparent;color:var(--terre);border:1px solid var(--ivoire-dark);}
+  .btn-ghost:hover{background:var(--ivoire-dark);}
+  .login-error{
+    display:none;background:rgba(200,90,58,0.08);border-left:3px solid var(--danger);
+    color:var(--danger);font-size:0.82rem;padding:10px 12px;border-radius:4px;margin-bottom:18px;text-align:left;
+  }
+
+  /* ---------- DASHBOARD ---------- */
+  #dashboard{display:none;}
+  .topbar{
+    background:var(--terre);color:var(--ivoire);padding:16px 28px;
+    display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+    position:sticky;top:0;z-index:20;
+  }
+  .topbar-brand{display:flex;align-items:center;gap:10px;}
+  .topbar-brand img{width:34px;height:34px;object-fit:contain;}
+  .topbar-brand span{font-family:'Cormorant Garamond',serif;font-size:1.25rem;letter-spacing:1px;}
+  .topbar-brand small{display:block;font-size:0.68rem;color:var(--or-light);letter-spacing:1.5px;text-transform:uppercase;}
+  .topbar-actions{display:flex;gap:10px;align-items:center;}
+  .icon-btn{
+    background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:var(--ivoire);
+    width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    cursor:pointer;transition:background .2s;font-size:0.9rem;
+  }
+  .icon-btn:hover{background:rgba(255,255,255,0.18);}
+  .icon-btn.spinning i{animation:spin 0.9s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 20px 60px;}
+
+  .stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:28px;}
+  .stat-card{
+    background:var(--blanc);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow);
+    border-bottom:3px solid var(--or);
+  }
+  .stat-card .num{font-family:'Cormorant Garamond',serif;font-size:2.1rem;font-weight:700;color:var(--terre);line-height:1;}
+  .stat-card .label{font-size:0.76rem;color:var(--gris);text-transform:uppercase;letter-spacing:0.6px;margin-top:6px;}
+  .stat-card.alert{border-bottom-color:var(--danger);}
+  .stat-card.alert .num{color:var(--danger);}
+
+  .tabs{display:flex;gap:6px;border-bottom:2px solid var(--ivoire-dark);margin-bottom:20px;flex-wrap:wrap;}
+  .tab-btn{
+    background:none;border:none;font-family:inherit;font-size:0.92rem;color:var(--gris);
+    padding:10px 18px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;
+    display:flex;align-items:center;gap:7px;
+  }
+  .tab-btn.active{color:var(--terre);border-bottom-color:var(--or);font-weight:600;}
+  .tab-btn .pill{
+    background:var(--danger);color:#fff;font-size:0.68rem;border-radius:10px;padding:1px 7px;line-height:1.4;
+  }
+
+  .toolbar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center;justify-content:space-between;}
+  .toolbar-filters{display:flex;gap:10px;flex-wrap:wrap;flex:1;}
+  .toolbar input[type="search"], .toolbar select{
+    padding:9px 12px;border:1px solid var(--ivoire-dark);border-radius:6px;font-family:inherit;
+    font-size:0.88rem;background:var(--blanc);color:var(--terre);
+  }
+  .toolbar input[type="search"]{min-width:200px;flex:1;max-width:280px;}
+
+  .panel{background:var(--blanc);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
+  .table-scroll{overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;font-size:0.86rem;min-width:760px;}
+  thead th{
+    text-align:left;background:var(--ivoire);color:var(--terre-light);font-weight:600;
+    padding:12px 14px;font-size:0.74rem;letter-spacing:0.6px;text-transform:uppercase;
+    border-bottom:1px solid var(--ivoire-dark);white-space:nowrap;
+  }
+  tbody td{padding:13px 14px;border-bottom:1px solid var(--ivoire-dark);vertical-align:top;}
+  tbody tr:hover{background:rgba(201,168,76,0.06);}
+  tbody tr.unread td{font-weight:600;}
+  .ref-code{font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--or-dark);font-size:1rem;}
+  .muted{color:var(--gris);font-size:0.8rem;}
+  .badge{
+    display:inline-block;padding:4px 10px;border-radius:20px;font-size:0.72rem;font-weight:600;
+    letter-spacing:0.3px;color:#fff;white-space:nowrap;
+  }
+  .badge-recu{background:var(--gris);}
+  .badge-en_fabrication{background:var(--or-dark);}
+  .badge-pret{background:var(--or);color:var(--terre);}
+  .badge-expedie{background:var(--bleu);}
+  .badge-livre{background:var(--vert);}
+  .badge-annule{background:var(--danger);}
+  select.statut-select{
+    border:1px solid var(--ivoire-dark);border-radius:6px;padding:6px 8px;font-family:inherit;
+    font-size:0.8rem;background:var(--blanc);color:var(--terre);
+  }
+  .row-actions{display:flex;gap:8px;flex-wrap:wrap;}
+  .link-btn{
+    display:inline-flex;align-items:center;gap:5px;font-size:0.78rem;color:var(--terre);
+    background:var(--ivoire);padding:6px 10px;border-radius:6px;text-decoration:none;border:1px solid var(--ivoire-dark);
+  }
+  .link-btn:hover{background:var(--ivoire-dark);}
+  .link-btn.wa{color:#1a7d4a;}
+  .msg-toggle{cursor:pointer;text-decoration:underline dotted;color:var(--or-dark);font-size:0.8rem;}
+  .msg-full{display:none;margin-top:6px;font-size:0.85rem;color:var(--terre-light);white-space:pre-wrap;max-width:320px;}
+  .dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:6px;}
+  .dot.unread{background:var(--danger);}
+  .dot.read{background:var(--ivoire-dark);}
+  .empty-state{padding:48px 24px;text-align:center;color:var(--gris);}
+  .empty-state i{font-size:2rem;color:var(--or-light);margin-bottom:12px;display:block;}
+  .loading-state{padding:48px 24px;text-align:center;color:var(--gris);}
+  .pr-thumb{width:46px;height:46px;border-radius:6px;object-fit:cover;display:block;background:var(--ivoire-dark);}
+  .badge-cat{
+    display:inline-block;padding:3px 9px;border-radius:14px;font-size:0.7rem;font-weight:600;
+    background:var(--ivoire);color:var(--terre-light);border:1px solid var(--ivoire-dark);text-transform:capitalize;
+  }
+  .prix-edit{display:flex;align-items:center;gap:8px;}
+  .prix-edit input{
+    width:100px;padding:7px 9px;border:1px solid var(--ivoire-dark);border-radius:6px;font-family:inherit;
+    font-size:0.86rem;background:var(--ivoire);color:var(--terre);
+  }
+  .prix-edit input:focus{outline:none;border-color:var(--or);}
+  .prix-edit span{color:var(--gris);font-size:0.78rem;}
+  .save-prix{display:none;}
+  .save-prix.visible{display:inline-flex;}
+  .toast{
+    position:fixed;bottom:24px;right:24px;background:var(--terre);color:var(--ivoire);
+    padding:13px 20px;border-radius:8px;font-size:0.88rem;box-shadow:var(--shadow);
+    display:flex;align-items:center;gap:10px;z-index:50;transform:translateY(20px);opacity:0;
+    transition:transform .25s,opacity .25s;pointer-events:none;
+  }
+  .toast.show{transform:translateY(0);opacity:1;}
+  .toast.error{background:var(--danger);}
+  .toast i{color:var(--or-light);}
+  .toast.error i{color:#fff;}
+
+  @media (max-width:860px){
+    .stats-row{grid-template-columns:repeat(3,1fr);}
+  }
+  @media (max-width:560px){
+    .topbar{padding:14px 16px;}
+    .wrap{padding:20px 12px 50px;}
+    .stats-row{grid-template-columns:1fr 1fr;gap:10px;}
+    .stat-card{padding:14px;}
+    .stat-card .num{font-size:1.6rem;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ ÉCRAN DE CONNEXION ============ -->
+<div id="login-screen">
+  <div class="login-card">
+    <img src="logo.png" alt="Artisan Nomade"/>
+    <h1>Administration</h1>
+    <p class="sub">Artisan Nomade · Porto-Novo</p>
+    <div class="login-error" id="login-error"><i class="fas fa-exclamation-circle"></i> <span id="login-error-text"></span></div>
+    <div class="field">
+      <label for="token-input">Token d'accès</label>
+      <input id="token-input" type="password" placeholder="••••••••••••" autocomplete="off"/>
+    </div>
+    <button class="btn" id="login-btn"><i class="fas fa-lock-open"></i> Entrer</button>
+  </div>
+</div>
+
+<!-- ============ TABLEAU DE BORD ============ -->
+<div id="dashboard">
+  <div class="topbar">
+    <div class="topbar-brand">
+      <img src="logo.png" alt="Artisan Nomade"/>
+      <div>
+        <span>Artisan Nomade</span>
+        <small>Espace administration</small>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <a href="index.html" class="icon-btn" title="Voir le site" target="_blank" rel="noopener"><i class="fas fa-arrow-up-right-from-square"></i></a>
+      <button class="icon-btn" id="refresh-btn" title="Actualiser"><i class="fas fa-rotate"></i></button>
+      <button class="icon-btn" id="logout-btn" title="Déconnexion"><i class="fas fa-power-off"></i></button>
+    </div>
+  </div>
+
+  <div class="wrap">
+
+    <div class="stats-row">
+      <div class="stat-card"><div class="num" id="stat-total-commandes">–</div><div class="label">Commandes</div></div>
+      <div class="stat-card" id="stat-en-attente-card"><div class="num" id="stat-en-attente">–</div><div class="label">En attente</div></div>
+      <div class="stat-card" id="stat-messages-card"><div class="num" id="stat-messages-non-lus">–</div><div class="label">Messages non lus</div></div>
+      <div class="stat-card"><div class="num" id="stat-newsletter">–</div><div class="label">Abonnés newsletter</div></div>
+      <div class="stat-card"><div class="num" id="stat-produits">–</div><div class="label">Produits au catalogue</div></div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="tab-commandes"><i class="fas fa-box"></i> Commandes</button>
+      <button class="tab-btn" data-tab="tab-messages"><i class="fas fa-envelope"></i> Messages <span class="pill" id="pill-messages" style="display:none;"></span></button>
+      <button class="tab-btn" data-tab="tab-newsletter"><i class="fas fa-users"></i> Newsletter</button>
+      <button class="tab-btn" data-tab="tab-produits"><i class="fas fa-tags"></i> Produits</button>
+    </div>
+
+    <!-- ---- COMMANDES ---- -->
+    <div class="tab-panel" id="tab-commandes">
+      <div class="toolbar">
+        <div class="toolbar-filters">
+          <input type="search" id="cmd-search" placeholder="Recherche : référence, nom, ville..."/>
+          <select id="cmd-filter-statut">
+            <option value="">Tous les statuts</option>
+            <option value="recu">Reçue</option>
+            <option value="en_fabrication">En fabrication</option>
+            <option value="pret">Prête</option>
+            <option value="expedie">Expédiée</option>
+            <option value="livre">Livrée</option>
+            <option value="annule">Annulée</option>
+          </select>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Référence</th><th>Client</th><th>Produits</th><th>Livraison</th>
+                <th>Date</th><th>Statut</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="cmd-tbody"></tbody>
+          </table>
+        </div>
+        <div class="empty-state" id="cmd-empty" style="display:none;"><i class="fas fa-box-open"></i>Aucune commande pour le moment.</div>
+        <div class="loading-state" id="cmd-loading"><i class="fas fa-spinner fa-spin"></i> Chargement...</div>
+      </div>
+    </div>
+
+    <!-- ---- MESSAGES ---- -->
+    <div class="tab-panel" id="tab-messages" style="display:none;">
+      <div class="toolbar">
+        <div class="toolbar-filters">
+          <input type="search" id="msg-search" placeholder="Recherche : nom, email, sujet..."/>
+          <select id="msg-filter-lu">
+            <option value="">Tous les messages</option>
+            <option value="non-lu">Non lus</option>
+            <option value="lu">Lus</option>
+          </select>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr><th></th><th>Nom</th><th>Contact</th><th>Sujet / message</th><th>Date</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="msg-tbody"></tbody>
+          </table>
+        </div>
+        <div class="empty-state" id="msg-empty" style="display:none;"><i class="fas fa-envelope-open"></i>Aucun message pour le moment.</div>
+        <div class="loading-state" id="msg-loading"><i class="fas fa-spinner fa-spin"></i> Chargement...</div>
+      </div>
+    </div>
+
+    <!-- ---- NEWSLETTER ---- -->
+    <div class="tab-panel" id="tab-newsletter" style="display:none;">
+      <div class="toolbar">
+        <div class="toolbar-filters">
+          <input type="search" id="nl-search" placeholder="Recherche : email, nom..."/>
+        </div>
+        <button class="btn btn-ghost btn-sm" id="nl-export"><i class="fas fa-download"></i> Exporter CSV</button>
+      </div>
+      <div class="panel">
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Email</th><th>Nom</th><th>Source</th><th>Date d'inscription</th></tr></thead>
+            <tbody id="nl-tbody"></tbody>
+          </table>
+        </div>
+        <div class="empty-state" id="nl-empty" style="display:none;"><i class="fas fa-user-slash"></i>Aucun abonné pour le moment.</div>
+        <div class="loading-state" id="nl-loading"><i class="fas fa-spinner fa-spin"></i> Chargement...</div>
+      </div>
+    </div>
+
+    <!-- ---- PRODUITS ---- -->
+    <div class="tab-panel" id="tab-produits" style="display:none;">
+      <div class="toolbar">
+        <div class="toolbar-filters">
+          <input type="search" id="pr-search" placeholder="Recherche : nom du produit..."/>
+          <select id="pr-filter-cat">
+            <option value="">Toutes les catégories</option>
+            <option value="parure">Parures</option>
+            <option value="collier">Colliers</option>
+            <option value="bracelet">Bracelets</option>
+            <option value="boucle">Boucles</option>
+            <option value="accessoire">Accessoires</option>
+          </select>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th></th><th>Produit</th><th>Catégorie</th><th>Badge</th><th>Prix (FCFA)</th><th></th></tr></thead>
+            <tbody id="pr-tbody"></tbody>
+          </table>
+        </div>
+        <div class="empty-state" id="pr-empty" style="display:none;"><i class="fas fa-tags"></i>Aucun produit ne correspond.</div>
+        <div class="loading-state" id="pr-loading"><i class="fas fa-spinner fa-spin"></i> Chargement...</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i> <span id="toast-text"></span></div>
+
+<script>
+(function(){
+
+  // ====================================================================
+  // CONFIG — même logique que frontend/api.js. Après déploiement du
+  // backend sur Render, remplace l'URL ci-dessous (recherche ONRENDER_URL
+  // dans api.js ET ici, ce sont les 2 seuls endroits à modifier).
+  // ====================================================================
+  const BASE_URL = (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost')
+    ? 'http://localhost:3001/api'
+    : 'https://artisan-nomade-api.onrender.com/api'; // ONRENDER_URL
+
+  const TOKEN_KEY = 'an_admin_token';
+
+  const STATUTS = {
+    recu: 'Reçue', en_fabrication: 'En fabrication', pret: 'Prête',
+    expedie: 'Expédiée', livre: 'Livrée', annule: 'Annulée'
+  };
+
+  let DATA = { commandes: [], contacts: [], newsletter: [], produits: [] };
+
+  // ---------- Helpers ----------
+  function $(id){ return document.getElementById(id); }
+  function escapeHtml(str){
+    if (str === null || str === undefined) return '';
+    return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  function fmtDate(iso){
+    if (!iso) return '–';
+    try { return new Date(iso).toLocaleDateString('fr-FR', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }); }
+    catch { return iso; }
+  }
+  function showToast(text, isError){
+    const t = $('toast');
+    $('toast-text').textContent = text;
+    t.classList.toggle('error', !!isError);
+    t.querySelector('i').className = isError ? 'fas fa-exclamation-circle' : 'fas fa-check-circle';
+    t.classList.add('show');
+    clearTimeout(window._toastTimer);
+    window._toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+  }
+
+  async function apiCall(method, path, body){
+    const token = sessionStorage.getItem(TOKEN_KEY) || localStorage.getItem(TOKEN_KEY);
+    const opts = {
+      method,
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }
+    };
+    if (body) opts.body = JSON.stringify(body);
+    try {
+      const res = await fetch(BASE_URL + path, opts);
+      let data = {};
+      try { data = await res.json(); } catch {}
+      return { ok: res.ok, status: res.status, data };
+    } catch (err) {
+      return { ok: false, status: 0, data: { success:false, message:'Impossible de contacter le serveur. Vérifie que le backend est démarré et accessible.' } };
+    }
+  }
+
+  // ---------- LOGIN ----------
+  async function attemptLogin(token){
+    const errEl = $('login-error');
+    const btn = $('login-btn');
+    errEl.style.display = 'none';
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Vérification...';
+
+    localStorage.setItem(TOKEN_KEY, token);
+    const result = await apiCall('GET', '/admin/commandes');
+
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-lock-open"></i> Entrer';
+
+    if (result.ok) {
+      $('login-screen').style.display = 'none';
+      $('dashboard').style.display = 'block';
+      loadAll();
+    } else {
+      localStorage.removeItem(TOKEN_KEY);
+      $('login-error-text').textContent = result.status === 401
+        ? 'Token incorrect. Vérifie la variable ADMIN_TOKEN du backend.'
+        : (result.data.message || 'Connexion impossible.');
+      errEl.style.display = 'block';
+    }
+  }
+
+  $('login-btn').addEventListener('click', () => {
+    const token = $('token-input').value.trim();
+    if (!token) return;
+    attemptLogin(token);
+  });
+  $('token-input').addEventListener('keydown', e => { if (e.key === 'Enter') $('login-btn').click(); });
+
+  $('logout-btn').addEventListener('click', () => {
+    localStorage.removeItem(TOKEN_KEY);
+    $('dashboard').style.display = 'none';
+    $('login-screen').style.display = 'flex';
+    $('token-input').value = '';
+  });
+
+  $('refresh-btn').addEventListener('click', () => {
+    $('refresh-btn').classList.add('spinning');
+    loadAll().finally(() => $('refresh-btn').classList.remove('spinning'));
+  });
+
+  // ---------- LOAD ----------
+  async function loadAll(){
+    $('cmd-loading').style.display = 'block';
+    $('msg-loading').style.display = 'block';
+    $('nl-loading').style.display = 'block';
+    $('pr-loading').style.display = 'block';
+
+    const [cmdRes, msgRes, nlRes, prRes] = await Promise.all([
+      apiCall('GET', '/admin/commandes'),
+      apiCall('GET', '/admin/contacts'),
+      apiCall('GET', '/admin/newsletter'),
+      apiCall('GET', '/admin/produits'),
+    ]);
+
+    if (cmdRes.ok) DATA.commandes = cmdRes.data.commandes || [];
+    if (msgRes.ok) DATA.contacts = msgRes.data.contacts || [];
+    if (nlRes.ok) DATA.newsletter = nlRes.data.abonnes || [];
+    if (prRes.ok) DATA.produits = prRes.data.produits || [];
+
+    if (!cmdRes.ok && cmdRes.status === 401) {
+      showToast('Session expirée ou token invalide.', true);
+      $('logout-btn').click();
+      return;
+    }
+
+    renderStats();
+    renderCommandes();
+    renderMessages();
+    renderNewsletter();
+    renderProduits();
+  }
+
+  function renderStats(){
+    $('stat-total-commandes').textContent = DATA.commandes.length;
+    const enAttente = DATA.commandes.filter(c => c.statut === 'recu' || c.statut === 'en_fabrication').length;
+    $('stat-en-attente').textContent = enAttente;
+    const nonLus = DATA.contacts.filter(c => !c.lu).length;
+    $('stat-messages-non-lus').textContent = nonLus;
+    $('stat-messages-card').classList.toggle('alert', nonLus > 0);
+    $('stat-newsletter').textContent = DATA.newsletter.length;
+    $('stat-produits').textContent = DATA.produits.length;
+
+    if (nonLus > 0) { $('pill-messages').style.display = 'inline-block'; $('pill-messages').textContent = nonLus; }
+    else { $('pill-messages').style.display = 'none'; }
+  }
+
+  // ---------- COMMANDES ----------
+  function renderCommandes(){
+    const search = $('cmd-search').value.trim().toLowerCase();
+    const filterStatut = $('cmd-filter-statut').value;
+    let list = DATA.commandes.slice().sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    if (filterStatut) list = list.filter(c => c.statut === filterStatut);
+    if (search) {
+      list = list.filter(c =>
+        (c.reference||'').toLowerCase().includes(search) ||
+        (c.client?.nom||'').toLowerCase().includes(search) ||
+        (c.client?.ville||'').toLowerCase().includes(search)
+      );
+    }
+
+    const tbody = $('cmd-tbody');
+    tbody.innerHTML = '';
+    $('cmd-empty').style.display = list.length ? 'none' : 'block';
+
+    list.forEach(c => {
+      const produits = (c.produits||[]).map(p => escapeHtml(p.nom) + (p.quantite > 1 ? ' ×' + p.quantite : '')).join(', ');
+      const tel = (c.client?.telephone || '').replace(/[^\d+]/g,'');
+      const waMsg = encodeURIComponent(`Bonjour ${c.client?.nom || ''}, à propos de votre commande ${c.reference} :`);
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><span class="ref-code">${escapeHtml(c.reference)}</span>${c.message ? `<br><span class="msg-toggle" data-msg="${escapeHtml(c.message)}">voir personnalisation</span>` : ''}</td>
+        <td>${escapeHtml(c.client?.nom)}<br><span class="muted">${escapeHtml(c.client?.ville)}, ${escapeHtml(c.client?.pays)}</span></td>
+        <td>${produits}</td>
+        <td><span class="muted">${escapeHtml(c.livraison)}</span></td>
+        <td><span class="muted">${fmtDate(c.createdAt)}</span></td>
+        <td>
+          <span class="badge badge-${c.statut}">${escapeHtml(c.statutLabel || STATUTS[c.statut] || c.statut)}</span><br>
+          <select class="statut-select" data-id="${c.id}" style="margin-top:6px;">
+            ${Object.keys(STATUTS).map(s => `<option value="${s}" ${s===c.statut?'selected':''}>${STATUTS[s]}</option>`).join('')}
+          </select>
+        </td>
+        <td>
+          <div class="row-actions">
+            ${tel ? `<a class="link-btn wa" href="https://wa.me/${tel}?text=${waMsg}" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Contacter</a>` : ''}
+          </div>
+        </td>`;
+      tbody.appendChild(tr);
+    });
+
+    $('cmd-loading').style.display = 'none';
+  }
+
+  $('cmd-tbody').addEventListener('click', e => {
+    const t = e.target.closest('.msg-toggle');
+    if (!t) return;
+    const existing = t.nextElementSibling;
+    if (existing && existing.classList.contains('msg-full')) { existing.remove(); return; }
+    const div = document.createElement('div');
+    div.className = 'msg-full';
+    div.style.display = 'block';
+    div.textContent = t.dataset.msg;
+    t.after(div);
+  });
+
+  $('cmd-tbody').addEventListener('change', async e => {
+    const sel = e.target.closest('.statut-select');
+    if (!sel) return;
+    const id = sel.dataset.id;
+    const newStatut = sel.value;
+    sel.disabled = true;
+    const result = await apiCall('PATCH', `/admin/commandes/${id}/statut`, { statut: newStatut });
+    sel.disabled = false;
+    if (result.ok) {
+      const idx = DATA.commandes.findIndex(c => c.id === id);
+      if (idx > -1) DATA.commandes[idx] = result.data.commande;
+      showToast('Statut mis à jour : ' + (STATUTS[newStatut] || newStatut));
+      renderStats();
+      renderCommandes();
+    } else {
+      showToast(result.data.message || 'Erreur lors de la mise à jour.', true);
+    }
+  });
+
+  $('cmd-search').addEventListener('input', renderCommandes);
+  $('cmd-filter-statut').addEventListener('change', renderCommandes);
+
+  // ---------- MESSAGES ----------
+  function renderMessages(){
+    const search = $('msg-search').value.trim().toLowerCase();
+    const filterLu = $('msg-filter-lu').value;
+    let list = DATA.contacts.slice().sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    if (filterLu === 'lu') list = list.filter(c => c.lu);
+    if (filterLu === 'non-lu') list = list.filter(c => !c.lu);
+    if (search) {
+      list = list.filter(c =>
+        (c.nom||'').toLowerCase().includes(search) ||
+        (c.email||'').toLowerCase().includes(search) ||
+        (c.sujet||'').toLowerCase().includes(search)
+      );
+    }
+
+    const tbody = $('msg-tbody');
+    tbody.innerHTML = '';
+    $('msg-empty').style.display = list.length ? 'none' : 'block';
+
+    list.forEach(c => {
+      const tr = document.createElement('tr');
+      tr.className = c.lu ? '' : 'unread';
+      const excerpt = (c.message || '').slice(0, 70) + ((c.message||'').length > 70 ? '…' : '');
+      tr.innerHTML = `
+        <td><span class="dot ${c.lu ? 'read' : 'unread'}" title="${c.lu ? 'Lu' : 'Non lu'}"></span></td>
+        <td>${escapeHtml(c.nom)}</td>
+        <td><span class="muted">${escapeHtml(c.email)}</span>${c.telephone ? `<br><span class="muted">${escapeHtml(c.telephone)}</span>` : ''}</td>
+        <td><strong>${escapeHtml(c.sujet || 'Autre')}</strong><br>
+          <span class="msg-toggle" data-msg="${escapeHtml(c.message)}">${escapeHtml(excerpt)}</span>
+        </td>
+        <td><span class="muted">${fmtDate(c.createdAt)}</span></td>
+        <td>
+          <div class="row-actions">
+            <button class="link-btn toggle-lu" data-id="${c.id}" data-lu="${c.lu ? '1':'0'}"><i class="fas fa-${c.lu ? 'envelope-open' : 'envelope'}"></i> ${c.lu ? 'Marquer non lu' : 'Marquer lu'}</button>
+            <a class="link-btn" href="mailto:${escapeHtml(c.email)}"><i class="fas fa-reply"></i> Répondre</a>
+          </div>
+        </td>`;
+      tbody.appendChild(tr);
+    });
+
+    $('msg-loading').style.display = 'none';
+  }
+
+  $('msg-tbody').addEventListener('click', async e => {
+    const toggleMsg = e.target.closest('.msg-toggle');
+    if (toggleMsg) {
+      const cell = toggleMsg.closest('td');
+      let full = cell.querySelector('.msg-full');
+      if (full) { full.remove(); return; }
+      full = document.createElement('div');
+      full.className = 'msg-full';
+      full.style.display = 'block';
+      full.textContent = toggleMsg.dataset.msg;
+      cell.appendChild(full);
+      return;
+    }
+    const toggleLu = e.target.closest('.toggle-lu');
+    if (toggleLu) {
+      const id = toggleLu.dataset.id;
+      const newLu = toggleLu.dataset.lu !== '1';
+      toggleLu.disabled = true;
+      const result = await apiCall('PATCH', `/admin/contacts/${id}/lu`, { lu: newLu });
+      if (result.ok) {
+        const idx = DATA.contacts.findIndex(c => c.id === id);
+        if (idx > -1) DATA.contacts[idx].lu = newLu;
+        renderStats();
+        renderMessages();
+      } else {
+        showToast(result.data.message || 'Erreur.', true);
+        toggleLu.disabled = false;
+      }
+    }
+  });
+
+  $('msg-search').addEventListener('input', renderMessages);
+  $('msg-filter-lu').addEventListener('change', renderMessages);
+
+  // ---------- PRODUITS ----------
+  const CATEGORIES_LABELS = { parure:'Parure', collier:'Collier', bracelet:'Bracelet', boucle:'Boucle', accessoire:'Accessoire' };
+
+  function renderProduits(){
+    const search = $('pr-search').value.trim().toLowerCase();
+    const filterCat = $('pr-filter-cat').value;
+    let list = DATA.produits.slice().sort((a,b) => a.nom.localeCompare(b.nom));
+
+    if (filterCat) list = list.filter(p => p.categorie === filterCat);
+    if (search) list = list.filter(p => p.nom.toLowerCase().includes(search));
+
+    const tbody = $('pr-tbody');
+    tbody.innerHTML = '';
+    $('pr-empty').style.display = list.length ? 'none' : 'block';
+
+    list.forEach(p => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><img class="pr-thumb" src="${escapeHtml(p.image)}" alt="" onerror="this.style.visibility='hidden'"/></td>
+        <td>${escapeHtml(p.nom)}</td>
+        <td><span class="badge-cat">${CATEGORIES_LABELS[p.categorie] || escapeHtml(p.categorie)}</span></td>
+        <td><span class="muted">${escapeHtml(p.badge) || '–'}</span></td>
+        <td>
+          <div class="prix-edit">
+            <input type="number" min="0" step="500" value="${p.prix}" data-id="${p.id}" class="prix-input"/>
+            <span>FCFA</span>
+          </div>
+        </td>
+        <td><button class="link-btn save-prix" data-id="${p.id}"><i class="fas fa-check"></i> Enregistrer</button></td>`;
+      tbody.appendChild(tr);
+    });
+
+    $('pr-loading').style.display = 'none';
+  }
+
+  $('pr-tbody').addEventListener('input', e => {
+    const input = e.target.closest('.prix-input');
+    if (!input) return;
+    const row = input.closest('tr');
+    row.querySelector('.save-prix').classList.add('visible');
+  });
+
+  $('pr-tbody').addEventListener('click', async e => {
+    const btn = e.target.closest('.save-prix');
+    if (!btn) return;
+    const id = btn.dataset.id;
+    const row = btn.closest('tr');
+    const input = row.querySelector('.prix-input');
+    const newPrix = Number(input.value);
+
+    if (!newPrix || newPrix < 0) { showToast('Prix invalide.', true); return; }
+
+    btn.disabled = true;
+    const result = await apiCall('PATCH', `/admin/produits/${id}`, { prix: newPrix });
+    btn.disabled = false;
+
+    if (result.ok) {
+      const idx = DATA.produits.findIndex(p => p.id === id);
+      if (idx > -1) DATA.produits[idx].prix = result.data.produit.prix;
+      btn.classList.remove('visible');
+      showToast('Prix mis à jour : ' + new Intl.NumberFormat('fr-FR').format(result.data.produit.prix) + ' FCFA');
+    } else {
+      showToast(result.data.message || 'Erreur lors de la mise à jour du prix.', true);
+    }
+  });
+
+  $('pr-search').addEventListener('input', renderProduits);
+  $('pr-filter-cat').addEventListener('change', renderProduits);
+
+
+  // ---------- NEWSLETTER ----------
+  function renderNewsletter(){
+    const search = $('nl-search').value.trim().toLowerCase();
+    let list = DATA.newsletter.slice().sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+    if (search) {
+      list = list.filter(a => (a.email||'').toLowerCase().includes(search) || (a.nom||'').toLowerCase().includes(search));
+    }
+
+    const tbody = $('nl-tbody');
+    tbody.innerHTML = '';
+    $('nl-empty').style.display = list.length ? 'none' : 'block';
+
+    list.forEach(a => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${escapeHtml(a.email)}</td>
+        <td>${escapeHtml(a.nom) || '<span class="muted">–</span>'}</td>
+        <td><span class="muted">${escapeHtml(a.source) || '–'}</span></td>
+        <td><span class="muted">${fmtDate(a.createdAt)}</span></td>`;
+      tbody.appendChild(tr);
+    });
+
+    $('nl-loading').style.display = 'none';
+  }
+
+  $('nl-search').addEventListener('input', renderNewsletter);
+
+  $('nl-export').addEventListener('click', () => {
+    if (!DATA.newsletter.length) { showToast('Aucun abonné à exporter.', true); return; }
+    const rows = [['Email','Nom','Source','Date'], ...DATA.newsletter.map(a => [a.email, a.nom||'', a.source||'', a.createdAt||''])];
+    const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `newsletter-artisan-nomade-${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  // ---------- TABS ----------
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.style.display = 'none');
+      btn.classList.add('active');
+      $(btn.dataset.tab).style.display = 'block';
+    });
+  });
+
+  // ---------- AUTO-LOGIN si token déjà enregistré ----------
+  window.addEventListener('DOMContentLoaded', () => {
+    const saved = localStorage.getItem(TOKEN_KEY);
+    if (saved) {
+      $('token-input').value = saved;
+      attemptLogin(saved);
+    }
+  });
+
+})();
+</script>
+</body>
+</html>
