@@ -190,12 +190,117 @@
   @media (max-width:860px){
     .stats-row{grid-template-columns:repeat(3,1fr);}
   }
-  @media (max-width:560px){
-    .topbar{padding:14px 16px;}
-    .wrap{padding:20px 12px 50px;}
-    .stats-row{grid-template-columns:1fr 1fr;gap:10px;}
-    .stat-card{padding:14px;}
-    .stat-card .num{font-size:1.6rem;}
+
+  /* ── TABLETTE (≤ 720px) ── */
+  @media (max-width:720px){
+    .wrap{padding:20px 14px 50px;}
+    .stats-row{grid-template-columns:repeat(3,1fr);gap:10px;}
+    .stat-card{padding:14px 12px;}
+    .stat-card .num{font-size:1.7rem;}
+
+    /* Tabs : scroll horizontal pour ne pas couper les labels */
+    .tabs{
+      flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;
+      scrollbar-width:none;padding-bottom:2px;
+    }
+    .tabs::-webkit-scrollbar{display:none;}
+    .tab-btn{flex-shrink:0;padding:10px 14px;font-size:0.85rem;}
+
+    /* Toolbar : colonne */
+    .toolbar{flex-direction:column;align-items:stretch;}
+    .toolbar-filters{flex-wrap:nowrap;overflow-x:auto;}
+    .toolbar input[type="search"]{max-width:100%;min-width:0;flex:1;}
+    .toolbar select{flex-shrink:0;}
+
+    /* Table : scroll horizontal natif (déjà .table-scroll) mais on réduit le font */
+    table{font-size:0.8rem;}
+    thead th{padding:10px 10px;}
+    tbody td{padding:10px 10px;}
+
+    /* Ligne actions : empilées */
+    .row-actions{flex-direction:column;gap:6px;}
+
+    /* Prix edit : compact */
+    .prix-edit input{width:80px;}
+
+    /* Toast : bas de page pleine largeur */
+    .toast{
+      left:12px;right:12px;bottom:12px;
+      border-radius:10px;font-size:0.84rem;
+    }
+  }
+
+  /* ── MOBILE (≤ 480px) ── */
+  @media (max-width:480px){
+    /* Topbar */
+    .topbar{padding:12px 14px;gap:8px;}
+    .topbar-brand span{font-size:1.05rem;}
+    .topbar-brand small{display:none;}
+    .icon-btn{width:34px;height:34px;font-size:0.82rem;}
+
+    /* Stats : 2 colonnes sur 3 rangées */
+    .stats-row{grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px;}
+    .stat-card{padding:12px 10px;}
+    .stat-card .num{font-size:1.5rem;}
+    .stat-card .label{font-size:0.68rem;}
+
+    /* Tabs : icônes seulement sur très petit */
+    .tab-btn{padding:10px 12px;font-size:0.8rem;}
+    .tab-btn i{font-size:0.9rem;}
+
+    /* Table : convertir en cartes sur mobile (chaque ligne = une carte)
+       Technique CSS "responsive table" sans JS */
+    .table-scroll{overflow-x:visible;}
+    table, thead, tbody, th, td, tr{display:block;}
+    thead{display:none;}  /* Cacher les en-têtes */
+    tbody tr{
+      background:var(--blanc);border-radius:8px;margin-bottom:12px;
+      border:1px solid var(--ivoire-dark);padding:12px;
+      box-shadow:0 2px 8px rgba(44,26,14,0.07);
+    }
+    tbody tr:hover{background:var(--blanc);}
+    tbody td{
+      padding:6px 0;border:none;border-bottom:1px solid var(--ivoire-dark);
+      font-size:0.84rem;display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap;
+    }
+    tbody td:last-child{border-bottom:none;padding-top:10px;}
+
+    /* Labelliser les cellules avec data-label (ajouté via JS ci-dessous) */
+    tbody td::before{
+      content:attr(data-label);
+      font-size:0.68rem;letter-spacing:0.5px;text-transform:uppercase;
+      color:var(--gris);font-weight:600;min-width:80px;padding-top:2px;flex-shrink:0;
+    }
+    /* Cellules sans label visible (photo produit, dot lu/non-lu) */
+    tbody td[data-label=""]::before{display:none;}
+    tbody td[data-label=""]{border-bottom:none;padding:0;}
+
+    /* Actions pleine largeur */
+    .row-actions{width:100%;flex-direction:row;flex-wrap:wrap;}
+    .link-btn,.save-prix.visible{flex:1;justify-content:center;min-width:120px;}
+
+    /* Select statut */
+    select.statut-select{width:100%;}
+
+    /* Prix edit */
+    .prix-edit{flex-wrap:wrap;}
+    .prix-edit input{width:100%;flex:1;}
+
+    /* Login card */
+    .login-card{padding:32px 20px;}
+
+    /* Toolbar */
+    .toolbar input[type="search"],.toolbar select{font-size:0.84rem;padding:8px 10px;}
+
+    /* Bouton export */
+    .btn-ghost.btn-sm{width:100%;justify-content:center;margin-top:6px;}
+  }
+
+  /* ── TRÈS PETIT (≤ 360px) ── */
+  @media (max-width:360px){
+    .stats-row{grid-template-columns:1fr;gap:6px;}
+    .tab-btn .tab-label{display:none;}  /* texte caché, icônes seulement */
+    table{font-size:0.78rem;}
   }
 </style>
 </head>
@@ -537,18 +642,18 @@
       const waMsg = encodeURIComponent(`Bonjour ${c.client?.nom || ''}, à propos de votre commande ${c.reference} :`);
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        <td><span class="ref-code">${escapeHtml(c.reference)}</span>${c.message ? `<br><span class="msg-toggle" data-msg="${escapeHtml(c.message)}">voir personnalisation</span>` : ''}</td>
-        <td>${escapeHtml(c.client?.nom)}<br><span class="muted">${escapeHtml(c.client?.ville)}, ${escapeHtml(c.client?.pays)}</span></td>
-        <td>${produits}</td>
-        <td><span class="muted">${escapeHtml(c.livraison)}</span></td>
-        <td><span class="muted">${fmtDate(c.createdAt)}</span></td>
-        <td>
+        <td data-label="Référence"><span class="ref-code">${escapeHtml(c.reference)}</span>${c.message ? `<br><span class="msg-toggle" data-msg="${escapeHtml(c.message)}">voir personnalisation</span>` : ''}</td>
+        <td data-label="Client">${escapeHtml(c.client?.nom)}<br><span class="muted">${escapeHtml(c.client?.ville)}, ${escapeHtml(c.client?.pays)}</span></td>
+        <td data-label="Produits">${produits}</td>
+        <td data-label="Livraison"><span class="muted">${escapeHtml(c.livraison)}</span></td>
+        <td data-label="Date"><span class="muted">${fmtDate(c.createdAt)}</span></td>
+        <td data-label="Statut">
           <span class="badge badge-${c.statut}">${escapeHtml(c.statutLabel || STATUTS[c.statut] || c.statut)}</span><br>
           <select class="statut-select" data-id="${c.id}" style="margin-top:6px;">
             ${Object.keys(STATUTS).map(s => `<option value="${s}" ${s===c.statut?'selected':''}>${STATUTS[s]}</option>`).join('')}
           </select>
         </td>
-        <td>
+        <td data-label="Actions">
           <div class="row-actions">
             ${tel ? `<a class="link-btn wa" href="https://wa.me/${tel}?text=${waMsg}" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Contacter</a>` : ''}
           </div>
@@ -618,14 +723,14 @@
       tr.className = c.lu ? '' : 'unread';
       const excerpt = (c.message || '').slice(0, 70) + ((c.message||'').length > 70 ? '…' : '');
       tr.innerHTML = `
-        <td><span class="dot ${c.lu ? 'read' : 'unread'}" title="${c.lu ? 'Lu' : 'Non lu'}"></span></td>
-        <td>${escapeHtml(c.nom)}</td>
-        <td><span class="muted">${escapeHtml(c.email)}</span>${c.telephone ? `<br><span class="muted">${escapeHtml(c.telephone)}</span>` : ''}</td>
-        <td><strong>${escapeHtml(c.sujet || 'Autre')}</strong><br>
+        <td data-label=""><span class="dot ${c.lu ? 'read' : 'unread'}" title="${c.lu ? 'Lu' : 'Non lu'}"></span></td>
+        <td data-label="Nom">${escapeHtml(c.nom)}</td>
+        <td data-label="Contact"><span class="muted">${escapeHtml(c.email)}</span>${c.telephone ? `<br><span class="muted">${escapeHtml(c.telephone)}</span>` : ''}</td>
+        <td data-label="Message"><strong>${escapeHtml(c.sujet || 'Autre')}</strong><br>
           <span class="msg-toggle" data-msg="${escapeHtml(c.message)}">${escapeHtml(excerpt)}</span>
         </td>
-        <td><span class="muted">${fmtDate(c.createdAt)}</span></td>
-        <td>
+        <td data-label="Date"><span class="muted">${fmtDate(c.createdAt)}</span></td>
+        <td data-label="Actions">
           <div class="row-actions">
             <button class="link-btn toggle-lu" data-id="${c.id}" data-lu="${c.lu ? '1':'0'}"><i class="fas fa-${c.lu ? 'envelope-open' : 'envelope'}"></i> ${c.lu ? 'Marquer non lu' : 'Marquer lu'}</button>
             <a class="link-btn" href="mailto:${escapeHtml(c.email)}"><i class="fas fa-reply"></i> Répondre</a>
@@ -689,17 +794,17 @@
     list.forEach(p => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        <td><img class="pr-thumb" src="${escapeHtml(p.image)}" alt="" onerror="this.style.visibility='hidden'"/></td>
-        <td>${escapeHtml(p.nom)}</td>
-        <td><span class="badge-cat">${CATEGORIES_LABELS[p.categorie] || escapeHtml(p.categorie)}</span></td>
-        <td><span class="muted">${escapeHtml(p.badge) || '–'}</span></td>
-        <td>
+        <td data-label=""><img class="pr-thumb" src="${escapeHtml(p.image)}" alt="" onerror="this.style.visibility='hidden'"/></td>
+        <td data-label="Produit">${escapeHtml(p.nom)}</td>
+        <td data-label="Catégorie"><span class="badge-cat">${CATEGORIES_LABELS[p.categorie] || escapeHtml(p.categorie)}</span></td>
+        <td data-label="Badge"><span class="muted">${escapeHtml(p.badge) || '–'}</span></td>
+        <td data-label="Prix">
           <div class="prix-edit">
             <input type="number" min="0" step="500" value="${p.prix}" data-id="${p.id}" class="prix-input"/>
             <span>FCFA</span>
           </div>
         </td>
-        <td><button class="link-btn save-prix" data-id="${p.id}"><i class="fas fa-check"></i> Enregistrer</button></td>`;
+        <td data-label=""><button class="link-btn save-prix" data-id="${p.id}"><i class="fas fa-check"></i> Enregistrer</button></td>`;
       tbody.appendChild(tr);
     });
 
@@ -756,10 +861,10 @@
     list.forEach(a => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        <td>${escapeHtml(a.email)}</td>
-        <td>${escapeHtml(a.nom) || '<span class="muted">–</span>'}</td>
-        <td><span class="muted">${escapeHtml(a.source) || '–'}</span></td>
-        <td><span class="muted">${fmtDate(a.createdAt)}</span></td>`;
+        <td data-label="Email">${escapeHtml(a.email)}</td>
+        <td data-label="Nom">${escapeHtml(a.nom) || '<span class="muted">–</span>'}</td>
+        <td data-label="Source"><span class="muted">${escapeHtml(a.source) || '–'}</span></td>
+        <td data-label="Inscrit le"><span class="muted">${fmtDate(a.createdAt)}</span></td>`;
       tbody.appendChild(tr);
     });
 
