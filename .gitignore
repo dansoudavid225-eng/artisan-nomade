@@ -23,5 +23,3 @@ Thumbs.db
 # Logs
 *.log
 logs/
-.github/workflows/deploy-pages.yml
-.github/workflows/deploy-pages.yml
