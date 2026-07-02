@@ -764,3 +764,143 @@ body {
   .gallery-slider-wrap { padding: 0 38px; }
   .gallery-btn-prev, .gallery-btn-next { width: 34px; height: 34px; font-size: 0.75rem; }
 }
+
+/* ============================================================
+   RESPONSIVE COMPLET – MOBILE / TABLETTE / DESKTOP
+   Tous les breakpoints en cascade, du plus large au plus petit
+   ============================================================ */
+
+/* ── TABLETTE (≤ 900px) ── */
+@media (max-width: 900px) {
+  /* Navbar : réduit le padding et cache le texte "Artisan Nomade" si trop serré */
+  .navbar { padding: 14px 20px !important; }
+  .logo-text { display: none; }
+
+  /* Hero principal : réduit le padding latéral */
+  .hero-content { padding: 100px 28px 48px !important; }
+  .page-hero    { padding: 80px 28px 40px !important; }
+
+  /* Perles décoratives du hero de page : on les cache sur tablette-mobile
+     pour éviter le débordement horizontal */
+  .page-hero-beads { display: none; }
+
+  /* Grille produits : min 240px pour tenir sur tablette */
+  .products-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important; gap: 20px !important; }
+
+  /* Culture : passe à 1 colonne dès 900px */
+  .culture-visual { grid-template-columns: 1fr !important; }
+
+  /* Footer : 2 colonnes max */
+  .footer-top { grid-template-columns: 1fr 1fr !important; }
+
+  /* Newsletter */
+  .newsletter-section { padding: 50px 24px !important; }
+}
+
+/* ── MOBILE LARGE (≤ 680px) ── */
+@media (max-width: 680px) {
+  /* Hero : padding resserré, titre taille clamp plus agressif */
+  .hero-content { padding: 90px 20px 40px !important; }
+  .page-hero    { padding: 72px 20px 32px !important; }
+  .hero-title   { font-size: clamp(2rem, 11vw, 3.2rem) !important; }
+  .page-hero-title { font-size: clamp(2rem, 9vw, 3rem) !important; }
+
+  /* CTA hero : boutons pleine largeur */
+  .hero-cta { flex-direction: column !important; align-items: stretch !important; gap: 12px !important; }
+  .hero-cta .btn-primary,
+  .hero-cta .btn-ghost { text-align: center !important; }
+
+  /* Grille produits : 2 colonnes fixes sur grand mobile */
+  .products-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; }
+  .product-img   { height: 200px !important; }
+
+  /* Grille contact */
+  .contact-container { grid-template-columns: 1fr !important; }
+
+  /* Grille à propos */
+  .apropos-grid { grid-template-columns: 1fr !important; }
+
+  /* Section principale : moins de padding */
+  .section-block { padding: 48px 20px !important; }
+
+  /* Footer */
+  .footer-top { grid-template-columns: 1fr !important; gap: 24px !important; }
+
+  /* Stats : déjà en colonne via l'existant, on renforce */
+  .stats { padding: 32px 20px !important; gap: 20px !important; }
+
+  /* Newsletter : formulaire en colonne */
+  .newsletter-form { flex-direction: column !important; align-items: stretch !important; }
+  .newsletter-input { min-width: 0 !important; width: 100% !important; }
+  .newsletter-btn   { width: 100% !important; }
+  .newsletter-section { padding: 40px 20px !important; }
+
+  /* Modale de commande : plein écran sur mobile */
+  .modal-overlay { padding: 0 !important; align-items: flex-end !important; }
+  .modal-box {
+    max-width: 100% !important;
+    max-height: 94vh !important;
+    border-radius: 16px 16px 0 0 !important;
+  }
+  .modal-header { padding: 18px 20px !important; }
+  .modal-header h3 { font-size: 1.1rem !important; }
+  .modal-body { padding: 20px !important; }
+  .modal-form-row { grid-template-columns: 1fr !important; }
+
+  /* Filtre boutique : scroll horizontal au lieu de wrap */
+  .filter-bar {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    justify-content: flex-start !important;
+    padding-bottom: 8px !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .filter-bar::-webkit-scrollbar { display: none; }
+  .filter-btn { flex-shrink: 0 !important; }
+
+  /* Slider d'avis : 1 carte */
+  .avis-card { min-width: 100% !important; }
+}
+
+/* ── MOBILE PETIT (≤ 400px) ── */
+@media (max-width: 400px) {
+  /* Grille produits : 1 seule colonne en dessous de 400px */
+  .products-grid { grid-template-columns: 1fr !important; }
+  .product-img   { height: 260px !important; }
+
+  /* Navbar : compacte */
+  .navbar { padding: 12px 14px !important; }
+  .nav-logo img { width: 30px !important; height: 30px !important; }
+
+  /* Hero */
+  .hero-content { padding: 80px 14px 32px !important; }
+  .page-hero    { padding: 64px 14px 28px !important; }
+
+  /* Titre */
+  .hero-title { font-size: clamp(1.8rem, 10vw, 2.8rem) !important; }
+
+  /* Sections */
+  .section-block { padding: 36px 14px !important; }
+
+  /* Modale */
+  .modal-header { padding: 14px 14px !important; }
+  .modal-body   { padding: 14px !important; }
+
+  /* Footer */
+  .footer { padding: 32px 14px 20px !important; }
+
+  /* Newsletter */
+  .newsletter-section { padding: 32px 14px !important; }
+
+  /* Admin – grille stats 1 colonne */
+  .stats-row { grid-template-columns: 1fr 1fr !important; }
+  .toolbar { flex-direction: column !important; }
+  .toolbar input[type="search"] { max-width: 100% !important; width: 100% !important; }
+}
+
+/* ── LARGE DESKTOP (≥ 1400px) ── */
+@media (min-width: 1400px) {
+  .products-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important; }
+  .hero-title { font-size: 6rem !important; }
+}

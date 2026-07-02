@@ -65,4 +65,28 @@
       spans[2].style.transform = '';
     }
   });
+
+  // Fermer le menu mobile quand on clique sur un lien
+  links.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      links.classList.remove('open');
+      const spans = toggle.querySelectorAll('span');
+      spans[0].style.transform = '';
+      spans[1].style.opacity = '';
+      spans[2].style.transform = '';
+    });
+  });
+
+  // Fermer le menu si on clique en dehors
+  document.addEventListener('click', e => {
+    if (links.classList.contains('open') &&
+        !links.contains(e.target) &&
+        !toggle.contains(e.target)) {
+      links.classList.remove('open');
+      const spans = toggle.querySelectorAll('span');
+      spans[0].style.transform = '';
+      spans[1].style.opacity = '';
+      spans[2].style.transform = '';
+    }
+  });
 })();
