@@ -1,0 +1,88 @@
+{
+  "global": {
+    "nom_boutique": "Artisan Nomade",
+    "logo_url": "logo.png",
+    "slogan": "Bijoux & Accessoires Artisanaux",
+    "telephone": "+229 01 97 99 85 46",
+    "whatsapp": "2290197998546",
+    "email": "artisannomade1@gmail.com",
+    "adresse": "Porto-Novo Oganla, Bénin",
+    "horaires": "Lun – Sam : 8h00 – 18h00",
+    "facebook": "https://www.facebook.com/artisannomade",
+    "instagram": "https://www.instagram.com/artisannomade",
+    "tiktok": ""
+  },
+  "accueil": {
+    "hero_brand": "Porto-Novo, Bénin · Depuis 2010",
+    "hero_titre_1": "L'Art des",
+    "hero_titre_em": "Perles",
+    "hero_titre_2": "Africaines",
+    "hero_desc": "Bijoux artisanaux tissés à la main,\nporteurs d'histoire et de culture.",
+    "hero_btn_1": "Découvrir la boutique",
+    "hero_btn_2": "Notre histoire",
+    "stat_1_val": "15",
+    "stat_1_unite": "ans",
+    "stat_1_label": "d'expertise artisanale",
+    "stat_2_val": "500",
+    "stat_2_unite": "+",
+    "stat_2_label": "créations uniques",
+    "stat_3_val": "30",
+    "stat_3_unite": "+",
+    "stat_3_label": "pays livrés",
+    "galerie_tag": "Galerie",
+    "galerie_titre": "Nos créations en images",
+    "selection_tag": "Nos créations",
+    "selection_titre": "Sélection du moment",
+    "avis_tag": "Ils nous font confiance",
+    "avis_titre": "Avis Clients",
+    "newsletter_tag": "Restez connecté",
+    "newsletter_titre": "Rejoignez notre liste VIP",
+    "newsletter_desc": "Nouveautés, offres exclusives et coulisses de l'atelier – directement dans votre boîte mail."
+  },
+  "boutique": {
+    "hero_tag": "Notre collection",
+    "hero_titre": "Notre Boutique",
+    "hero_btn_1": "Voir les créations",
+    "hero_btn_2": "Commander"
+  },
+  "contact": {
+    "hero_tag": "Parlons-nous",
+    "hero_titre_em": "Contactez",
+    "hero_titre_suite": "-nous",
+    "section_tag": "Nos coordonnées",
+    "section_titre": "On est là pour vous"
+  },
+  "apropos": {
+    "hero_tag": "Qui sommes-nous",
+    "hero_titre_em": "À propos",
+    "histoire_tag": "Notre histoire",
+    "histoire_titre": "Artisan Nomade, 15 ans de passion",
+    "histoire_texte": "Née à Porto-Novo en 2010, Artisan Nomade est bien plus qu'une boutique de bijoux. C'est un espace de création, de transmission et de fierté culturelle."
+  },
+  "avis": [
+    {
+      "texte": "Des bijoux d'une beauté exceptionnelle. La livraison a été rapide et l'emballage soigné. Je recommande vivement !",
+      "auteur": "Marie D.",
+      "origine": "France",
+      "note": 5
+    },
+    {
+      "texte": "Artisan Nomade incarne parfaitement la richesse de la culture béninoise. Mes bracelets sont magnifiques !",
+      "auteur": "Kofi A.",
+      "origine": "Ghana",
+      "note": 5
+    },
+    {
+      "texte": "J'ai commandé un sac personnalisé et le résultat dépasse toutes mes attentes.",
+      "auteur": "Sophie L.",
+      "origine": "Canada",
+      "note": 5
+    },
+    {
+      "texte": "Service client exceptionnel, produits authentiques. J'achète régulièrement pour offrir en cadeau.",
+      "auteur": "Ama B.",
+      "origine": "Bénin",
+      "note": 5
+    }
+  ]
+}

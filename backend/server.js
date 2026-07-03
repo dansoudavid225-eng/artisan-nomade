@@ -29,6 +29,8 @@ const helmet   = require('helmet');
 const morgan   = require('morgan');
 const { v4: uuidv4 } = require('uuid');
 const { body, param, validationResult } = require('express-validator');
+const fs       = require('fs');
+const path     = require('path');
 
 const db     = require('./db');
 const mailer = require('./mailer');
@@ -498,6 +500,76 @@ app.patch('/api/admin/produits/:id', adminAuth,
 
     db.writeCollection('produits', produits);
     res.json({ success: true, produit: produits[idx] });
+  }
+);
+
+// ============================================================
+// CMS – CONTENU DES PAGES (textes, infos de contact, avis)
+// ============================================================
+
+function getContenu() {
+  try {
+    // Lit depuis contenu-live.json (fichier runtime, ne conflicte pas avec le seed)
+    const data = db.findAll('contenu-live');
+    if (data.length) return data[0];
+    // 1er démarrage : charger le seed depuis backend/data/contenu.json
+    const seedPath = path.join(__dirname, 'data', 'contenu.json');
+    if (fs.existsSync(seedPath)) {
+      try {
+        const raw = JSON.parse(fs.readFileSync(seedPath, 'utf-8'));
+        const seed = Array.isArray(raw) ? (raw[0] || {}) : raw;
+        if (seed && Object.keys(seed).length) {
+          db.writeCollection('contenu-live', [seed]);
+          return seed;
+        }
+      } catch (e) { console.warn('Seed parse error:', e.message); }
+    }
+    return {};
+  } catch (e) { console.error('getContenu error:', e); return {}; }
+}
+function saveContenu(contenu) {
+  db.writeCollection('contenu-live', [contenu]);
+}
+
+/** Route publique – le frontend lit le contenu */
+app.get('/api/contenu', (req, res) => {
+  const contenu = getContenu();
+  if (!contenu) return res.status(404).json({ success: false, message: 'Contenu non initialisé' });
+  res.json({ success: true, contenu });
+});
+
+/** Admin – lire le contenu complet */
+app.get('/api/admin/contenu', adminAuth, (req, res) => {
+  const contenu = getContenu();
+  res.json({ success: true, contenu: contenu || {} });
+});
+
+/** Admin – mettre à jour une section du contenu (merge partiel) */
+app.patch('/api/admin/contenu', adminAuth,
+  validate([
+    body('section').notEmpty().withMessage('La section est requise'),
+    body('data').isObject().withMessage('data doit être un objet'),
+  ]),
+  (req, res) => {
+    const { section, data } = req.body;
+    const contenu = getContenu() || {};
+    // Merge profond de la section
+    contenu[section] = { ...(contenu[section] || {}), ...data };
+    saveContenu(contenu);
+    res.json({ success: true, section, contenu: contenu[section] });
+  }
+);
+
+/** Admin – mettre à jour les avis clients (tableau complet) */
+app.put('/api/admin/contenu/avis', adminAuth,
+  validate([
+    body('avis').isArray().withMessage('avis doit être un tableau'),
+  ]),
+  (req, res) => {
+    const contenu = getContenu() || {};
+    contenu.avis = req.body.avis;
+    saveContenu(contenu);
+    res.json({ success: true, avis: contenu.avis });
   }
 );
 

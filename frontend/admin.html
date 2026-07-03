@@ -163,6 +163,68 @@
   .empty-state i{font-size:2rem;color:var(--or-light);margin-bottom:12px;display:block;}
   .loading-state{padding:48px 24px;text-align:center;color:var(--gris);}
   .pr-thumb{width:46px;height:46px;border-radius:6px;object-fit:cover;display:block;background:var(--ivoire-dark);}
+
+  /* ---- CMS ---- */
+  .cms-nav{
+    display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;
+    background:var(--blanc);border-radius:var(--radius);padding:10px;
+    box-shadow:var(--shadow);
+  }
+  .cms-tab-btn{
+    background:none;border:none;font-family:inherit;font-size:0.86rem;color:var(--gris);
+    padding:9px 14px;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:7px;
+    transition:background .15s,color .15s;
+  }
+  .cms-tab-btn:hover{background:var(--ivoire);color:var(--terre);}
+  .cms-tab-btn.active{background:var(--terre);color:var(--ivoire);}
+  .cms-panel{display:flex;flex-direction:column;gap:18px;}
+  .cms-card{
+    background:var(--blanc);border-radius:var(--radius);padding:24px;
+    box-shadow:var(--shadow);
+  }
+  .cms-card-title{font-size:1.05rem;margin-bottom:16px;display:flex;align-items:center;gap:9px;color:var(--terre);}
+  .cms-card-title i{color:var(--or-dark);}
+  .cms-note{
+    font-size:0.82rem;color:var(--gris);background:var(--ivoire);
+    border-left:3px solid var(--or);padding:10px 14px;border-radius:4px;margin-bottom:16px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .cms-fields{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+  .cms-field{display:flex;flex-direction:column;gap:5px;}
+  .cms-field.cms-field-full{grid-column:1/-1;}
+  .cms-field label{font-size:0.76rem;letter-spacing:0.4px;text-transform:uppercase;color:var(--gris);font-weight:600;}
+  .cms-field label small{text-transform:none;letter-spacing:0;font-weight:400;margin-left:4px;}
+  .cms-field input,.cms-field textarea,.cms-field select{
+    padding:10px 12px;border:1px solid var(--ivoire-dark);border-radius:6px;
+    font-family:inherit;font-size:0.9rem;background:var(--ivoire);color:var(--terre);
+    resize:vertical;transition:border-color .2s;
+  }
+  .cms-field input:focus,.cms-field textarea:focus{outline:none;border-color:var(--or);}
+  .cms-save-btn{margin-top:4px;}
+  .logo-preview-wrap{display:flex;gap:10px;align-items:center;}
+  .logo-preview-wrap input{flex:1;}
+  .logo-preview{width:44px;height:44px;object-fit:contain;border-radius:6px;background:var(--ivoire-dark);flex-shrink:0;}
+
+  /* Avis */
+  .avis-editor-item{
+    border:1px solid var(--ivoire-dark);border-radius:8px;padding:16px;
+    margin-bottom:12px;background:var(--ivoire);position:relative;
+  }
+  .avis-editor-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+  .avis-editor-fields textarea{grid-column:1/-1;padding:8px 10px;border:1px solid var(--ivoire-dark);border-radius:6px;font-family:inherit;font-size:0.88rem;resize:vertical;background:var(--blanc);}
+  .avis-editor-fields input{padding:8px 10px;border:1px solid var(--ivoire-dark);border-radius:6px;font-family:inherit;font-size:0.88rem;background:var(--blanc);}
+  .avis-del-btn{position:absolute;top:10px;right:10px;background:none;border:none;color:var(--danger);cursor:pointer;font-size:0.9rem;opacity:0.6;}
+  .avis-del-btn:hover{opacity:1;}
+  .cms-loading{padding:48px 24px;text-align:center;color:var(--gris);}
+
+  @media(max-width:600px){
+    .cms-nav{gap:4px;}
+    .cms-tab-btn{padding:8px 10px;font-size:0.78rem;}
+    .cms-fields{grid-template-columns:1fr;}
+    .cms-field.cms-field-full{grid-column:1;}
+    .logo-preview-wrap{flex-wrap:wrap;}
+    .avis-editor-fields{grid-template-columns:1fr;}
+  }
   .badge-cat{
     display:inline-block;padding:3px 9px;border-radius:14px;font-size:0.7rem;font-weight:600;
     background:var(--ivoire);color:var(--terre-light);border:1px solid var(--ivoire-dark);text-transform:capitalize;
@@ -353,6 +415,7 @@
       <button class="tab-btn" data-tab="tab-messages"><i class="fas fa-envelope"></i> Messages <span class="pill" id="pill-messages" style="display:none;"></span></button>
       <button class="tab-btn" data-tab="tab-newsletter"><i class="fas fa-users"></i> Newsletter</button>
       <button class="tab-btn" data-tab="tab-produits"><i class="fas fa-tags"></i> Produits</button>
+      <button class="tab-btn" data-tab="tab-contenu"><i class="fas fa-pen-to-square"></i> Contenu</button>
     </div>
 
     <!-- ---- COMMANDES ---- -->
@@ -459,6 +522,164 @@
         <div class="empty-state" id="pr-empty" style="display:none;"><i class="fas fa-tags"></i>Aucun produit ne correspond.</div>
         <div class="loading-state" id="pr-loading"><i class="fas fa-spinner fa-spin"></i> Chargement...</div>
       </div>
+    </div>
+
+    <!-- ---- CONTENU CMS ---- -->
+    <div class="tab-panel" id="tab-contenu" style="display:none;">
+
+      <div class="cms-nav">
+        <button class="cms-tab-btn active" data-cms-section="global"><i class="fas fa-globe"></i> Infos générales</button>
+        <button class="cms-tab-btn" data-cms-section="accueil"><i class="fas fa-home"></i> Accueil</button>
+        <button class="cms-tab-btn" data-cms-section="boutique"><i class="fas fa-store"></i> Boutique</button>
+        <button class="cms-tab-btn" data-cms-section="contact"><i class="fas fa-address-card"></i> Contact</button>
+        <button class="cms-tab-btn" data-cms-section="apropos"><i class="fas fa-info-circle"></i> À propos</button>
+        <button class="cms-tab-btn" data-cms-section="avis"><i class="fas fa-star"></i> Avis clients</button>
+      </div>
+
+      <div class="cms-loading" id="cms-loading"><i class="fas fa-spinner fa-spin"></i> Chargement du contenu...</div>
+
+      <!-- GLOBAL -->
+      <div class="cms-panel" id="cms-global" style="display:none;">
+        <div class="cms-card">
+          <h3 class="cms-card-title"><i class="fas fa-store"></i> Identité de la boutique</h3>
+          <div class="cms-fields">
+            <div class="cms-field"><label>Nom de la boutique</label><input type="text" id="g-nom_boutique" placeholder="Artisan Nomade"/></div>
+            <div class="cms-field"><label>Slogan</label><input type="text" id="g-slogan" placeholder="Bijoux & Accessoires Artisanaux"/></div>
+            <div class="cms-field cms-field-full"><label>URL du logo <small>(lien direct vers une image)</small></label><div class="logo-preview-wrap"><input type="text" id="g-logo_url" placeholder="logo.png ou https://..."/><img id="logo-preview" class="logo-preview"/></div></div>
+          </div>
+          <button class="btn cms-save-btn" data-section="global" data-fields="nom_boutique,slogan,logo_url"><i class="fas fa-save"></i> Enregistrer</button>
+        </div>
+
+        <div class="cms-card">
+          <h3 class="cms-card-title"><i class="fas fa-address-book"></i> Coordonnées</h3>
+          <div class="cms-fields">
+            <div class="cms-field"><label>Téléphone</label><input type="text" id="g-telephone" placeholder="+229 01 97 99 85 46"/></div>
+            <div class="cms-field"><label>WhatsApp <small>(chiffres uniquement, ex: 2290197998546)</small></label><input type="text" id="g-whatsapp" placeholder="2290197998546"/></div>
+            <div class="cms-field"><label>Email</label><input type="email" id="g-email" placeholder="artisannomade1@gmail.com"/></div>
+            <div class="cms-field"><label>Adresse</label><input type="text" id="g-adresse" placeholder="Porto-Novo, Bénin"/></div>
+            <div class="cms-field"><label>Horaires d'ouverture</label><input type="text" id="g-horaires" placeholder="Lun – Sam : 8h00 – 18h00"/></div>
+          </div>
+          <button class="btn cms-save-btn" data-section="global" data-fields="telephone,whatsapp,email,adresse,horaires"><i class="fas fa-save"></i> Enregistrer</button>
+        </div>
+
+        <div class="cms-card">
+          <h3 class="cms-card-title"><i class="fas fa-share-nodes"></i> Réseaux sociaux</h3>
+          <div class="cms-fields">
+            <div class="cms-field"><label><i class="fab fa-facebook"></i> Facebook</label><input type="url" id="g-facebook" placeholder="https://www.facebook.com/artisannomade"/></div>
+            <div class="cms-field"><label><i class="fab fa-instagram"></i> Instagram</label><input type="url" id="g-instagram" placeholder="https://www.instagram.com/artisannomade"/></div>
+            <div class="cms-field"><label><i class="fab fa-tiktok"></i> TikTok</label><input type="url" id="g-tiktok" placeholder="https://www.tiktok.com/@artisannomade"/></div>
+          </div>
+          <button class="btn cms-save-btn" data-section="global" data-fields="facebook,instagram,tiktok"><i class="fas fa-save"></i> Enregistrer</button>
+        </div>
+      </div>
+
+      <!-- ACCUEIL -->
+      <div class="cms-panel" id="cms-accueil" style="display:none;">
+        <div class="cms-card">
+          <h3 class="cms-card-title"><i class="fas fa-image"></i> Section Hero (grande image d'accueil)</h3>
+          <div class="cms-fields">
+            <div class="cms-field"><label>Texte sous-marque</label><input type="text" id="a-hero_brand" placeholder="Porto-Novo, Bénin · Depuis 2010"/></div>
+            <div class="cms-field"><label>Titre – ligne 1</label><input type="text" id="a-hero_titre_1" placeholder="L'Art des"/></div>
+            <div class="cms-field"><label>Titre – mot en doré (em)</label><input type="text" id="a-hero_titre_em" placeholder="Perles"/></div>
+            <div class="cms-field"><label>Titre – ligne 3</label><input type="text" id="a-hero_titre_2" placeholder="Africaines"/></div>
+            <div class="cms-field cms-field-full"><label>Description</label><textarea id="a-hero_desc" rows="2" placeholder="Bijoux artisanaux tissés à la main..."></textarea></div>
+            <div class="cms-field"><label>Bouton 1 (principal)</label><input type="text" id="a-hero_btn_1" placeholder="Découvrir la boutique"/></div>
+            <div class="cms-field"><label>Bouton 2 (secondaire)</label><input type="text" id="a-hero_btn_2" placeholder="Notre histoire"/></div>
+          </div>
+          <button class="btn cms-save-btn" data-section="accueil" data-fields="hero_brand,hero_titre_1,hero_titre_em,hero_titre_2,hero_desc,hero_btn_1,hero_btn_2"><i class="fas fa-save"></i> Enregistrer</button>
+        </div>
+
+        <div class="cms-card">
+          <h3 class="cms-card-title"><i class="fas fa-chart-bar"></i> Statistiques (chiffres clés)</h3>
+          <div class="cms-fields">
+            <div class="cms-field"><label>Stat 1 – Chiffre</label><input type="number" id="a-stat_1_val" placeholder="15"/></div>
+            <div class="cms-field"><label>Stat 1 – Unité</label><input type="text" id="a-stat_1_unite" placeholder="ans"/></div>
+            <div class="cms-field cms-field-full"><label>Stat 1 – Label</label><input type="text" id="a-stat_1_label" placeholder="d'expertise artisanale"/></div>
+            <div class="cms-field"><label>Stat 2 – Chiffre</label><input type="number" id="a-stat_2_val" placeholder="500"/></div>
+            <div class="cms-field"><label>Stat 2 – Unité</label><input type="text" id="a-stat_2_unite" placeholder="+"/></div>
+            <div class="cms-field cms-field-full"><label>Stat 2 – Label</label><input type="text" id="a-stat_2_label" placeholder="créations uniques"/></div>
+            <div class="cms-field"><label>Stat 3 – Chiffre</label><input type="number" id="a-stat_3_val" placeholder="30"/></div>
+            <div class="cms-field"><label>Stat 3 – Unité</label><input type="text" id="a-stat_3_unite" placeholder="+"/></div>
+            <div class="cms-field cms-field-full"><label>Stat 3 – Label</label><input type="text" id="a-stat_3_label" placeholder="pays livrés"/></div>
+          </div>
+          <button class="btn cms-save-btn" data-section="accueil" data-fields="stat_1_val,stat_1_unite,stat_1_label,stat_2_val,stat_2_unite,stat_2_label,stat_3_val,stat_3_unite,stat_3_label"><i class="fas fa-save"></i> Enregistrer</button>
+        </div>
+
+        <div class="cms-card">
+          <h3 class="cms-card-title"><i class="fas fa-heading"></i> Titres de sections</h3>
+          <div class="cms-fields">
+            <div class="cms-field"><label>Galerie – étiquette</label><input type="text" id="a-galerie_tag" placeholder="Galerie"/></div>
+            <div class="cms-field"><label>Galerie – titre</label><input type="text" id="a-galerie_titre" placeholder="Nos créations en images"/></div>
+            <div class="cms-field"><label>Sélection – étiquette</label><input type="text" id="a-selection_tag" placeholder="Nos créations"/></div>
+            <div class="cms-field"><label>Sélection – titre</label><input type="text" id="a-selection_titre" placeholder="Sélection du moment"/></div>
+            <div class="cms-field"><label>Avis – étiquette</label><input type="text" id="a-avis_tag" placeholder="Ils nous font confiance"/></div>
+            <div class="cms-field"><label>Avis – titre</label><input type="text" id="a-avis_titre" placeholder="Avis Clients"/></div>
+            <div class="cms-field"><label>Newsletter – étiquette</label><input type="text" id="a-newsletter_tag" placeholder="Restez connecté"/></div>
+            <div class="cms-field"><label>Newsletter – titre</label><input type="text" id="a-newsletter_titre" placeholder="Rejoignez notre liste VIP"/></div>
+            <div class="cms-field cms-field-full"><label>Newsletter – description</label><textarea id="a-newsletter_desc" rows="2"></textarea></div>
+          </div>
+          <button class="btn cms-save-btn" data-section="accueil" data-fields="galerie_tag,galerie_titre,selection_tag,selection_titre,avis_tag,avis_titre,newsletter_tag,newsletter_titre,newsletter_desc"><i class="fas fa-save"></i> Enregistrer</button>
+        </div>
+      </div>
+
+      <!-- BOUTIQUE -->
+      <div class="cms-panel" id="cms-boutique" style="display:none;">
+        <div class="cms-card">
+          <h3 class="cms-card-title"><i class="fas fa-store"></i> Page Boutique</h3>
+          <div class="cms-fields">
+            <div class="cms-field"><label>Hero – étiquette</label><input type="text" id="b-hero_tag" placeholder="Notre collection"/></div>
+            <div class="cms-field"><label>Hero – titre</label><input type="text" id="b-hero_titre" placeholder="Notre Boutique"/></div>
+            <div class="cms-field"><label>Bouton 1</label><input type="text" id="b-hero_btn_1" placeholder="Voir les créations"/></div>
+            <div class="cms-field"><label>Bouton 2</label><input type="text" id="b-hero_btn_2" placeholder="Commander"/></div>
+          </div>
+          <button class="btn cms-save-btn" data-section="boutique" data-fields="hero_tag,hero_titre,hero_btn_1,hero_btn_2"><i class="fas fa-save"></i> Enregistrer</button>
+        </div>
+      </div>
+
+      <!-- CONTACT -->
+      <div class="cms-panel" id="cms-contact" style="display:none;">
+        <div class="cms-card">
+          <h3 class="cms-card-title"><i class="fas fa-address-card"></i> Page Contact</h3>
+          <p class="cms-note"><i class="fas fa-circle-info"></i> Les coordonnées (adresse, téléphone, email, horaires) se modifient dans <strong>Infos générales</strong> — elles sont communes à tout le site.</p>
+          <div class="cms-fields">
+            <div class="cms-field"><label>Hero – étiquette</label><input type="text" id="c-hero_tag" placeholder="Parlons-nous"/></div>
+            <div class="cms-field"><label>Hero – titre (partie dorée)</label><input type="text" id="c-hero_titre_em" placeholder="Contactez"/></div>
+            <div class="cms-field"><label>Hero – titre (suite)</label><input type="text" id="c-hero_titre_suite" placeholder="-nous"/></div>
+            <div class="cms-field"><label>Section coordonnées – étiquette</label><input type="text" id="c-section_tag" placeholder="Nos coordonnées"/></div>
+            <div class="cms-field"><label>Section coordonnées – titre</label><input type="text" id="c-section_titre" placeholder="On est là pour vous"/></div>
+          </div>
+          <button class="btn cms-save-btn" data-section="contact" data-fields="hero_tag,hero_titre_em,hero_titre_suite,section_tag,section_titre"><i class="fas fa-save"></i> Enregistrer</button>
+        </div>
+      </div>
+
+      <!-- À PROPOS -->
+      <div class="cms-panel" id="cms-apropos" style="display:none;">
+        <div class="cms-card">
+          <h3 class="cms-card-title"><i class="fas fa-info-circle"></i> Page À propos</h3>
+          <div class="cms-fields">
+            <div class="cms-field"><label>Hero – étiquette</label><input type="text" id="ap-hero_tag" placeholder="Qui sommes-nous"/></div>
+            <div class="cms-field"><label>Hero – titre (doré)</label><input type="text" id="ap-hero_titre_em" placeholder="À propos"/></div>
+            <div class="cms-field"><label>Section histoire – étiquette</label><input type="text" id="ap-histoire_tag" placeholder="Notre histoire"/></div>
+            <div class="cms-field"><label>Section histoire – titre</label><input type="text" id="ap-histoire_titre" placeholder="Artisan Nomade, 15 ans de passion"/></div>
+            <div class="cms-field cms-field-full"><label>Texte de présentation <small>(HTML autorisé : &lt;br&gt;, &lt;em&gt;, &lt;strong&gt;)</small></label><textarea id="ap-histoire_texte" rows="6" placeholder="Née à Porto-Novo..."></textarea></div>
+          </div>
+          <button class="btn cms-save-btn" data-section="apropos" data-fields="hero_tag,hero_titre_em,histoire_tag,histoire_titre,histoire_texte"><i class="fas fa-save"></i> Enregistrer</button>
+        </div>
+      </div>
+
+      <!-- AVIS CLIENTS -->
+      <div class="cms-panel" id="cms-avis" style="display:none;">
+        <div class="cms-card">
+          <h3 class="cms-card-title"><i class="fas fa-star"></i> Avis clients</h3>
+          <p class="cms-note"><i class="fas fa-circle-info"></i> Ces avis s'affichent dans le slider de la page d'accueil. Tu peux en ajouter, modifier ou supprimer.</p>
+          <div id="avis-list"></div>
+          <button class="btn btn-ghost btn-sm" id="avis-add-btn" style="margin-top:14px;"><i class="fas fa-plus"></i> Ajouter un avis</button>
+          <div style="margin-top:20px;">
+            <button class="btn cms-save-avis-btn"><i class="fas fa-save"></i> Enregistrer tous les avis</button>
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </div>
@@ -884,6 +1105,146 @@
     a.download = `newsletter-artisan-nomade-${new Date().toISOString().slice(0,10)}.csv`;
     a.click();
     URL.revokeObjectURL(url);
+  });
+
+  // ---------- CMS – CONTENU ----------
+  let CMS_DATA = {};
+
+  // Préfixes des champs par section : g- = global, a- = accueil, etc.
+  const CMS_PREFIX = { global:'g', accueil:'a', boutique:'b', contact:'c', apropos:'ap' };
+
+  async function loadCMS() {
+    $('cms-loading').style.display = 'block';
+    const res = await apiCall('GET', '/admin/contenu');
+    $('cms-loading').style.display = 'none';
+    if (!res.ok) { showToast('Impossible de charger le contenu.', true); return; }
+    CMS_DATA = res.data.contenu || {};
+    populateCMSFields();
+    renderAvisEditor();
+  }
+
+  function populateCMSFields() {
+    Object.entries(CMS_PREFIX).forEach(([section, prefix]) => {
+      const data = CMS_DATA[section] || {};
+      Object.entries(data).forEach(([key, val]) => {
+        const el = $(`${prefix}-${key}`);
+        if (!el) return;
+        if (el.tagName === 'TEXTAREA') el.value = val;
+        else el.value = val;
+      });
+    });
+    // Logo preview
+    const logoEl = $('g-logo_url');
+    if (logoEl) {
+      $('logo-preview').src = logoEl.value || 'logo.png';
+      logoEl.addEventListener('input', () => { $('logo-preview').src = logoEl.value || 'logo.png'; });
+    }
+  }
+
+  // Sauvegarder une section
+  document.addEventListener('click', async e => {
+    const btn = e.target.closest('.cms-save-btn');
+    if (!btn) return;
+    const section = btn.dataset.section;
+    const fields = btn.dataset.fields.split(',');
+    const prefix = CMS_PREFIX[section];
+    const data = {};
+    fields.forEach(f => {
+      const el = $(`${prefix}-${f}`);
+      if (el) data[f] = el.value;
+    });
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sauvegarde...';
+    const res = await apiCall('PATCH', '/admin/contenu', { section, data });
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-save"></i> Enregistrer';
+    if (res.ok) {
+      CMS_DATA[section] = { ...(CMS_DATA[section] || {}), ...data };
+      showToast('Contenu mis à jour !');
+    } else {
+      showToast(res.data.message || 'Erreur lors de la sauvegarde.', true);
+    }
+  });
+
+  // ---- Éditeur d'avis ----
+  function renderAvisEditor() {
+    const list = $('avis-list');
+    const avis = CMS_DATA.avis || [];
+    list.innerHTML = '';
+    avis.forEach((av, i) => {
+      const div = document.createElement('div');
+      div.className = 'avis-editor-item';
+      div.innerHTML = `
+        <button class="avis-del-btn" data-idx="${i}" title="Supprimer"><i class="fas fa-trash"></i></button>
+        <div class="avis-editor-fields">
+          <textarea rows="3" placeholder="Texte de l'avis..." data-avis="${i}" data-field="texte">${escapeHtml(av.texte)}</textarea>
+          <input type="text" placeholder="Nom (ex: Marie D.)" data-avis="${i}" data-field="auteur" value="${escapeHtml(av.auteur)}"/>
+          <input type="text" placeholder="Pays / Ville (ex: France)" data-avis="${i}" data-field="origine" value="${escapeHtml(av.origine)}"/>
+          <input type="number" min="1" max="5" placeholder="Note /5" data-avis="${i}" data-field="note" value="${av.note || 5}"/>
+        </div>`;
+      list.appendChild(div);
+    });
+  }
+
+  // Modifier un champ d'avis
+  $('avis-list').addEventListener('input', e => {
+    const el = e.target.closest('[data-avis]');
+    if (!el) return;
+    const i = parseInt(el.dataset.avis);
+    const field = el.dataset.field;
+    if (!CMS_DATA.avis) CMS_DATA.avis = [];
+    if (!CMS_DATA.avis[i]) CMS_DATA.avis[i] = {};
+    CMS_DATA.avis[i][field] = field === 'note' ? parseInt(el.value) : el.value;
+  });
+
+  // Supprimer un avis
+  $('avis-list').addEventListener('click', e => {
+    const btn = e.target.closest('.avis-del-btn');
+    if (!btn) return;
+    const i = parseInt(btn.dataset.idx);
+    CMS_DATA.avis.splice(i, 1);
+    renderAvisEditor();
+  });
+
+  // Ajouter un avis
+  $('avis-add-btn').addEventListener('click', () => {
+    if (!CMS_DATA.avis) CMS_DATA.avis = [];
+    CMS_DATA.avis.push({ texte: '', auteur: '', origine: '', note: 5 });
+    renderAvisEditor();
+    $('avis-list').lastElementChild?.scrollIntoView({ behavior: 'smooth' });
+  });
+
+  // Sauvegarder tous les avis
+  document.querySelector('.cms-save-avis-btn').addEventListener('click', async () => {
+    const btn = document.querySelector('.cms-save-avis-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sauvegarde...';
+    const res = await apiCall('PUT', '/admin/contenu/avis', { avis: CMS_DATA.avis || [] });
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-save"></i> Enregistrer tous les avis';
+    if (res.ok) showToast('Avis mis à jour !');
+    else showToast(res.data.message || 'Erreur.', true);
+  });
+
+  // Navigation sous-onglets CMS
+  document.querySelectorAll('.cms-tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.cms-tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.cms-panel').forEach(p => p.style.display = 'none');
+      btn.classList.add('active');
+      const panel = $(`cms-${btn.dataset.cmsSection}`);
+      if (panel) panel.style.display = 'flex';
+    });
+  });
+
+  // Charger le CMS quand on clique sur l'onglet Contenu
+  document.querySelector('[data-tab="tab-contenu"]').addEventListener('click', () => {
+    if (!Object.keys(CMS_DATA).length) loadCMS();
+    // Afficher le premier panel
+    document.querySelectorAll('.cms-panel').forEach(p => p.style.display = 'none');
+    const first = document.querySelector('.cms-tab-btn.active');
+    if (first) $(`cms-${first.dataset.cmsSection}`).style.display = 'flex';
+    else { $('cms-global').style.display = 'flex'; document.querySelector('.cms-tab-btn').classList.add('active'); }
   });
 
   // ---------- TABS ----------

@@ -102,13 +102,13 @@
 
     <!-- TEXTE CENTRAL -->
     <div class="hs-content">
-      <p class="hs-brand reveal">Porto-Novo, Bénin · Depuis 2010</p>
+      <p class="hs-brand reveal" data-cms="accueil.hero_brand">Porto-Novo, Bénin · Depuis 2010</p>
       <h1 class="hs-title reveal">
-        <span>L'Art des</span>
-        <em>Perles</em>
-        <span>Africaines</span>
+        <span data-cms="accueil.hero_titre_1">L'Art des</span>
+        <em data-cms="accueil.hero_titre_em">Perles</em>
+        <span data-cms="accueil.hero_titre_2">Africaines</span>
       </h1>
-      <p class="hs-desc reveal">Bijoux artisanaux tissés à la main,<br>porteurs d'histoire et de culture.</p>
+      <p class="hs-desc reveal" data-cms="accueil.hero_desc">Bijoux artisanaux tissés à la main,<br>porteurs d'histoire et de culture.</p>
       <div class="hs-cta reveal">
         <a href="boutique.html" class="btn-primary">Découvrir la boutique</a>
         <a href="culture.html" class="btn-ghost">Notre histoire</a>
@@ -232,17 +232,17 @@
   <!-- STATS -->
   <section class="stats">
     <div class="stat-item reveal">
-      <span class="stat-number" data-target="15">0</span><span class="stat-unit">ans</span>
-      <p>d'expertise artisanale</p>
+      <span class="stat-number" data-target="15">0</span><span class="stat-unit" data-cms="accueil.stat_1_unite">ans</span>
+      <p data-cms="accueil.stat_1_label">d'expertise artisanale</p>
     </div>
     <div class="stat-divider"></div>
     <div class="stat-item reveal">
-      <span class="stat-number" data-target="500">0</span><span class="stat-unit">+</span>
+      <span class="stat-number" data-target="500">0</span><span class="stat-unit" data-cms="accueil.stat_2_unite">+</span>
       <p>créations uniques</p>
     </div>
     <div class="stat-divider"></div>
     <div class="stat-item reveal">
-      <span class="stat-number" data-target="30">0</span><span class="stat-unit">+</span>
+      <span class="stat-number" data-target="30">0</span><span class="stat-unit" data-cms="accueil.stat_3_unite">+</span>
       <p>pays livrés</p>
     </div>
   </section>
@@ -250,7 +250,7 @@
   <!-- GALERIE SLIDER -->
   <section class="section-block dark" style="padding-top:70px; padding-bottom:70px; overflow:hidden;">
     <div class="section-header reveal" style="margin-bottom:40px;">
-      <p class="section-tag light">Galerie</p>
+      <p class="section-tag light" data-cms="accueil.galerie_tag">Galerie</p>
       <h2 class="section-title light">Nos <em>créations en images</em></h2>
       <div class="title-line"></div>
     </div>
@@ -342,8 +342,8 @@
   <!-- APERÇU BOUTIQUE -->
   <section class="section-block white">
     <div class="section-header reveal">
-      <p class="section-tag">Nos créations</p>
-      <h2 class="section-title">Sélection du moment</h2>
+      <p class="section-tag" data-cms="accueil.selection_tag">Nos créations</p>
+      <h2 class="section-title" data-cms="accueil.selection_titre">Sélection du moment</h2>
       <div class="title-line"></div>
     </div>
     <div class="products-grid">
@@ -432,8 +432,8 @@
   <!-- AVIS -->
   <section class="section-block white">
     <div class="section-header reveal">
-      <p class="section-tag">Ils nous font confiance</p>
-      <h2 class="section-title">Avis Clients</h2>
+      <p class="section-tag" data-cms="accueil.avis_tag">Ils nous font confiance</p>
+      <h2 class="section-title" data-cms="accueil.avis_titre">Avis Clients</h2>
       <div class="title-line"></div>
     </div>
     <div style="overflow:hidden;">
@@ -476,9 +476,9 @@
         <div class="newsletter-bead"></div>
         <div class="newsletter-bead"></div>
       </div>
-      <p class="newsletter-tag reveal">Restez connecté</p>
-      <h2 class="newsletter-title reveal">Rejoignez notre <em>liste VIP</em></h2>
-      <p class="newsletter-desc reveal">Nouveautés, offres exclusives et coulisses de l'atelier – directement dans votre boîte mail.</p>
+      <p class="newsletter-tag reveal" data-cms="accueil.newsletter_tag">Restez connecté</p>
+      <h2 class="newsletter-title reveal" data-cms-type="html" data-cms="accueil.newsletter_titre_html">Rejoignez notre <em>liste VIP</em></h2>
+      <p class="newsletter-desc reveal" data-cms="accueil.newsletter_desc">Nouveautés, offres exclusives et coulisses de l'atelier – directement dans votre boîte mail.</p>
       <form class="newsletter-form reveal" id="newsletter-form" action="https://formspree.io/f/YOUR_NEWSLETTER_ID" method="POST">
         <input type="hidden" name="_subject" value="Nouvelle inscription newsletter – Artisan Nomade"/>
         <input type="text" name="_gotcha" style="display:none"/>
@@ -493,6 +493,7 @@
   </section>
   <script src="footer.js"></script>
   <script src="api.js"></script>
-  <script src="main.js"></script>
+  <script src="contenu.js"></script>
+<script src="main.js"></script>
 </body>
 </html>
