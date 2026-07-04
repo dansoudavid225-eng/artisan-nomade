@@ -560,11 +560,28 @@ app.patch('/api/admin/contenu', adminAuth,
   }
 );
 
-/** Admin – mettre à jour les avis clients (tableau complet) */
-app.put('/api/admin/contenu/avis', adminAuth,
+/** Admin – mettre à jour un tableau du contenu (slides, galerie, faq, equipe, etc.) */
+app.put('/api/admin/contenu/array', adminAuth,
   validate([
-    body('avis').isArray().withMessage('avis doit être un tableau'),
+    body('key').notEmpty().withMessage('La clé est requise'),
+    body('data').isArray().withMessage('data doit être un tableau'),
   ]),
+  (req, res) => {
+    const { key, data } = req.body;
+    const ALLOWED_ARRAYS = ['slides','galerie','services','faq','valeurs','equipe','partenaires_liste','avis'];
+    if (!ALLOWED_ARRAYS.includes(key)) {
+      return res.status(400).json({ success: false, message: 'Clé de tableau non autorisée' });
+    }
+    const contenu = getContenu() || {};
+    contenu[key] = data;
+    saveContenu(contenu);
+    res.json({ success: true, key, count: data.length });
+  }
+);
+
+/** Admin – mettre à jour les avis clients (rétrocompatibilité) */
+app.put('/api/admin/contenu/avis', adminAuth,
+  validate([body('avis').isArray().withMessage('avis doit être un tableau')]),
   (req, res) => {
     const contenu = getContenu() || {};
     contenu.avis = req.body.avis;

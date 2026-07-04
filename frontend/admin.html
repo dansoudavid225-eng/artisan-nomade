@@ -527,156 +527,257 @@
     <!-- ---- CONTENU CMS ---- -->
     <div class="tab-panel" id="tab-contenu" style="display:none;">
 
-      <div class="cms-nav">
+      <div class="cms-nav" id="cms-nav">
         <button class="cms-tab-btn active" data-cms-section="global"><i class="fas fa-globe"></i> Infos générales</button>
         <button class="cms-tab-btn" data-cms-section="accueil"><i class="fas fa-home"></i> Accueil</button>
+        <button class="cms-tab-btn" data-cms-section="slider"><i class="fas fa-images"></i> Slider photos</button>
+        <button class="cms-tab-btn" data-cms-section="galerie"><i class="fas fa-th"></i> Galerie</button>
+        <button class="cms-tab-btn" data-cms-section="services"><i class="fas fa-concierge-bell"></i> Services</button>
         <button class="cms-tab-btn" data-cms-section="boutique"><i class="fas fa-store"></i> Boutique</button>
         <button class="cms-tab-btn" data-cms-section="contact"><i class="fas fa-address-card"></i> Contact</button>
+        <button class="cms-tab-btn" data-cms-section="faq"><i class="fas fa-circle-question"></i> FAQ</button>
         <button class="cms-tab-btn" data-cms-section="apropos"><i class="fas fa-info-circle"></i> À propos</button>
+        <button class="cms-tab-btn" data-cms-section="equipe"><i class="fas fa-users"></i> Équipe</button>
+        <button class="cms-tab-btn" data-cms-section="culture"><i class="fas fa-landmark"></i> Culture</button>
+        <button class="cms-tab-btn" data-cms-section="partenaires"><i class="fas fa-handshake"></i> Partenaires</button>
         <button class="cms-tab-btn" data-cms-section="avis"><i class="fas fa-star"></i> Avis clients</button>
       </div>
 
       <div class="cms-loading" id="cms-loading"><i class="fas fa-spinner fa-spin"></i> Chargement du contenu...</div>
 
-      <!-- GLOBAL -->
+      <!-- ── GLOBAL ── -->
       <div class="cms-panel" id="cms-global" style="display:none;">
         <div class="cms-card">
           <h3 class="cms-card-title"><i class="fas fa-store"></i> Identité de la boutique</h3>
           <div class="cms-fields">
             <div class="cms-field"><label>Nom de la boutique</label><input type="text" id="g-nom_boutique" placeholder="Artisan Nomade"/></div>
             <div class="cms-field"><label>Slogan</label><input type="text" id="g-slogan" placeholder="Bijoux & Accessoires Artisanaux"/></div>
-            <div class="cms-field cms-field-full"><label>URL du logo <small>(lien direct vers une image)</small></label><div class="logo-preview-wrap"><input type="text" id="g-logo_url" placeholder="logo.png ou https://..."/><img id="logo-preview" class="logo-preview"/></div></div>
+            <div class="cms-field cms-field-full"><label>URL du logo <small>(chemin local ex: logo.png, ou lien https://...)</small></label><div class="logo-preview-wrap"><input type="text" id="g-logo_url" placeholder="logo.png"/><img id="logo-preview" class="logo-preview"/></div></div>
+            <div class="cms-field cms-field-full"><label>Description footer</label><textarea id="g-footer_desc" rows="2"></textarea></div>
+            <div class="cms-field cms-field-full"><label>Copyright footer</label><input type="text" id="g-footer_copyright" placeholder="© 2025 Artisan Nomade"/></div>
           </div>
-          <button class="btn cms-save-btn" data-section="global" data-fields="nom_boutique,slogan,logo_url"><i class="fas fa-save"></i> Enregistrer</button>
+          <button class="btn cms-save-btn" data-section="global" data-fields="nom_boutique,slogan,logo_url,footer_desc,footer_copyright"><i class="fas fa-save"></i> Enregistrer</button>
         </div>
-
         <div class="cms-card">
           <h3 class="cms-card-title"><i class="fas fa-address-book"></i> Coordonnées</h3>
           <div class="cms-fields">
-            <div class="cms-field"><label>Téléphone</label><input type="text" id="g-telephone" placeholder="+229 01 97 99 85 46"/></div>
-            <div class="cms-field"><label>WhatsApp <small>(chiffres uniquement, ex: 2290197998546)</small></label><input type="text" id="g-whatsapp" placeholder="2290197998546"/></div>
-            <div class="cms-field"><label>Email</label><input type="email" id="g-email" placeholder="artisannomade1@gmail.com"/></div>
-            <div class="cms-field"><label>Adresse</label><input type="text" id="g-adresse" placeholder="Porto-Novo, Bénin"/></div>
-            <div class="cms-field"><label>Horaires d'ouverture</label><input type="text" id="g-horaires" placeholder="Lun – Sam : 8h00 – 18h00"/></div>
+            <div class="cms-field"><label>Téléphone</label><input type="text" id="g-telephone"/></div>
+            <div class="cms-field"><label>WhatsApp <small>(chiffres, ex: 2290197998546)</small></label><input type="text" id="g-whatsapp"/></div>
+            <div class="cms-field"><label>Email</label><input type="email" id="g-email"/></div>
+            <div class="cms-field"><label>Adresse</label><input type="text" id="g-adresse"/></div>
+            <div class="cms-field"><label>Horaires</label><input type="text" id="g-horaires"/></div>
           </div>
           <button class="btn cms-save-btn" data-section="global" data-fields="telephone,whatsapp,email,adresse,horaires"><i class="fas fa-save"></i> Enregistrer</button>
         </div>
-
         <div class="cms-card">
           <h3 class="cms-card-title"><i class="fas fa-share-nodes"></i> Réseaux sociaux</h3>
           <div class="cms-fields">
-            <div class="cms-field"><label><i class="fab fa-facebook"></i> Facebook</label><input type="url" id="g-facebook" placeholder="https://www.facebook.com/artisannomade"/></div>
-            <div class="cms-field"><label><i class="fab fa-instagram"></i> Instagram</label><input type="url" id="g-instagram" placeholder="https://www.instagram.com/artisannomade"/></div>
-            <div class="cms-field"><label><i class="fab fa-tiktok"></i> TikTok</label><input type="url" id="g-tiktok" placeholder="https://www.tiktok.com/@artisannomade"/></div>
+            <div class="cms-field"><label><i class="fab fa-facebook"></i> Facebook URL</label><input type="url" id="g-facebook"/></div>
+            <div class="cms-field"><label><i class="fab fa-instagram"></i> Instagram URL</label><input type="url" id="g-instagram"/></div>
+            <div class="cms-field"><label><i class="fab fa-tiktok"></i> TikTok URL</label><input type="url" id="g-tiktok"/></div>
           </div>
           <button class="btn cms-save-btn" data-section="global" data-fields="facebook,instagram,tiktok"><i class="fas fa-save"></i> Enregistrer</button>
         </div>
       </div>
 
-      <!-- ACCUEIL -->
+      <!-- ── ACCUEIL ── -->
       <div class="cms-panel" id="cms-accueil" style="display:none;">
         <div class="cms-card">
-          <h3 class="cms-card-title"><i class="fas fa-image"></i> Section Hero (grande image d'accueil)</h3>
+          <h3 class="cms-card-title"><i class="fas fa-image"></i> Texte central du Hero</h3>
           <div class="cms-fields">
-            <div class="cms-field"><label>Texte sous-marque</label><input type="text" id="a-hero_brand" placeholder="Porto-Novo, Bénin · Depuis 2010"/></div>
-            <div class="cms-field"><label>Titre – ligne 1</label><input type="text" id="a-hero_titre_1" placeholder="L'Art des"/></div>
-            <div class="cms-field"><label>Titre – mot en doré (em)</label><input type="text" id="a-hero_titre_em" placeholder="Perles"/></div>
-            <div class="cms-field"><label>Titre – ligne 3</label><input type="text" id="a-hero_titre_2" placeholder="Africaines"/></div>
-            <div class="cms-field cms-field-full"><label>Description</label><textarea id="a-hero_desc" rows="2" placeholder="Bijoux artisanaux tissés à la main..."></textarea></div>
-            <div class="cms-field"><label>Bouton 1 (principal)</label><input type="text" id="a-hero_btn_1" placeholder="Découvrir la boutique"/></div>
-            <div class="cms-field"><label>Bouton 2 (secondaire)</label><input type="text" id="a-hero_btn_2" placeholder="Notre histoire"/></div>
+            <div class="cms-field"><label>Sous-marque</label><input type="text" id="a-hero_brand"/></div>
+            <div class="cms-field"><label>Titre ligne 1</label><input type="text" id="a-hero_titre_1"/></div>
+            <div class="cms-field"><label>Titre mot doré</label><input type="text" id="a-hero_titre_em"/></div>
+            <div class="cms-field"><label>Titre ligne 3</label><input type="text" id="a-hero_titre_2"/></div>
+            <div class="cms-field cms-field-full"><label>Description</label><textarea id="a-hero_desc" rows="2"></textarea></div>
+            <div class="cms-field"><label>Bouton 1</label><input type="text" id="a-hero_btn_1"/></div>
+            <div class="cms-field"><label>Bouton 2</label><input type="text" id="a-hero_btn_2"/></div>
           </div>
           <button class="btn cms-save-btn" data-section="accueil" data-fields="hero_brand,hero_titre_1,hero_titre_em,hero_titre_2,hero_desc,hero_btn_1,hero_btn_2"><i class="fas fa-save"></i> Enregistrer</button>
         </div>
-
         <div class="cms-card">
-          <h3 class="cms-card-title"><i class="fas fa-chart-bar"></i> Statistiques (chiffres clés)</h3>
+          <h3 class="cms-card-title"><i class="fas fa-chart-bar"></i> Statistiques</h3>
           <div class="cms-fields">
-            <div class="cms-field"><label>Stat 1 – Chiffre</label><input type="number" id="a-stat_1_val" placeholder="15"/></div>
-            <div class="cms-field"><label>Stat 1 – Unité</label><input type="text" id="a-stat_1_unite" placeholder="ans"/></div>
-            <div class="cms-field cms-field-full"><label>Stat 1 – Label</label><input type="text" id="a-stat_1_label" placeholder="d'expertise artisanale"/></div>
-            <div class="cms-field"><label>Stat 2 – Chiffre</label><input type="number" id="a-stat_2_val" placeholder="500"/></div>
-            <div class="cms-field"><label>Stat 2 – Unité</label><input type="text" id="a-stat_2_unite" placeholder="+"/></div>
-            <div class="cms-field cms-field-full"><label>Stat 2 – Label</label><input type="text" id="a-stat_2_label" placeholder="créations uniques"/></div>
-            <div class="cms-field"><label>Stat 3 – Chiffre</label><input type="number" id="a-stat_3_val" placeholder="30"/></div>
-            <div class="cms-field"><label>Stat 3 – Unité</label><input type="text" id="a-stat_3_unite" placeholder="+"/></div>
-            <div class="cms-field cms-field-full"><label>Stat 3 – Label</label><input type="text" id="a-stat_3_label" placeholder="pays livrés"/></div>
+            <div class="cms-field"><label>Stat 1 – Chiffre</label><input type="number" id="a-stat_1_val"/></div>
+            <div class="cms-field"><label>Stat 1 – Unité</label><input type="text" id="a-stat_1_unite"/></div>
+            <div class="cms-field cms-field-full"><label>Stat 1 – Label</label><input type="text" id="a-stat_1_label"/></div>
+            <div class="cms-field"><label>Stat 2 – Chiffre</label><input type="number" id="a-stat_2_val"/></div>
+            <div class="cms-field"><label>Stat 2 – Unité</label><input type="text" id="a-stat_2_unite"/></div>
+            <div class="cms-field cms-field-full"><label>Stat 2 – Label</label><input type="text" id="a-stat_2_label"/></div>
+            <div class="cms-field"><label>Stat 3 – Chiffre</label><input type="number" id="a-stat_3_val"/></div>
+            <div class="cms-field"><label>Stat 3 – Unité</label><input type="text" id="a-stat_3_unite"/></div>
+            <div class="cms-field cms-field-full"><label>Stat 3 – Label</label><input type="text" id="a-stat_3_label"/></div>
           </div>
           <button class="btn cms-save-btn" data-section="accueil" data-fields="stat_1_val,stat_1_unite,stat_1_label,stat_2_val,stat_2_unite,stat_2_label,stat_3_val,stat_3_unite,stat_3_label"><i class="fas fa-save"></i> Enregistrer</button>
         </div>
-
         <div class="cms-card">
-          <h3 class="cms-card-title"><i class="fas fa-heading"></i> Titres de sections</h3>
+          <h3 class="cms-card-title"><i class="fas fa-heading"></i> Titres des sections</h3>
           <div class="cms-fields">
-            <div class="cms-field"><label>Galerie – étiquette</label><input type="text" id="a-galerie_tag" placeholder="Galerie"/></div>
-            <div class="cms-field"><label>Galerie – titre</label><input type="text" id="a-galerie_titre" placeholder="Nos créations en images"/></div>
-            <div class="cms-field"><label>Sélection – étiquette</label><input type="text" id="a-selection_tag" placeholder="Nos créations"/></div>
-            <div class="cms-field"><label>Sélection – titre</label><input type="text" id="a-selection_titre" placeholder="Sélection du moment"/></div>
-            <div class="cms-field"><label>Avis – étiquette</label><input type="text" id="a-avis_tag" placeholder="Ils nous font confiance"/></div>
-            <div class="cms-field"><label>Avis – titre</label><input type="text" id="a-avis_titre" placeholder="Avis Clients"/></div>
-            <div class="cms-field"><label>Newsletter – étiquette</label><input type="text" id="a-newsletter_tag" placeholder="Restez connecté"/></div>
-            <div class="cms-field"><label>Newsletter – titre</label><input type="text" id="a-newsletter_titre" placeholder="Rejoignez notre liste VIP"/></div>
+            <div class="cms-field"><label>Galerie – étiquette</label><input type="text" id="a-galerie_tag"/></div>
+            <div class="cms-field"><label>Galerie – titre</label><input type="text" id="a-galerie_titre"/></div>
+            <div class="cms-field"><label>Services – étiquette</label><input type="text" id="a-services_tag"/></div>
+            <div class="cms-field"><label>Services – titre</label><input type="text" id="a-services_titre"/></div>
+            <div class="cms-field"><label>Sélection – étiquette</label><input type="text" id="a-selection_tag"/></div>
+            <div class="cms-field"><label>Sélection – titre</label><input type="text" id="a-selection_titre"/></div>
+            <div class="cms-field"><label>Avis – étiquette</label><input type="text" id="a-avis_tag"/></div>
+            <div class="cms-field"><label>Avis – titre</label><input type="text" id="a-avis_titre"/></div>
+            <div class="cms-field"><label>Newsletter – étiquette</label><input type="text" id="a-newsletter_tag"/></div>
+            <div class="cms-field"><label>Newsletter – titre</label><input type="text" id="a-newsletter_titre"/></div>
             <div class="cms-field cms-field-full"><label>Newsletter – description</label><textarea id="a-newsletter_desc" rows="2"></textarea></div>
           </div>
-          <button class="btn cms-save-btn" data-section="accueil" data-fields="galerie_tag,galerie_titre,selection_tag,selection_titre,avis_tag,avis_titre,newsletter_tag,newsletter_titre,newsletter_desc"><i class="fas fa-save"></i> Enregistrer</button>
+          <button class="btn cms-save-btn" data-section="accueil" data-fields="galerie_tag,galerie_titre,services_tag,services_titre,selection_tag,selection_titre,avis_tag,avis_titre,newsletter_tag,newsletter_titre,newsletter_desc"><i class="fas fa-save"></i> Enregistrer</button>
         </div>
       </div>
 
-      <!-- BOUTIQUE -->
+      <!-- ── SLIDER ── -->
+      <div class="cms-panel" id="cms-slider" style="display:none;">
+        <div class="cms-card">
+          <h3 class="cms-card-title"><i class="fas fa-images"></i> Slides du hero (page d'accueil)</h3>
+          <p class="cms-note"><i class="fas fa-circle-info"></i> Chaque slide = une grande photo plein écran avec un titre. Tu peux coller l'URL d'une image hébergée en ligne, ou le nom d'un fichier local (ex: slide1.jpg).</p>
+          <div id="slider-list"></div>
+          <button class="btn btn-ghost btn-sm" id="slider-add-btn" style="margin-top:14px;"><i class="fas fa-plus"></i> Ajouter un slide</button>
+          <div style="margin-top:20px;"><button class="btn cms-save-array-btn" data-array="slider"><i class="fas fa-save"></i> Enregistrer les slides</button></div>
+        </div>
+      </div>
+
+      <!-- ── GALERIE ── -->
+      <div class="cms-panel" id="cms-galerie" style="display:none;">
+        <div class="cms-card">
+          <h3 class="cms-card-title"><i class="fas fa-th"></i> Galerie photos (section d'accueil)</h3>
+          <p class="cms-note"><i class="fas fa-circle-info"></i> Ces photos s'affichent dans le carrousel "Nos créations en images". Tu peux mettre des URLs d'images ou des noms de fichiers locaux.</p>
+          <div id="galerie-list"></div>
+          <button class="btn btn-ghost btn-sm" id="galerie-add-btn" style="margin-top:14px;"><i class="fas fa-plus"></i> Ajouter une photo</button>
+          <div style="margin-top:20px;"><button class="btn cms-save-array-btn" data-array="galerie"><i class="fas fa-save"></i> Enregistrer la galerie</button></div>
+        </div>
+      </div>
+
+      <!-- ── SERVICES ── -->
+      <div class="cms-panel" id="cms-services" style="display:none;">
+        <div class="cms-card">
+          <h3 class="cms-card-title"><i class="fas fa-concierge-bell"></i> Services / Modes de paiement & livraison</h3>
+          <p class="cms-note"><i class="fas fa-circle-info"></i> Ces cartes apparaissent dans la section "Commander chez nous" de l'accueil.</p>
+          <div id="services-list"></div>
+          <button class="btn btn-ghost btn-sm" id="services-add-btn" style="margin-top:14px;"><i class="fas fa-plus"></i> Ajouter un service</button>
+          <div style="margin-top:20px;"><button class="btn cms-save-array-btn" data-array="services"><i class="fas fa-save"></i> Enregistrer</button></div>
+        </div>
+      </div>
+
+      <!-- ── BOUTIQUE ── -->
       <div class="cms-panel" id="cms-boutique" style="display:none;">
         <div class="cms-card">
           <h3 class="cms-card-title"><i class="fas fa-store"></i> Page Boutique</h3>
           <div class="cms-fields">
-            <div class="cms-field"><label>Hero – étiquette</label><input type="text" id="b-hero_tag" placeholder="Notre collection"/></div>
-            <div class="cms-field"><label>Hero – titre</label><input type="text" id="b-hero_titre" placeholder="Notre Boutique"/></div>
-            <div class="cms-field"><label>Bouton 1</label><input type="text" id="b-hero_btn_1" placeholder="Voir les créations"/></div>
-            <div class="cms-field"><label>Bouton 2</label><input type="text" id="b-hero_btn_2" placeholder="Commander"/></div>
+            <div class="cms-field"><label>Hero – étiquette</label><input type="text" id="b-hero_tag"/></div>
+            <div class="cms-field"><label>Hero – titre</label><input type="text" id="b-hero_titre"/></div>
+            <div class="cms-field"><label>Bouton 1</label><input type="text" id="b-hero_btn_1"/></div>
+            <div class="cms-field"><label>Bouton 2</label><input type="text" id="b-hero_btn_2"/></div>
           </div>
           <button class="btn cms-save-btn" data-section="boutique" data-fields="hero_tag,hero_titre,hero_btn_1,hero_btn_2"><i class="fas fa-save"></i> Enregistrer</button>
         </div>
       </div>
 
-      <!-- CONTACT -->
+      <!-- ── CONTACT ── -->
       <div class="cms-panel" id="cms-contact" style="display:none;">
         <div class="cms-card">
           <h3 class="cms-card-title"><i class="fas fa-address-card"></i> Page Contact</h3>
-          <p class="cms-note"><i class="fas fa-circle-info"></i> Les coordonnées (adresse, téléphone, email, horaires) se modifient dans <strong>Infos générales</strong> — elles sont communes à tout le site.</p>
+          <p class="cms-note"><i class="fas fa-circle-info"></i> Adresse, téléphone, email et horaires se modifient dans <strong>Infos générales</strong>.</p>
           <div class="cms-fields">
-            <div class="cms-field"><label>Hero – étiquette</label><input type="text" id="c-hero_tag" placeholder="Parlons-nous"/></div>
-            <div class="cms-field"><label>Hero – titre (partie dorée)</label><input type="text" id="c-hero_titre_em" placeholder="Contactez"/></div>
-            <div class="cms-field"><label>Hero – titre (suite)</label><input type="text" id="c-hero_titre_suite" placeholder="-nous"/></div>
-            <div class="cms-field"><label>Section coordonnées – étiquette</label><input type="text" id="c-section_tag" placeholder="Nos coordonnées"/></div>
-            <div class="cms-field"><label>Section coordonnées – titre</label><input type="text" id="c-section_titre" placeholder="On est là pour vous"/></div>
+            <div class="cms-field"><label>Hero – étiquette</label><input type="text" id="c-hero_tag"/></div>
+            <div class="cms-field"><label>Hero – titre doré</label><input type="text" id="c-hero_titre_em"/></div>
+            <div class="cms-field"><label>Hero – suite du titre</label><input type="text" id="c-hero_titre_suite"/></div>
+            <div class="cms-field"><label>Section – étiquette</label><input type="text" id="c-section_tag"/></div>
+            <div class="cms-field"><label>Section – titre</label><input type="text" id="c-section_titre"/></div>
+            <div class="cms-field"><label>FAQ – étiquette</label><input type="text" id="c-faq_tag"/></div>
+            <div class="cms-field"><label>FAQ – titre</label><input type="text" id="c-faq_titre"/></div>
           </div>
-          <button class="btn cms-save-btn" data-section="contact" data-fields="hero_tag,hero_titre_em,hero_titre_suite,section_tag,section_titre"><i class="fas fa-save"></i> Enregistrer</button>
+          <button class="btn cms-save-btn" data-section="contact" data-fields="hero_tag,hero_titre_em,hero_titre_suite,section_tag,section_titre,faq_tag,faq_titre"><i class="fas fa-save"></i> Enregistrer</button>
         </div>
       </div>
 
-      <!-- À PROPOS -->
+      <!-- ── FAQ ── -->
+      <div class="cms-panel" id="cms-faq" style="display:none;">
+        <div class="cms-card">
+          <h3 class="cms-card-title"><i class="fas fa-circle-question"></i> Questions fréquentes (FAQ)</h3>
+          <div id="faq-list"></div>
+          <button class="btn btn-ghost btn-sm" id="faq-add-btn" style="margin-top:14px;"><i class="fas fa-plus"></i> Ajouter une question</button>
+          <div style="margin-top:20px;"><button class="btn cms-save-array-btn" data-array="faq"><i class="fas fa-save"></i> Enregistrer la FAQ</button></div>
+        </div>
+      </div>
+
+      <!-- ── À PROPOS ── -->
       <div class="cms-panel" id="cms-apropos" style="display:none;">
         <div class="cms-card">
           <h3 class="cms-card-title"><i class="fas fa-info-circle"></i> Page À propos</h3>
           <div class="cms-fields">
-            <div class="cms-field"><label>Hero – étiquette</label><input type="text" id="ap-hero_tag" placeholder="Qui sommes-nous"/></div>
-            <div class="cms-field"><label>Hero – titre (doré)</label><input type="text" id="ap-hero_titre_em" placeholder="À propos"/></div>
-            <div class="cms-field"><label>Section histoire – étiquette</label><input type="text" id="ap-histoire_tag" placeholder="Notre histoire"/></div>
-            <div class="cms-field"><label>Section histoire – titre</label><input type="text" id="ap-histoire_titre" placeholder="Artisan Nomade, 15 ans de passion"/></div>
-            <div class="cms-field cms-field-full"><label>Texte de présentation <small>(HTML autorisé : &lt;br&gt;, &lt;em&gt;, &lt;strong&gt;)</small></label><textarea id="ap-histoire_texte" rows="6" placeholder="Née à Porto-Novo..."></textarea></div>
+            <div class="cms-field"><label>Hero – étiquette</label><input type="text" id="ap-hero_tag"/></div>
+            <div class="cms-field"><label>Hero – titre doré</label><input type="text" id="ap-hero_titre_em"/></div>
+            <div class="cms-field"><label>Section histoire – étiquette</label><input type="text" id="ap-histoire_tag"/></div>
+            <div class="cms-field"><label>Section histoire – titre</label><input type="text" id="ap-histoire_titre"/></div>
+            <div class="cms-field cms-field-full"><label>Texte de présentation</label><textarea id="ap-histoire_texte" rows="6"></textarea></div>
+            <div class="cms-field"><label>Section équipe – étiquette</label><input type="text" id="ap-equipe_tag"/></div>
+            <div class="cms-field"><label>Section équipe – titre</label><input type="text" id="ap-equipe_titre"/></div>
           </div>
-          <button class="btn cms-save-btn" data-section="apropos" data-fields="hero_tag,hero_titre_em,histoire_tag,histoire_titre,histoire_texte"><i class="fas fa-save"></i> Enregistrer</button>
+          <button class="btn cms-save-btn" data-section="apropos" data-fields="hero_tag,hero_titre_em,histoire_tag,histoire_titre,histoire_texte,equipe_tag,equipe_titre"><i class="fas fa-save"></i> Enregistrer</button>
         </div>
       </div>
 
-      <!-- AVIS CLIENTS -->
+      <!-- ── ÉQUIPE ── -->
+      <div class="cms-panel" id="cms-equipe" style="display:none;">
+        <div class="cms-card">
+          <h3 class="cms-card-title"><i class="fas fa-users"></i> Membres de l'équipe</h3>
+          <p class="cms-note"><i class="fas fa-circle-info"></i> Pour la photo, colle l'URL d'une image en ligne. Laisse vide pour afficher une icône par défaut.</p>
+          <div id="equipe-list"></div>
+          <button class="btn btn-ghost btn-sm" id="equipe-add-btn" style="margin-top:14px;"><i class="fas fa-plus"></i> Ajouter un membre</button>
+          <div style="margin-top:20px;"><button class="btn cms-save-array-btn" data-array="equipe"><i class="fas fa-save"></i> Enregistrer l'équipe</button></div>
+        </div>
+      </div>
+
+      <!-- ── CULTURE ── -->
+      <div class="cms-panel" id="cms-culture" style="display:none;">
+        <div class="cms-card">
+          <h3 class="cms-card-title"><i class="fas fa-landmark"></i> Page Culture</h3>
+          <div class="cms-fields">
+            <div class="cms-field"><label>Hero – étiquette</label><input type="text" id="cu-hero_tag"/></div>
+            <div class="cms-field"><label>Intro – étiquette</label><input type="text" id="cu-intro_tag"/></div>
+            <div class="cms-field"><label>Intro – titre</label><input type="text" id="cu-intro_titre"/></div>
+            <div class="cms-field cms-field-full"><label>Intro – texte</label><textarea id="cu-intro_texte" rows="3"></textarea></div>
+            <div class="cms-field"><label>Symbolisme – étiquette</label><input type="text" id="cu-symbolisme_tag"/></div>
+            <div class="cms-field"><label>Symbolisme – titre</label><input type="text" id="cu-symbolisme_titre"/></div>
+            <div class="cms-field"><label>Fabrication – étiquette</label><input type="text" id="cu-fabrication_tag"/></div>
+            <div class="cms-field"><label>Fabrication – titre</label><input type="text" id="cu-fabrication_titre"/></div>
+          </div>
+          <button class="btn cms-save-btn" data-section="culture" data-fields="hero_tag,intro_tag,intro_titre,intro_texte,symbolisme_tag,symbolisme_titre,fabrication_tag,fabrication_titre"><i class="fas fa-save"></i> Enregistrer</button>
+        </div>
+      </div>
+
+      <!-- ── PARTENAIRES ── -->
+      <div class="cms-panel" id="cms-partenaires" style="display:none;">
+        <div class="cms-card">
+          <h3 class="cms-card-title"><i class="fas fa-handshake"></i> Textes de la page Partenaires</h3>
+          <div class="cms-fields">
+            <div class="cms-field"><label>Hero – étiquette</label><input type="text" id="pt-hero_tag"/></div>
+            <div class="cms-field"><label>Hero – titre</label><input type="text" id="pt-hero_titre"/></div>
+            <div class="cms-field"><label>Section – étiquette</label><input type="text" id="pt-section_tag"/></div>
+            <div class="cms-field"><label>Section – titre</label><input type="text" id="pt-section_titre"/></div>
+          </div>
+          <button class="btn cms-save-btn" data-section="partenaires" data-fields="hero_tag,hero_titre,section_tag,section_titre"><i class="fas fa-save"></i> Enregistrer</button>
+        </div>
+        <div class="cms-card">
+          <h3 class="cms-card-title"><i class="fas fa-building"></i> Liste des partenaires</h3>
+          <div id="partenaires-list"></div>
+          <button class="btn btn-ghost btn-sm" id="partenaires-add-btn" style="margin-top:14px;"><i class="fas fa-plus"></i> Ajouter un partenaire</button>
+          <div style="margin-top:20px;"><button class="btn cms-save-array-btn" data-array="partenaires_liste"><i class="fas fa-save"></i> Enregistrer</button></div>
+        </div>
+      </div>
+
+      <!-- ── AVIS ── -->
       <div class="cms-panel" id="cms-avis" style="display:none;">
         <div class="cms-card">
           <h3 class="cms-card-title"><i class="fas fa-star"></i> Avis clients</h3>
-          <p class="cms-note"><i class="fas fa-circle-info"></i> Ces avis s'affichent dans le slider de la page d'accueil. Tu peux en ajouter, modifier ou supprimer.</p>
+          <p class="cms-note"><i class="fas fa-circle-info"></i> Ces avis s'affichent dans le slider de la page d'accueil.</p>
           <div id="avis-list"></div>
           <button class="btn btn-ghost btn-sm" id="avis-add-btn" style="margin-top:14px;"><i class="fas fa-plus"></i> Ajouter un avis</button>
-          <div style="margin-top:20px;">
-            <button class="btn cms-save-avis-btn"><i class="fas fa-save"></i> Enregistrer tous les avis</button>
-          </div>
+          <div style="margin-top:20px;"><button class="btn cms-save-array-btn" data-array="avis"><i class="fas fa-save"></i> Enregistrer les avis</button></div>
         </div>
       </div>
 
@@ -1107,11 +1208,60 @@
     URL.revokeObjectURL(url);
   });
 
-  // ---------- CMS – CONTENU ----------
+  // ---------- CMS – CONTENU COMPLET ----------
   let CMS_DATA = {};
 
-  // Préfixes des champs par section : g- = global, a- = accueil, etc.
-  const CMS_PREFIX = { global:'g', accueil:'a', boutique:'b', contact:'c', apropos:'ap' };
+  // Préfixes des champs simples (section → préfixe des input ids)
+  const CMS_PREFIX = {
+    global:'g', accueil:'a', boutique:'b', contact:'c',
+    apropos:'ap', culture:'cu', partenaires:'pt'
+  };
+
+  // Schémas des tableaux éditables
+  const ARRAY_SCHEMAS = {
+    slides: [
+      { key:'image', label:'URL image', placeholder:'slide1.jpg ou https://...' },
+      { key:'tag', label:'Étiquette', placeholder:'Parure complète' },
+      { key:'titre', label:'Titre', placeholder:'Parure Royale' },
+      { key:'sous_titre', label:'Sous-titre', placeholder:'Description courte...' }
+    ],
+    galerie: [
+      { key:'image', label:'URL image', placeholder:'photos/p17.jpg ou https://...' },
+      { key:'caption', label:'Légende', placeholder:'Nom de la création' }
+    ],
+    services: [
+      { key:'icone', label:'Icône FontAwesome', placeholder:'fas fa-mobile-alt' },
+      { key:'titre', label:'Titre', placeholder:'Mobile Money' },
+      { key:'texte', label:'Description', placeholder:'Paiement sécurisé...' }
+    ],
+    faq: [
+      { key:'question', label:'Question', placeholder:'Comment passer une commande ?' },
+      { key:'reponse', label:'Réponse', type:'textarea', placeholder:'Réponse complète...' }
+    ],
+    valeurs: [
+      { key:'titre', label:'Titre', placeholder:'Authenticité' },
+      { key:'texte', label:'Texte', type:'textarea', placeholder:'Description de la valeur...' }
+    ],
+    equipe: [
+      { key:'nom', label:'Nom / Poste', placeholder:'Fondatrice' },
+      { key:'role', label:'Rôle', placeholder:'Artisan Nomade' },
+      { key:'photo', label:'URL photo', placeholder:'https://... (optionnel)' },
+      { key:'description', label:'Description courte', type:'textarea', placeholder:'(optionnel)' }
+    ],
+    partenaires_liste: [
+      { key:'nom', label:'Nom', placeholder:'Perles du Bénin' },
+      { key:'description', label:'Description', type:'textarea', placeholder:'Fournisseur de...' },
+      { key:'badge', label:'Badge', placeholder:'Fournisseur' },
+      { key:'logo', label:'URL logo', placeholder:'https://... (optionnel)' },
+      { key:'lien', label:'URL lien', placeholder:'https://... (optionnel)' }
+    ],
+    avis: [
+      { key:'texte', label:'Texte de l\'avis', type:'textarea', placeholder:'Des bijoux magnifiques...' },
+      { key:'auteur', label:'Auteur', placeholder:'Marie D.' },
+      { key:'origine', label:'Pays / Ville', placeholder:'France' },
+      { key:'note', label:'Note (1-5)', type:'number', placeholder:'5' }
+    ]
+  };
 
   async function loadCMS() {
     $('cms-loading').style.display = 'block';
@@ -1120,31 +1270,109 @@
     if (!res.ok) { showToast('Impossible de charger le contenu.', true); return; }
     CMS_DATA = res.data.contenu || {};
     populateCMSFields();
-    renderAvisEditor();
+    // Initialiser tous les éditeurs de tableaux
+    Object.keys(ARRAY_SCHEMAS).forEach(key => renderArrayEditor(key));
   }
 
   function populateCMSFields() {
+    // Remplir les champs simples (texte/textarea)
     Object.entries(CMS_PREFIX).forEach(([section, prefix]) => {
       const data = CMS_DATA[section] || {};
       Object.entries(data).forEach(([key, val]) => {
         const el = $(`${prefix}-${key}`);
-        if (!el) return;
-        if (el.tagName === 'TEXTAREA') el.value = val;
-        else el.value = val;
+        if (el) el.value = val || '';
       });
     });
     // Logo preview
     const logoEl = $('g-logo_url');
-    if (logoEl) {
+    if (logoEl && $('logo-preview')) {
       $('logo-preview').src = logoEl.value || 'logo.png';
       logoEl.addEventListener('input', () => { $('logo-preview').src = logoEl.value || 'logo.png'; });
     }
   }
 
-  // Sauvegarder une section
+  // ── Éditeur de tableau générique ──
+  function renderArrayEditor(arrayKey) {
+    const container = $(`${arrayKey}-list`);
+    if (!container) return;
+    const schema = ARRAY_SCHEMAS[arrayKey];
+    const items = CMS_DATA[arrayKey] || [];
+    container.innerHTML = '';
+    items.forEach((item, i) => {
+      const div = document.createElement('div');
+      div.className = 'avis-editor-item';
+      div.innerHTML = `<button class="avis-del-btn" data-array="${arrayKey}" data-idx="${i}" title="Supprimer"><i class="fas fa-trash"></i></button>
+        <div class="avis-editor-fields">
+          ${schema.map(f => {
+            const val = escapeHtml(String(item[f.key] || ''));
+            const id = `${arrayKey}-${i}-${f.key}`;
+            if (f.type === 'textarea') return `<textarea id="${id}" data-array="${arrayKey}" data-idx="${i}" data-field="${f.key}" placeholder="${f.placeholder}" rows="2">${val}</textarea>`;
+            if (f.type === 'number') return `<input type="number" id="${id}" data-array="${arrayKey}" data-idx="${i}" data-field="${f.key}" value="${val}" min="1" max="5" placeholder="${f.placeholder}"/>`;
+            return `<input type="text" id="${id}" data-array="${arrayKey}" data-idx="${i}" data-field="${f.key}" value="${val}" placeholder="${f.placeholder}"/>`;
+          }).join('')}
+        </div>
+        <div style="font-size:0.72rem;color:var(--gris);margin-top:4px;">Item ${i + 1}</div>`;
+      container.appendChild(div);
+    });
+  }
+
+  // Modifier un champ de tableau
+  document.addEventListener('input', e => {
+    const el = e.target.closest('[data-array][data-idx][data-field]');
+    if (!el) return;
+    const { array: arrayKey, idx, field } = el.dataset;
+    const i = parseInt(idx);
+    if (!CMS_DATA[arrayKey]) CMS_DATA[arrayKey] = [];
+    if (!CMS_DATA[arrayKey][i]) CMS_DATA[arrayKey][i] = {};
+    CMS_DATA[arrayKey][i][field] = field === 'note' ? parseInt(el.value) : el.value;
+  });
+
+  // Supprimer un item de tableau
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('.avis-del-btn[data-array]');
+    if (!btn) return;
+    const arrayKey = btn.dataset.array;
+    const i = parseInt(btn.dataset.idx);
+    if (!CMS_DATA[arrayKey]) return;
+    CMS_DATA[arrayKey].splice(i, 1);
+    renderArrayEditor(arrayKey);
+  });
+
+  // Ajouter un item vide
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('[id$="-add-btn"]');
+    if (!btn) return;
+    const arrayKey = btn.id.replace('-add-btn', '');
+    const schema = ARRAY_SCHEMAS[arrayKey];
+    if (!schema) return;
+    if (!CMS_DATA[arrayKey]) CMS_DATA[arrayKey] = [];
+    const newItem = {};
+    schema.forEach(f => { newItem[f.key] = f.type === 'number' ? 5 : ''; });
+    CMS_DATA[arrayKey].push(newItem);
+    renderArrayEditor(arrayKey);
+    const container = $(`${arrayKey}-list`);
+    if (container?.lastElementChild) container.lastElementChild.scrollIntoView({ behavior:'smooth' });
+  });
+
+  // Sauvegarder un tableau
+  document.addEventListener('click', async e => {
+    const btn = e.target.closest('.cms-save-array-btn');
+    if (!btn) return;
+    const arrayKey = btn.dataset.array;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sauvegarde...';
+    // Utilise PUT pour les tableaux
+    const res = await apiCall('PUT', '/admin/contenu/array', { key: arrayKey, data: CMS_DATA[arrayKey] || [] });
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-save"></i> Enregistrer';
+    if (res.ok) showToast('Contenu mis à jour !');
+    else showToast(res.data.message || 'Erreur.', true);
+  });
+
+  // Sauvegarder une section (champs simples)
   document.addEventListener('click', async e => {
     const btn = e.target.closest('.cms-save-btn');
-    if (!btn) return;
+    if (!btn || !btn.dataset.section) return;
     const section = btn.dataset.section;
     const fields = btn.dataset.fields.split(',');
     const prefix = CMS_PREFIX[section];
@@ -1162,68 +1390,8 @@
       CMS_DATA[section] = { ...(CMS_DATA[section] || {}), ...data };
       showToast('Contenu mis à jour !');
     } else {
-      showToast(res.data.message || 'Erreur lors de la sauvegarde.', true);
+      showToast(res.data.message || 'Erreur.', true);
     }
-  });
-
-  // ---- Éditeur d'avis ----
-  function renderAvisEditor() {
-    const list = $('avis-list');
-    const avis = CMS_DATA.avis || [];
-    list.innerHTML = '';
-    avis.forEach((av, i) => {
-      const div = document.createElement('div');
-      div.className = 'avis-editor-item';
-      div.innerHTML = `
-        <button class="avis-del-btn" data-idx="${i}" title="Supprimer"><i class="fas fa-trash"></i></button>
-        <div class="avis-editor-fields">
-          <textarea rows="3" placeholder="Texte de l'avis..." data-avis="${i}" data-field="texte">${escapeHtml(av.texte)}</textarea>
-          <input type="text" placeholder="Nom (ex: Marie D.)" data-avis="${i}" data-field="auteur" value="${escapeHtml(av.auteur)}"/>
-          <input type="text" placeholder="Pays / Ville (ex: France)" data-avis="${i}" data-field="origine" value="${escapeHtml(av.origine)}"/>
-          <input type="number" min="1" max="5" placeholder="Note /5" data-avis="${i}" data-field="note" value="${av.note || 5}"/>
-        </div>`;
-      list.appendChild(div);
-    });
-  }
-
-  // Modifier un champ d'avis
-  $('avis-list').addEventListener('input', e => {
-    const el = e.target.closest('[data-avis]');
-    if (!el) return;
-    const i = parseInt(el.dataset.avis);
-    const field = el.dataset.field;
-    if (!CMS_DATA.avis) CMS_DATA.avis = [];
-    if (!CMS_DATA.avis[i]) CMS_DATA.avis[i] = {};
-    CMS_DATA.avis[i][field] = field === 'note' ? parseInt(el.value) : el.value;
-  });
-
-  // Supprimer un avis
-  $('avis-list').addEventListener('click', e => {
-    const btn = e.target.closest('.avis-del-btn');
-    if (!btn) return;
-    const i = parseInt(btn.dataset.idx);
-    CMS_DATA.avis.splice(i, 1);
-    renderAvisEditor();
-  });
-
-  // Ajouter un avis
-  $('avis-add-btn').addEventListener('click', () => {
-    if (!CMS_DATA.avis) CMS_DATA.avis = [];
-    CMS_DATA.avis.push({ texte: '', auteur: '', origine: '', note: 5 });
-    renderAvisEditor();
-    $('avis-list').lastElementChild?.scrollIntoView({ behavior: 'smooth' });
-  });
-
-  // Sauvegarder tous les avis
-  document.querySelector('.cms-save-avis-btn').addEventListener('click', async () => {
-    const btn = document.querySelector('.cms-save-avis-btn');
-    btn.disabled = true;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sauvegarde...';
-    const res = await apiCall('PUT', '/admin/contenu/avis', { avis: CMS_DATA.avis || [] });
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fas fa-save"></i> Enregistrer tous les avis';
-    if (res.ok) showToast('Avis mis à jour !');
-    else showToast(res.data.message || 'Erreur.', true);
   });
 
   // Navigation sous-onglets CMS
@@ -1237,14 +1405,13 @@
     });
   });
 
-  // Charger le CMS quand on clique sur l'onglet Contenu
+  // Charger le CMS au 1er clic sur l'onglet Contenu
   document.querySelector('[data-tab="tab-contenu"]').addEventListener('click', () => {
     if (!Object.keys(CMS_DATA).length) loadCMS();
-    // Afficher le premier panel
     document.querySelectorAll('.cms-panel').forEach(p => p.style.display = 'none');
-    const first = document.querySelector('.cms-tab-btn.active');
-    if (first) $(`cms-${first.dataset.cmsSection}`).style.display = 'flex';
-    else { $('cms-global').style.display = 'flex'; document.querySelector('.cms-tab-btn').classList.add('active'); }
+    const active = document.querySelector('.cms-tab-btn.active');
+    if (active) { const p = $(`cms-${active.dataset.cmsSection}`); if (p) p.style.display = 'flex'; }
+    else { if ($('cms-global')) $('cms-global').style.display = 'flex'; }
   });
 
   // ---------- TABS ----------
