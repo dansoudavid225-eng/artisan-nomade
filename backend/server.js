@@ -591,6 +591,157 @@ app.put('/api/admin/contenu/avis', adminAuth,
 );
 
 // ============================================================
+// ÉVÉNEMENTS & MARCHÉS
+// ============================================================
+
+/** Route publique – liste des événements */
+app.get('/api/evenements', (req, res) => {
+  const evenements = db.findAll('evenements');
+  res.json({ success: true, count: evenements.length, evenements });
+});
+
+/** Admin – créer un événement */
+app.post('/api/admin/evenements', adminAuth,
+  validate([
+    body('titre').notEmpty().trim().withMessage('Le titre est requis'),
+    body('date_debut').notEmpty().isISO8601().withMessage('Date de début invalide (format: YYYY-MM-DD)'),
+  ]),
+  (req, res) => {
+    const ev = db.insertOne('evenements', {
+      titre:       req.body.titre?.trim(),
+      date_debut:  req.body.date_debut,
+      date_fin:    req.body.date_fin || req.body.date_debut,
+      heure:       req.body.heure?.trim() || '',
+      lieu:        req.body.lieu?.trim() || '',
+      ville:       req.body.ville?.trim() || 'Porto-Novo, Bénin',
+      description: req.body.description?.trim() || '',
+      image:       req.body.image?.trim() || '',
+    });
+    res.status(201).json({ success: true, evenement: ev });
+  }
+);
+
+/** Admin – modifier un événement */
+app.patch('/api/admin/evenements/:id', adminAuth,
+  validate([
+    body('titre').optional().notEmpty().trim(),
+    body('date_debut').optional().isISO8601().withMessage('Date invalide'),
+  ]),
+  (req, res) => {
+    const allowed = ['titre','date_debut','date_fin','heure','lieu','ville','description','image'];
+    const updates = {};
+    allowed.forEach(k => { if (req.body[k] !== undefined) updates[k] = req.body[k]; });
+    const updated = db.updateById('evenements', req.params.id, updates);
+    if (!updated) return res.status(404).json({ success: false, message: 'Événement introuvable' });
+    res.json({ success: true, evenement: updated });
+  }
+);
+
+/** Admin – supprimer un événement */
+app.delete('/api/admin/evenements/:id', adminAuth, (req, res) => {
+  const events = db.findAll('evenements');
+  const idx = events.findIndex(e => e.id === req.params.id);
+  if (idx === -1) return res.status(404).json({ success: false, message: 'Événement introuvable' });
+  events.splice(idx, 1);
+  db.writeCollection('evenements', events);
+  res.json({ success: true });
+});
+
+// ============================================================
+// ÉVÉNEMENTS & MARCHÉS
+// ============================================================
+
+function getEvenements() {
+  try {
+    const data = db.findAll('evenements');
+    if (data.length) return data;
+    // Seed depuis evenements.json
+    const seedPath = path.join(__dirname, 'data', 'evenements.json');
+    if (fs.existsSync(seedPath)) {
+      const seed = JSON.parse(fs.readFileSync(seedPath, 'utf-8'));
+      if (seed.length) {
+        db.writeCollection('evenements', seed);
+        return seed;
+      }
+    }
+    return [];
+  } catch (e) { return []; }
+}
+
+/** Route publique – liste des événements (triés par date) */
+app.get('/api/evenements', (req, res) => {
+  const all = getEvenements();
+  const now = new Date().toISOString().slice(0, 10);
+  // Mettre à jour automatiquement le statut selon la date
+  const updated = all.map(e => ({
+    ...e,
+    statut: e.date < now ? 'passe' : 'a_venir'
+  }));
+  const avenir = updated.filter(e => e.statut === 'a_venir').sort((a,b) => a.date.localeCompare(b.date));
+  const passes = updated.filter(e => e.statut === 'passe').sort((a,b) => b.date.localeCompare(a.date));
+  res.json({ success: true, avenir, passes, total: all.length });
+});
+
+/** Admin – tous les événements */
+app.get('/api/admin/evenements', adminAuth, (req, res) => {
+  const all = getEvenements();
+  res.json({ success: true, evenements: all });
+});
+
+/** Admin – créer un événement */
+app.post('/api/admin/evenements', adminAuth,
+  validate([
+    body('titre').notEmpty().trim().withMessage('Le titre est requis'),
+    body('date_debut').notEmpty().withMessage('La date de début est requise'),
+  ]),
+  (req, res) => {
+    const { titre, date_debut, date_fin, heure, lieu, ville, description, image } = req.body;
+    const now = new Date().toISOString().slice(0, 10);
+    const date = date_debut;
+    const evt = {
+      id: 'evt-' + uuidv4().slice(0, 8),
+      titre, date_debut, date_fin: date_fin || date_debut,
+      date, heure: heure || '',
+      lieu: lieu || '', ville: ville || 'Porto-Novo, Bénin',
+      description: description || '',
+      image: image || '', photo: image || '',
+      statut: date < now ? 'passe' : 'a_venir',
+      createdAt: new Date().toISOString()
+    };
+    const all = getEvenements();
+    all.push(evt);
+    db.writeCollection('evenements', all);
+    res.status(201).json({ success: true, evenement: evt });
+  }
+);
+
+/** Admin – modifier un événement */
+app.patch('/api/admin/evenements/:id', adminAuth, (req, res) => {
+    const all = getEvenements();
+    const idx = all.findIndex(e => e.id === req.params.id);
+    if (idx === -1) return res.status(404).json({ success: false, message: 'Événement introuvable' });
+    const allowed = ['titre','date_debut','date_fin','date','heure','lieu','ville','description','image','photo','statut'];
+    allowed.forEach(k => { if (req.body[k] !== undefined) all[idx][k] = req.body[k]; });
+    // Sync date ↔ date_debut
+    if (req.body.date_debut) { all[idx].date = req.body.date_debut; all[idx].photo = all[idx].image || all[idx].photo; }
+    // Recalcul statut auto
+    const now = new Date().toISOString().slice(0, 10);
+    if (!req.body.statut) all[idx].statut = all[idx].date < now ? 'passe' : 'a_venir';
+    db.writeCollection('evenements', all);
+    res.json({ success: true, evenement: all[idx] });
+  }
+);
+
+/** Admin – supprimer un événement */
+app.delete('/api/admin/evenements/:id', adminAuth, (req, res) => {
+  const all = getEvenements();
+  const filtered = all.filter(e => e.id !== req.params.id);
+  if (filtered.length === all.length) return res.status(404).json({ success: false, message: 'Événement introuvable' });
+  db.writeCollection('evenements', filtered);
+  res.json({ success: true, message: 'Événement supprimé' });
+});
+
+// ============================================================
 // GESTION 404 & ERREURS
 // ============================================================
 

@@ -1,0 +1,54 @@
+[
+  {
+    "id": "evt-001",
+    "titre": "Marché Artisanal de Porto-Novo",
+    "date_debut": "2026-08-15",
+    "date_fin": "2026-08-15",
+    "date": "2026-08-15",
+    "heure": "08h00 – 18h00",
+    "lieu": "Place Jean Bayol",
+    "ville": "Porto-Novo, Bénin",
+    "description": "Venez nous retrouver au grand marché artisanal annuel de Porto-Novo. Découvrez nos dernières créations en exclusivité.",
+    "image": "photos/p04.jpg",
+    "photo": "photos/p04.jpg"
+  },
+  {
+    "id": "evt-002",
+    "titre": "Foire Internationale de Cotonou",
+    "date_debut": "2026-09-20",
+    "date_fin": "2026-09-22",
+    "date": "2026-09-20",
+    "heure": "09h00 – 19h00",
+    "lieu": "Palais des Congrès",
+    "ville": "Cotonou, Bénin",
+    "description": "Artisan Nomade sera présent à la grande foire internationale. Rencontrez nos artisanes et commandez sur place.",
+    "image": "photos/p17.jpg",
+    "photo": "photos/p17.jpg"
+  },
+  {
+    "id": "evt-003",
+    "titre": "Marché de Noël Artisanal",
+    "date_debut": "2026-12-20",
+    "date_fin": "2026-12-24",
+    "date": "2026-12-20",
+    "heure": "10h00 – 20h00",
+    "lieu": "Centre Culturel",
+    "ville": "Porto-Novo, Bénin",
+    "description": "Collection spéciale cadeaux, bijoux emballés et personnalisation express pour les fêtes.",
+    "image": "photos/p16.jpg",
+    "photo": "photos/p16.jpg"
+  },
+  {
+    "id": "evt-004",
+    "titre": "Journée Culturelle du Bénin",
+    "date_debut": "2025-05-10",
+    "date_fin": "2025-05-10",
+    "date": "2025-05-10",
+    "heure": "09h00 – 17h00",
+    "lieu": "Musée d'Histoire",
+    "ville": "Ouidah, Bénin",
+    "description": "Exposition de bijoux traditionnels et démonstration de l'art du tissage de perles.",
+    "image": "photos/p21.jpg",
+    "photo": "photos/p21.jpg"
+  }
+]

@@ -17,6 +17,7 @@
     <ul class="nav-links" id="nav-links">
       <li><a href="index.html" class="nav-link ${currentPage === 'index.html' ? 'active-page' : ''}">Accueil</a></li>
       <li><a href="boutique.html" class="nav-link ${currentPage === 'boutique.html' ? 'active-page' : ''}">Boutique</a></li>
+      <li><a href="evenements.html" class="nav-link ${currentPage === 'evenements.html' ? 'active-page' : ''}">Événements</a></li>
       <li><a href="apropos.html" class="nav-link ${currentPage === 'apropos.html' ? 'active-page' : ''}">À propos</a></li>
       <li><a href="culture.html" class="nav-link ${currentPage === 'culture.html' ? 'active-page' : ''}">Histoire & Culture</a></li>
       <li><a href="partenaires.html" class="nav-link ${currentPage === 'partenaires.html' ? 'active-page' : ''}">Partenaires</a></li>

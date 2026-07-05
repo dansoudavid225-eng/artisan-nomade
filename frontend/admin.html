@@ -415,7 +415,9 @@
       <button class="tab-btn" data-tab="tab-messages"><i class="fas fa-envelope"></i> Messages <span class="pill" id="pill-messages" style="display:none;"></span></button>
       <button class="tab-btn" data-tab="tab-newsletter"><i class="fas fa-users"></i> Newsletter</button>
       <button class="tab-btn" data-tab="tab-produits"><i class="fas fa-tags"></i> Produits</button>
+      <button class="tab-btn" data-tab="tab-evenements"><i class="fas fa-tent"></i> Événements</button>
       <button class="tab-btn" data-tab="tab-contenu"><i class="fas fa-pen-to-square"></i> Contenu</button>
+      <button class="tab-btn" data-tab="tab-evenements"><i class="fas fa-calendar-star"></i> Événements</button>
     </div>
 
     <!-- ---- COMMANDES ---- -->
@@ -521,6 +523,53 @@
         </div>
         <div class="empty-state" id="pr-empty" style="display:none;"><i class="fas fa-tags"></i>Aucun produit ne correspond.</div>
         <div class="loading-state" id="pr-loading"><i class="fas fa-spinner fa-spin"></i> Chargement...</div>
+      </div>
+    </div>
+
+    <!-- ---- ÉVÉNEMENTS ---- -->
+    <div class="tab-panel" id="tab-evenements" style="display:none;">
+      <div class="toolbar">
+        <div class="toolbar-filters">
+          <input type="search" id="ev-search" placeholder="Recherche : titre, lieu, ville..."/>
+          <select id="ev-filter">
+            <option value="">Tous</option>
+            <option value="upcoming">À venir</option>
+            <option value="today">En ce moment</option>
+            <option value="past">Passés</option>
+          </select>
+        </div>
+        <button class="btn btn-sm" id="ev-add-open"><i class="fas fa-plus"></i> Nouvel événement</button>
+      </div>
+
+      <!-- Formulaire ajout/édition -->
+      <div class="panel" id="ev-form-panel" style="display:none;padding:24px;margin-bottom:18px;">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;margin-bottom:18px;" id="ev-form-title">Nouvel événement</h3>
+        <div class="cms-fields">
+          <div class="cms-field cms-field-full"><label>Titre *</label><input type="text" id="ev-titre" placeholder="Marché artisanal de Cotonou"/></div>
+          <div class="cms-field"><label>Date de début *</label><input type="date" id="ev-date-debut"/></div>
+          <div class="cms-field"><label>Date de fin <small>(si plusieurs jours)</small></label><input type="date" id="ev-date-fin"/></div>
+          <div class="cms-field"><label>Heure</label><input type="text" id="ev-heure" placeholder="9h00 – 18h00"/></div>
+          <div class="cms-field"><label>Lieu précis</label><input type="text" id="ev-lieu" placeholder="Centre Artisanal de Cotonou"/></div>
+          <div class="cms-field"><label>Ville / Pays</label><input type="text" id="ev-ville" placeholder="Porto-Novo, Bénin"/></div>
+          <div class="cms-field cms-field-full"><label>URL photo du stand <small>(optionnel)</small></label><input type="text" id="ev-image" placeholder="https://... ou photos/p17.jpg"/></div>
+          <div class="cms-field cms-field-full"><label>Description</label><textarea id="ev-description" rows="3" placeholder="Venez découvrir nos créations artisanales, essayer les bijoux et commander sur place..."></textarea></div>
+        </div>
+        <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;">
+          <button class="btn" id="ev-save-btn"><i class="fas fa-save"></i> Enregistrer</button>
+          <button class="btn btn-ghost btn-sm" id="ev-cancel-btn"><i class="fas fa-times"></i> Annuler</button>
+        </div>
+        <input type="hidden" id="ev-edit-id"/>
+      </div>
+
+      <div class="panel">
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Titre</th><th>Date</th><th>Lieu</th><th>Statut</th><th>Actions</th></tr></thead>
+            <tbody id="ev-tbody"></tbody>
+          </table>
+        </div>
+        <div class="empty-state" id="ev-empty" style="display:none;"><i class="fas fa-tent"></i>Aucun événement. Clique sur "Nouvel événement" pour commencer.</div>
+        <div class="loading-state" id="ev-loading"><i class="fas fa-spinner fa-spin"></i> Chargement...</div>
       </div>
     </div>
 
@@ -781,6 +830,51 @@
         </div>
       </div>
 
+    </div>
+
+    <!-- ---- ÉVÉNEMENTS ---- -->
+    <div class="tab-panel" id="tab-evenements" style="display:none;">
+      <div class="toolbar">
+        <div class="toolbar-filters">
+          <input type="search" id="evt-search" placeholder="Recherche : titre, lieu..."/>
+          <select id="evt-filter">
+            <option value="">Tous</option>
+            <option value="a_venir">À venir</option>
+            <option value="passe">Passés</option>
+          </select>
+        </div>
+        <button class="btn btn-sm" id="evt-add-btn" style="white-space:nowrap;"><i class="fas fa-plus"></i> Nouvel événement</button>
+      </div>
+
+      <!-- Formulaire d'ajout/édition -->
+      <div class="panel" id="evt-form-panel" style="display:none;padding:24px;margin-bottom:20px;">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:18px;" id="evt-form-title">Nouvel événement</h3>
+        <div class="cms-fields">
+          <div class="cms-field"><label>Titre *</label><input type="text" id="ef-titre" placeholder="Marché Artisanal de Porto-Novo"/></div>
+          <div class="cms-field"><label>Date * (AAAA-MM-JJ)</label><input type="date" id="ef-date"/></div>
+          <div class="cms-field"><label>Heure</label><input type="text" id="ef-heure" placeholder="08h00 – 18h00"/></div>
+          <div class="cms-field"><label>Lieu *</label><input type="text" id="ef-lieu" placeholder="Place Jean Bayol, Porto-Novo"/></div>
+          <div class="cms-field cms-field-full"><label>Description</label><textarea id="ef-description" rows="3" placeholder="Décrivez l'événement..."></textarea></div>
+          <div class="cms-field"><label>URL photo <small>(lien ou chemin)</small></label><input type="text" id="ef-photo" placeholder="photos/p04.jpg ou https://..."/></div>
+          <div class="cms-field"><label>Lien externe <small>(optionnel)</small></label><input type="url" id="ef-lien" placeholder="https://..."/></div>
+        </div>
+        <input type="hidden" id="ef-id"/>
+        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;">
+          <button class="btn" id="evt-save-btn"><i class="fas fa-save"></i> Enregistrer</button>
+          <button class="btn btn-ghost btn-sm" id="evt-cancel-btn"><i class="fas fa-times"></i> Annuler</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Événement</th><th>Date</th><th>Lieu</th><th>Statut</th><th>Actions</th></tr></thead>
+            <tbody id="evt-tbody"></tbody>
+          </table>
+        </div>
+        <div class="empty-state" id="evt-empty" style="display:none;"><i class="fas fa-calendar-xmark"></i>Aucun événement.</div>
+        <div class="loading-state" id="evt-loading"><i class="fas fa-spinner fa-spin"></i> Chargement...</div>
+      </div>
     </div>
 
   </div>
@@ -1206,6 +1300,169 @@
     a.download = `newsletter-artisan-nomade-${new Date().toISOString().slice(0,10)}.csv`;
     a.click();
     URL.revokeObjectURL(url);
+  });
+
+  // ---------- ÉVÉNEMENTS ----------
+  let EV_DATA = [];
+
+  function evStatus(ev) {
+    const now = new Date();
+    const start = new Date(ev.date_debut);
+    const end = new Date(ev.date_fin || ev.date_debut);
+    end.setHours(23,59,59);
+    if (now > end) return 'past';
+    if (now >= start) return 'today';
+    return 'upcoming';
+  }
+
+  const EV_BADGE = {
+    upcoming: '<span class="badge badge-pret">À venir</span>',
+    today:    '<span class="badge badge-expedie">En ce moment</span>',
+    past:     '<span class="badge badge-recu">Passé</span>'
+  };
+
+  function fmtEvDate(ev) {
+    if (!ev.date_debut) return '–';
+    const d1 = new Date(ev.date_debut).toLocaleDateString('fr-FR', { day:'2-digit', month:'short', year:'numeric' });
+    if (ev.date_fin && ev.date_fin !== ev.date_debut) {
+      const d2 = new Date(ev.date_fin).toLocaleDateString('fr-FR', { day:'2-digit', month:'short', year:'numeric' });
+      return `${d1} → ${d2}`;
+    }
+    return d1;
+  }
+
+  async function loadEvenements() {
+    $('ev-loading').style.display = 'block';
+    const res = await apiCall('GET', '/admin/evenements');
+    $('ev-loading').style.display = 'none';
+    if (!res.ok) { showToast('Impossible de charger les événements.', true); return; }
+    EV_DATA = res.data.evenements || [];
+    renderEvenements();
+  }
+
+  function renderEvenements() {
+    const search = $('ev-search').value.trim().toLowerCase();
+    const filter = $('ev-filter').value;
+    let list = EV_DATA.slice().sort((a,b) => new Date(a.date_debut) - new Date(b.date_debut));
+    if (filter) list = list.filter(e => evStatus(e) === filter);
+    if (search) list = list.filter(e =>
+      (e.titre||'').toLowerCase().includes(search) ||
+      (e.lieu||'').toLowerCase().includes(search) ||
+      (e.ville||'').toLowerCase().includes(search)
+    );
+
+    const tbody = $('ev-tbody');
+    tbody.innerHTML = '';
+    $('ev-empty').style.display = list.length ? 'none' : 'block';
+
+    list.forEach(ev => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td data-label="Titre"><strong>${escapeHtml(ev.titre)}</strong>${ev.image ? `<br><span class="muted">📷 photo</span>` : ''}</td>
+        <td data-label="Date"><span class="muted">${fmtEvDate(ev)}</span>${ev.heure ? `<br><span class="muted">${escapeHtml(ev.heure)}</span>` : ''}</td>
+        <td data-label="Lieu">${escapeHtml(ev.lieu || '–')}<br><span class="muted">${escapeHtml(ev.ville || '')}</span></td>
+        <td data-label="Statut">${EV_BADGE[evStatus(ev)]}</td>
+        <td data-label="Actions">
+          <div class="row-actions">
+            <button class="link-btn ev-edit-btn" data-id="${ev.id}"><i class="fas fa-pen"></i> Modifier</button>
+            <button class="link-btn ev-del-btn" data-id="${ev.id}" style="color:var(--danger);"><i class="fas fa-trash"></i></button>
+          </div>
+        </td>`;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // Ouvrir formulaire ajout
+  $('ev-add-open').addEventListener('click', () => {
+    $('ev-form-title').textContent = 'Nouvel événement';
+    $('ev-edit-id').value = '';
+    ['titre','heure','lieu','ville','description','image'].forEach(f => $(`ev-${f}`).value = '');
+    $('ev-date-debut').value = '';
+    $('ev-date-fin').value = '';
+    $('ev-form-panel').style.display = 'block';
+    $('ev-titre').focus();
+  });
+
+  $('ev-cancel-btn').addEventListener('click', () => { $('ev-form-panel').style.display = 'none'; });
+
+  // Sauvegarder (ajout ou modif)
+  $('ev-save-btn').addEventListener('click', async () => {
+    const titre = $('ev-titre').value.trim();
+    const date_debut = $('ev-date-debut').value;
+    if (!titre || !date_debut) { showToast('Titre et date de début sont obligatoires.', true); return; }
+    const body = {
+      titre, date_debut,
+      date_fin:    $('ev-date-fin').value || date_debut,
+      heure:       $('ev-heure').value.trim(),
+      lieu:        $('ev-lieu').value.trim(),
+      ville:       $('ev-ville').value.trim() || 'Porto-Novo, Bénin',
+      description: $('ev-description').value.trim(),
+      image:       $('ev-image').value.trim(),
+    };
+    const editId = $('ev-edit-id').value;
+    $('ev-save-btn').disabled = true;
+    $('ev-save-btn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sauvegarde...';
+    const res = editId
+      ? await apiCall('PATCH', `/admin/evenements/${editId}`, body)
+      : await apiCall('POST', '/admin/evenements', body);
+    $('ev-save-btn').disabled = false;
+    $('ev-save-btn').innerHTML = '<i class="fas fa-save"></i> Enregistrer';
+    if (res.ok) {
+      if (editId) {
+        const idx = EV_DATA.findIndex(e => e.id === editId);
+        if (idx > -1) EV_DATA[idx] = res.data.evenement;
+      } else {
+        EV_DATA.push(res.data.evenement);
+      }
+      renderEvenements();
+      $('ev-form-panel').style.display = 'none';
+      showToast(editId ? 'Événement mis à jour !' : 'Événement ajouté !');
+    } else {
+      showToast(res.data.message || 'Erreur.', true);
+    }
+  });
+
+  // Modifier / Supprimer
+  $('ev-tbody').addEventListener('click', async e => {
+    const editBtn = e.target.closest('.ev-edit-btn');
+    if (editBtn) {
+      const ev = EV_DATA.find(e => e.id === editBtn.dataset.id);
+      if (!ev) return;
+      $('ev-form-title').textContent = 'Modifier l\'événement';
+      $('ev-edit-id').value = ev.id;
+      $('ev-titre').value = ev.titre || '';
+      $('ev-date-debut').value = ev.date_debut || '';
+      $('ev-date-fin').value = ev.date_fin || '';
+      $('ev-heure').value = ev.heure || '';
+      $('ev-lieu').value = ev.lieu || '';
+      $('ev-ville').value = ev.ville || '';
+      $('ev-description').value = ev.description || '';
+      $('ev-image').value = ev.image || '';
+      $('ev-form-panel').style.display = 'block';
+      $('ev-form-panel').scrollIntoView({ behavior:'smooth' });
+      return;
+    }
+    const delBtn = e.target.closest('.ev-del-btn');
+    if (delBtn) {
+      if (!confirm('Supprimer cet événement ?')) return;
+      const id = delBtn.dataset.id;
+      const res = await apiCall('DELETE', `/admin/evenements/${id}`);
+      if (res.ok) {
+        EV_DATA = EV_DATA.filter(e => e.id !== id);
+        renderEvenements();
+        showToast('Événement supprimé.');
+      } else {
+        showToast(res.data.message || 'Erreur.', true);
+      }
+    }
+  });
+
+  $('ev-search').addEventListener('input', renderEvenements);
+  $('ev-filter').addEventListener('change', renderEvenements);
+
+  // Charger au 1er clic sur l'onglet
+  document.querySelector('[data-tab="tab-evenements"]').addEventListener('click', () => {
+    if (!EV_DATA.length) loadEvenements();
   });
 
   // ---------- CMS – CONTENU COMPLET ----------
