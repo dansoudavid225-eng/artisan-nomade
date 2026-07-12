@@ -27,6 +27,7 @@ const express  = require('express');
 const cors     = require('cors');
 const helmet   = require('helmet');
 const morgan   = require('morgan');
+const rateLimit = require('express-rate-limit');
 const { v4: uuidv4 } = require('uuid');
 const { body, param, validationResult } = require('express-validator');
 const fs       = require('fs');
@@ -42,9 +43,40 @@ const PORT = process.env.PORT || 3001;
 // MIDDLEWARES GLOBAUX
 // ============================================================
 
-app.use(helmet());
-app.use(morgan('dev'));
+app.use(helmet({
+  contentSecurityPolicy: false,
+  crossOriginEmbedderPolicy: false,
+}));
+app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 app.use(express.json({ limit: '10kb' }));
+
+// Rate limiting globaux – protection anti-brute-force
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 200,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: 'Trop de requêtes. Réessayez dans 15 minutes.' },
+});
+app.use('/api/', apiLimiter);
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: 'Trop de tentatives. Réessayez dans 15 minutes.' },
+});
+app.use('/api/admin/', authLimiter);
+
+// Rate limiting spécifique email – max 5 req/15min par IP
+const emailLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: 'Trop de requêtes. Réessayez dans 15 minutes.' },
+});
 
 // CORS – autorise uniquement le frontend
 const allowedOrigins = [
@@ -62,7 +94,7 @@ app.use(cors({
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error(`CORS: origine non autorisée: ${origin}`));
+      callback(new Error('Origine non autorisée'));
     }
   },
   credentials: true,
@@ -92,13 +124,40 @@ function validate(validations) {
 }
 
 /** Auth admin simple (token dans header Authorization) */
+function timingSafeEqual(a, b) {
+  if (a.length !== b.length) return false;
+  let result = 0;
+  for (let i = 0; i < a.length; i++) result |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return result === 0;
+}
+
 function adminAuth(req, res, next) {
   const token = req.headers['authorization']?.replace('Bearer ', '');
-  const adminToken = process.env.ADMIN_TOKEN || 'artisan-nomade-admin-2025';
-  if (token !== adminToken) {
+  const adminToken = process.env.ADMIN_TOKEN;
+  if (!adminToken) {
+    console.error('ADMIN_TOKEN non défini dans les variables d\'environnement');
+    return res.status(500).json({ success: false, message: 'Erreur de configuration serveur' });
+  }
+  if (!token || !timingSafeEqual(token, adminToken)) {
     return res.status(401).json({ success: false, message: 'Non autorisé' });
   }
   next();
+}
+
+// Journalisation des actions admin (fichier de log)
+const ADMIN_LOG_PATH = path.join(__dirname, 'data', 'admin-log.ndjson');
+function logAdminAction(req, action, details = {}) {
+  const entry = {
+    timestamp: new Date().toISOString(),
+    ip: req.ip || req.connection?.remoteAddress,
+    action,
+    details,
+  };
+  try {
+    fs.appendFileSync(ADMIN_LOG_PATH, JSON.stringify(entry) + '\n');
+  } catch (e) {
+    console.error('Échec écriture log admin:', e.message);
+  }
 }
 
 // ============================================================
@@ -129,13 +188,13 @@ const SEED_PRODUITS = [
   { id: 'pr-005', nom: 'Parure Perles & Rubis',        categorie: 'parure',     image: 'photos/p04.jpg',    prix: 25000 },
   { id: 'pr-006', nom: 'Parure Or & Nacre',            categorie: 'parure',     image: 'photos/p14.jpg',    prix: 22000 },
   { id: 'pr-007', nom: 'Grand Collier Corail Doré',    categorie: 'collier',    image: 'slide1.jpg',        badge: 'Traditionnel', prix: 8500 },
-  { id: 'pr-008', nom: 'Collier Corail Royal',         categorie: 'collier',    image: 'C1.jpg',            prix: 15500 },
-  { id: 'pr-009', nom: 'Collier Corail Royal',         categorie: 'collier',    image: 'C2.jpg',            prix: 8000 },
-  { id: 'pr-010', nom: 'Collier Corail Royal',         categorie: 'collier',    image: 'C3.jpg',            prix: 16000 },
-  { id: 'pr-011', nom: 'Collier Corail Royal',         categorie: 'collier',    image: 'C4.jpg',            prix: 13500 },
-  { id: 'pr-012', nom: 'Collier Corail Royal',         categorie: 'collier',    image: 'C5.jpg',            prix: 7500 },
-  { id: 'pr-013', nom: 'Collier Corail Royal',         categorie: 'collier',    image: 'photos/p08.jpg',    prix: 7000 },
-  { id: 'pr-014', nom: 'Collier Corail Royal',         categorie: 'collier',    image: 'photos/p08.jpg',    prix: 8000 },
+  { id: 'pr-008', nom: 'Collier Corail Royal Bleu',    categorie: 'collier',    image: 'C1.jpg',            prix: 15500 },
+  { id: 'pr-009', nom: 'Collier Corail Royal Blanc',   categorie: 'collier',    image: 'C2.jpg',            prix: 8000 },
+  { id: 'pr-010', nom: 'Collier Corail Royal Vert',    categorie: 'collier',    image: 'C3.jpg',            prix: 16000 },
+  { id: 'pr-011', nom: 'Collier Corail Royal Or',      categorie: 'collier',    image: 'C4.jpg',            prix: 13500 },
+  { id: 'pr-012', nom: 'Collier Corail Royal Rose',    categorie: 'collier',    image: 'C5.jpg',            prix: 7500 },
+  { id: 'pr-013', nom: 'Collier Perles & Corail Tissé', categorie: 'collier',    image: 'photos/p08.jpg',    prix: 7000 },
+  { id: 'pr-014', nom: 'Collier Rangs de Perles Rouges', categorie: 'collier',   image: 'photos/p09.jpg',    prix: 8000 },
   { id: 'pr-015', nom: 'Collection Éclats de Couleurs', categorie: 'bracelet',  image: 'bracelet1.jpg',     badge: 'Collection',   prix: 4000 },
   { id: 'pr-016', nom: 'Bracelets Azur & Nacre',        categorie: 'bracelet',  image: 'bracelet2.jpg',     prix: 4000 },
   { id: 'pr-017', nom: 'Bracelets "Made with Love"',    categorie: 'bracelet',  image: 'bracelet3.jpg',     prix: 6500 },
@@ -318,6 +377,7 @@ app.get('/api/commandes/:reference',
 // ============================================================
 
 app.post('/api/newsletter',
+  emailLimiter,
   validate([
     body('email').isEmail().normalizeEmail().withMessage('Email invalide'),
     body('nom').optional().trim().isLength({ max: 100 }),
@@ -337,7 +397,7 @@ app.post('/api/newsletter',
       id: uuidv4(),
       email,
       nom: nom?.trim() || '',
-      source: req.headers.referer || 'direct',
+      source: new URL(req.headers.referer || 'http://unknown').hostname || 'direct',
       createdAt: new Date().toISOString(),
     };
 
@@ -356,6 +416,7 @@ app.post('/api/newsletter',
 // ============================================================
 
 app.post('/api/contact',
+  emailLimiter,
   validate([
     body('nom').trim().notEmpty().isLength({ min: 2, max: 100 }).withMessage('Nom requis'),
     body('email').isEmail().normalizeEmail().withMessage('Email invalide'),
@@ -379,23 +440,17 @@ app.post('/api/contact',
 
     db.insertOne('contacts', contact);
 
-    // Notifier l'admin
-    if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-      const nodemailer = require('nodemailer');
-      const transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST || 'smtp.gmail.com',
-        port: 587,
-        secure: false,
-        auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
-      });
-
-      transporter.sendMail({
-        from: `"Artisan Nomade" <${process.env.EMAIL_USER}>`,
-        to: process.env.ADMIN_EMAIL || process.env.EMAIL_USER,
-        subject: `📩 Nouveau message de ${nom} – ${sujet || 'Contact'}`,
-        text: `De : ${nom} <${email}>\nTél : ${telephone || '–'}\nSujet : ${sujet || '–'}\n\n${message}`,
-      }).catch(console.error);
-    }
+    // Notifier l'admin (via le mailer existant)
+    const contactNotification = {
+      client: { nom, email, telephone },
+      reference: sujet || 'Contact',
+      produits: [{ nom: message }],
+    };
+    mailer.sendOrderNotification({
+      ...contactNotification,
+      reference: `MSG-${Date.now()}`,
+      createdAt: new Date().toISOString(),
+    }).catch(console.error);
 
     res.status(201).json({
       success: true,
@@ -450,6 +505,7 @@ app.patch('/api/admin/commandes/:id/statut', adminAuth,
       JSON.stringify(commandes, null, 2)
     );
 
+    logAdminAction(req, 'commande.statut', { commandeId: req.params.id, nouveauStatut: statut });
     res.json({ success: true, message: `Statut mis à jour : ${label}`, commande: commandes[idx] });
   }
 );
@@ -487,7 +543,7 @@ app.get('/api/admin/produits', adminAuth, (req, res) => {
 /** Modifier le prix (et éventuellement le badge) d'un produit */
 app.patch('/api/admin/produits/:id', adminAuth,
   validate([
-    body('prix').optional().isFloat({ min: 0 }).withMessage('Le prix doit être un nombre positif'),
+    body('prix').optional().isFloat({ min: 0, max: 999999999 }).withMessage('Le prix doit être un nombre positif'),
     body('badge').optional({ checkFalsy: true }).trim().isLength({ max: 30 }),
   ]),
   (req, res) => {
@@ -499,6 +555,7 @@ app.patch('/api/admin/produits/:id', adminAuth,
     if (req.body.badge !== undefined) produits[idx].badge = req.body.badge || undefined;
 
     db.writeCollection('produits', produits);
+    logAdminAction(req, 'produit.modifier', { produitId: req.params.id, nouveauPrix: req.body.prix });
     res.json({ success: true, produit: produits[idx] });
   }
 );
@@ -594,63 +651,6 @@ app.put('/api/admin/contenu/avis', adminAuth,
 // ÉVÉNEMENTS & MARCHÉS
 // ============================================================
 
-/** Route publique – liste des événements */
-app.get('/api/evenements', (req, res) => {
-  const evenements = db.findAll('evenements');
-  res.json({ success: true, count: evenements.length, evenements });
-});
-
-/** Admin – créer un événement */
-app.post('/api/admin/evenements', adminAuth,
-  validate([
-    body('titre').notEmpty().trim().withMessage('Le titre est requis'),
-    body('date_debut').notEmpty().isISO8601().withMessage('Date de début invalide (format: YYYY-MM-DD)'),
-  ]),
-  (req, res) => {
-    const ev = db.insertOne('evenements', {
-      titre:       req.body.titre?.trim(),
-      date_debut:  req.body.date_debut,
-      date_fin:    req.body.date_fin || req.body.date_debut,
-      heure:       req.body.heure?.trim() || '',
-      lieu:        req.body.lieu?.trim() || '',
-      ville:       req.body.ville?.trim() || 'Porto-Novo, Bénin',
-      description: req.body.description?.trim() || '',
-      image:       req.body.image?.trim() || '',
-    });
-    res.status(201).json({ success: true, evenement: ev });
-  }
-);
-
-/** Admin – modifier un événement */
-app.patch('/api/admin/evenements/:id', adminAuth,
-  validate([
-    body('titre').optional().notEmpty().trim(),
-    body('date_debut').optional().isISO8601().withMessage('Date invalide'),
-  ]),
-  (req, res) => {
-    const allowed = ['titre','date_debut','date_fin','heure','lieu','ville','description','image'];
-    const updates = {};
-    allowed.forEach(k => { if (req.body[k] !== undefined) updates[k] = req.body[k]; });
-    const updated = db.updateById('evenements', req.params.id, updates);
-    if (!updated) return res.status(404).json({ success: false, message: 'Événement introuvable' });
-    res.json({ success: true, evenement: updated });
-  }
-);
-
-/** Admin – supprimer un événement */
-app.delete('/api/admin/evenements/:id', adminAuth, (req, res) => {
-  const events = db.findAll('evenements');
-  const idx = events.findIndex(e => e.id === req.params.id);
-  if (idx === -1) return res.status(404).json({ success: false, message: 'Événement introuvable' });
-  events.splice(idx, 1);
-  db.writeCollection('evenements', events);
-  res.json({ success: true });
-});
-
-// ============================================================
-// ÉVÉNEMENTS & MARCHÉS
-// ============================================================
-
 function getEvenements() {
   try {
     const data = db.findAll('evenements');
@@ -699,7 +699,7 @@ app.post('/api/admin/evenements', adminAuth,
     const now = new Date().toISOString().slice(0, 10);
     const date = date_debut;
     const evt = {
-      id: 'evt-' + uuidv4().slice(0, 8),
+      id: 'evt-' + uuidv4().slice(0, 13),
       titre, date_debut, date_fin: date_fin || date_debut,
       date, heure: heure || '',
       lieu: lieu || '', ville: ville || 'Porto-Novo, Bénin',
@@ -746,7 +746,7 @@ app.delete('/api/admin/evenements/:id', adminAuth, (req, res) => {
 // ============================================================
 
 app.use((req, res) => {
-  res.status(404).json({ success: false, message: `Route ${req.method} ${req.path} introuvable` });
+  res.status(404).json({ success: false, message: 'Route introuvable' });
 });
 
 app.use((err, req, res, next) => {

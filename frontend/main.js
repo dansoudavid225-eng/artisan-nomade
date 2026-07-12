@@ -44,11 +44,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   // FALLBACK IMAGES CASSÉES (ex: dossier photos/ manquant)
+  const fallbackSrc = 'placeholder.svg';
+  let fallbackWorks = true;
+  // Test si placeholder.svg existe (évite boucle infinie si lui-même est cassé)
+  const fbTest = new Image();
+  fbTest.onerror = () => { fallbackWorks = false; };
+  fbTest.src = fallbackSrc;
+
   document.querySelectorAll('img').forEach(img => {
     img.addEventListener('error', () => {
-      if (img.dataset.fallback) return; // évite boucle si placeholder.svg manque aussi
+      if (img.dataset.fallback || !fallbackWorks) {
+        if (!img.dataset.fallback) {
+          img.style.visibility = 'hidden';
+          img.style.display = 'none';
+        }
+        return;
+      }
       img.dataset.fallback = '1';
-      img.src = 'placeholder.svg';
+      img.src = fallbackSrc;
       img.classList.add('img-placeholder');
     });
   });

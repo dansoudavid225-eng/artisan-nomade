@@ -23,3 +23,6 @@ Thumbs.db
 # Logs
 *.log
 logs/
+
+# Backups auto
+backend/data/backups/

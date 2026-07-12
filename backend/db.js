@@ -32,10 +32,27 @@ function readCollection(name) {
 }
 
 /**
- * Écrire une collection JSON
+ * Écrire une collection JSON (avec backup automatique)
  */
+const MAX_BACKUPS = 5;
+
 function writeCollection(name, data) {
   const filePath = path.join(DATA_DIR, `${name}.json`);
+  // Backup du fichier existant avant écrasement
+  if (fs.existsSync(filePath)) {
+    const backupDir = path.join(DATA_DIR, 'backups');
+    if (!fs.existsSync(backupDir)) fs.mkdirSync(backupDir, { recursive: true });
+    const ts = new Date().toISOString().replace(/[:.]/g, '-');
+    fs.copyFileSync(filePath, path.join(backupDir, `${name}-${ts}.json`));
+    // Nettoyer les vieux backups
+    try {
+      const backups = fs.readdirSync(backupDir)
+        .filter(f => f.startsWith(name + '-'))
+        .sort()
+        .reverse();
+      backups.slice(MAX_BACKUPS).forEach(f => fs.unlinkSync(path.join(backupDir, f)));
+    } catch {}
+  }
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 }
 

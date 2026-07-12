@@ -7,13 +7,19 @@
     "start": "node server.js",
     "dev": "node --watch server.js"
   },
-  "keywords": ["artisan", "bénin", "bijoux", "api"],
+  "keywords": [
+    "artisan",
+    "bénin",
+    "bijoux",
+    "api"
+  ],
   "author": "Artisan Nomade",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.18.0",
+    "express-rate-limit": "^8.5.2",
     "express-validator": "^7.0.0",
     "helmet": "^7.0.0",
     "morgan": "^1.10.0",

@@ -8,10 +8,7 @@
  */
 
 const API = (function () {
-  // En développement : localhost. En production : votre domaine
-  const BASE_URL = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
-    ? 'http://localhost:3001/api'
-    : 'https://artisan-nomade-api.onrender.com/api'; // ← remplacer par votre URL Render
+  const BASE_URL = CONFIG.API_BASE_URL;
 
   /** Helper fetch générique */
   async function request(method, path, body = null) {

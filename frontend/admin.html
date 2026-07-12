@@ -8,6 +8,7 @@
 <link rel="icon" href="logo.png"/>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Josefin+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<script src="config.js"></script>
 <style>
   :root{
     --or:#C9A84C; --or-light:#E2C47A; --or-dark:#9B7A2E;
@@ -417,7 +418,6 @@
       <button class="tab-btn" data-tab="tab-produits"><i class="fas fa-tags"></i> Produits</button>
       <button class="tab-btn" data-tab="tab-evenements"><i class="fas fa-tent"></i> Événements</button>
       <button class="tab-btn" data-tab="tab-contenu"><i class="fas fa-pen-to-square"></i> Contenu</button>
-      <button class="tab-btn" data-tab="tab-evenements"><i class="fas fa-calendar-star"></i> Événements</button>
     </div>
 
     <!-- ---- COMMANDES ---- -->
@@ -831,52 +831,6 @@
       </div>
 
     </div>
-
-    <!-- ---- ÉVÉNEMENTS ---- -->
-    <div class="tab-panel" id="tab-evenements" style="display:none;">
-      <div class="toolbar">
-        <div class="toolbar-filters">
-          <input type="search" id="evt-search" placeholder="Recherche : titre, lieu..."/>
-          <select id="evt-filter">
-            <option value="">Tous</option>
-            <option value="a_venir">À venir</option>
-            <option value="passe">Passés</option>
-          </select>
-        </div>
-        <button class="btn btn-sm" id="evt-add-btn" style="white-space:nowrap;"><i class="fas fa-plus"></i> Nouvel événement</button>
-      </div>
-
-      <!-- Formulaire d'ajout/édition -->
-      <div class="panel" id="evt-form-panel" style="display:none;padding:24px;margin-bottom:20px;">
-        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:18px;" id="evt-form-title">Nouvel événement</h3>
-        <div class="cms-fields">
-          <div class="cms-field"><label>Titre *</label><input type="text" id="ef-titre" placeholder="Marché Artisanal de Porto-Novo"/></div>
-          <div class="cms-field"><label>Date * (AAAA-MM-JJ)</label><input type="date" id="ef-date"/></div>
-          <div class="cms-field"><label>Heure</label><input type="text" id="ef-heure" placeholder="08h00 – 18h00"/></div>
-          <div class="cms-field"><label>Lieu *</label><input type="text" id="ef-lieu" placeholder="Place Jean Bayol, Porto-Novo"/></div>
-          <div class="cms-field cms-field-full"><label>Description</label><textarea id="ef-description" rows="3" placeholder="Décrivez l'événement..."></textarea></div>
-          <div class="cms-field"><label>URL photo <small>(lien ou chemin)</small></label><input type="text" id="ef-photo" placeholder="photos/p04.jpg ou https://..."/></div>
-          <div class="cms-field"><label>Lien externe <small>(optionnel)</small></label><input type="url" id="ef-lien" placeholder="https://..."/></div>
-        </div>
-        <input type="hidden" id="ef-id"/>
-        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;">
-          <button class="btn" id="evt-save-btn"><i class="fas fa-save"></i> Enregistrer</button>
-          <button class="btn btn-ghost btn-sm" id="evt-cancel-btn"><i class="fas fa-times"></i> Annuler</button>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="table-scroll">
-          <table>
-            <thead><tr><th>Événement</th><th>Date</th><th>Lieu</th><th>Statut</th><th>Actions</th></tr></thead>
-            <tbody id="evt-tbody"></tbody>
-          </table>
-        </div>
-        <div class="empty-state" id="evt-empty" style="display:none;"><i class="fas fa-calendar-xmark"></i>Aucun événement.</div>
-        <div class="loading-state" id="evt-loading"><i class="fas fa-spinner fa-spin"></i> Chargement...</div>
-      </div>
-    </div>
-
   </div>
 </div>
 
@@ -886,13 +840,9 @@
 (function(){
 
   // ====================================================================
-  // CONFIG — même logique que frontend/api.js. Après déploiement du
-  // backend sur Render, remplace l'URL ci-dessous (recherche ONRENDER_URL
-  // dans api.js ET ici, ce sont les 2 seuls endroits à modifier).
+  // CONFIG — centralisée dans config.js
   // ====================================================================
-  const BASE_URL = (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost')
-    ? 'http://localhost:3001/api'
-    : 'https://artisan-nomade-api.onrender.com/api'; // ONRENDER_URL
+  const BASE_URL = CONFIG.API_BASE_URL;
 
   const TOKEN_KEY = 'an_admin_token';
 
@@ -925,7 +875,7 @@
   }
 
   async function apiCall(method, path, body){
-    const token = sessionStorage.getItem(TOKEN_KEY) || localStorage.getItem(TOKEN_KEY);
+    const token = sessionStorage.getItem(TOKEN_KEY);
     const opts = {
       method,
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }
@@ -949,18 +899,20 @@
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Vérification...';
 
-    localStorage.setItem(TOKEN_KEY, token);
+    sessionStorage.setItem(TOKEN_KEY, token);
     const result = await apiCall('GET', '/admin/commandes');
 
     btn.disabled = false;
     btn.innerHTML = '<i class="fas fa-lock-open"></i> Entrer';
 
     if (result.ok) {
+      // Sauvegarder aussi dans sessionStorage pour les rechargements de page
+      sessionStorage.setItem(TOKEN_KEY, token);
       $('login-screen').style.display = 'none';
       $('dashboard').style.display = 'block';
       loadAll();
     } else {
-      localStorage.removeItem(TOKEN_KEY);
+      sessionStorage.removeItem(TOKEN_KEY);
       $('login-error-text').textContent = result.status === 401
         ? 'Token incorrect. Vérifie la variable ADMIN_TOKEN du backend.'
         : (result.data.message || 'Connexion impossible.');
@@ -976,7 +928,7 @@
   $('token-input').addEventListener('keydown', e => { if (e.key === 'Enter') $('login-btn').click(); });
 
   $('logout-btn').addEventListener('click', () => {
-    localStorage.removeItem(TOKEN_KEY);
+    sessionStorage.removeItem(TOKEN_KEY);
     $('dashboard').style.display = 'none';
     $('login-screen').style.display = 'flex';
     $('token-input').value = '';
@@ -1681,9 +1633,9 @@
     });
   });
 
-  // ---------- AUTO-LOGIN si token déjà enregistré ----------
+  // ---------- AUTO-LOGIN si token déjà enregistré (sessionStorage) ----------
   window.addEventListener('DOMContentLoaded', () => {
-    const saved = localStorage.getItem(TOKEN_KEY);
+    const saved = sessionStorage.getItem(TOKEN_KEY);
     if (saved) {
       $('token-input').value = saved;
       attemptLogin(saved);

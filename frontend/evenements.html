@@ -133,13 +133,18 @@
 </section>
 
 <script src="footer.js"></script>
-<script src="api.js"></script>
+<script src="config.js"></script>
+  <script src="api.js"></script>
 <script src="contenu.js"></script>
 <script>
 (function(){
-  const BASE_URL = (window.location.hostname==='127.0.0.1'||window.location.hostname==='localhost')
-    ? 'http://localhost:3001/api'
-    : 'https://artisan-nomade-api.onrender.com/api'; // ONRENDER_URL
+  const BASE_URL = CONFIG.API_BASE_URL;
+
+  const HTML_ENTITIES = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#x27;' };
+  function esc(v) {
+    if (v == null) return '';
+    return String(v).replace(/[&<>"']/g, ch => HTML_ENTITIES[ch]);
+  }
 
   function fmtDate(iso){
     if(!iso) return '–';
@@ -149,27 +154,29 @@
 
   function buildCard(evt){
     const av = evt.statut==='a_venir';
-    const waMsg = encodeURIComponent(`Bonjour, je suis intéressé(e) par votre présence à "${evt.titre}" le ${evt.date}.`);
-    return `<div class="event-card ${av?'':'passe'} reveal">
-      ${evt.photo ? `<img class="event-img" src="${evt.photo}" alt="${evt.titre}"/>` : `<div class="event-img-placeholder"><i class="fas fa-store"></i></div>`}
-      <div class="event-body">
-        <span class="event-badge ${av?'avenir':'passe'}"><i class="fas fa-calendar-${av?'check':'xmark'}"></i> ${av?'À venir':'Passé'}</span>
-        <h3 class="event-title">${evt.titre}</h3>
-        <div class="event-meta">
-          <div class="event-meta-row"><i class="fas fa-calendar-days"></i> ${fmtDate(evt.date)}${evt.heure?' · '+evt.heure:''}</div>
-          <div class="event-meta-row"><i class="fas fa-location-dot"></i> ${evt.lieu}</div>
-        </div>
-        ${evt.description?`<p class="event-desc">${evt.description}</p>`:''}
-        <div class="event-actions">
-          ${av?`<a class="event-btn-wa" href="https://wa.me/2290197998546?text=${waMsg}" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Je viens vous voir</a>`:''}
-          ${evt.lien?`<a class="event-btn-lien" href="${evt.lien}" target="_blank" rel="noopener"><i class="fas fa-arrow-up-right-from-square"></i> Plus d'infos</a>`:''}
-        </div>
-      </div>
-    </div>`;
+    const waMsg = encodeURIComponent('Bonjour, je suis intéressé(e) par votre présence à "' + esc(evt.titre) + '" le ' + esc(evt.date) + '.');
+    return '<div class="event-card ' + (av?'':'passe') + ' reveal">' +
+      (evt.photo
+        ? '<img class="event-img" src="' + esc(evt.photo) + '" alt="' + esc(evt.titre) + '"/>'
+        : '<div class="event-img-placeholder"><i class="fas fa-store"></i></div>') +
+      '<div class="event-body">' +
+        '<span class="event-badge ' + (av?'avenir':'passe') + '"><i class="fas fa-calendar-' + (av?'check':'xmark') + '"></i> ' + (av?'À venir':'Passé') + '</span>' +
+        '<h3 class="event-title">' + esc(evt.titre) + '</h3>' +
+        '<div class="event-meta">' +
+          '<div class="event-meta-row"><i class="fas fa-calendar-days"></i> ' + esc(fmtDate(evt.date)) + (evt.heure?' · ' + esc(evt.heure):'') + '</div>' +
+          '<div class="event-meta-row"><i class="fas fa-location-dot"></i> ' + esc(evt.lieu) + '</div>' +
+        '</div>' +
+        (evt.description ? '<p class="event-desc">' + esc(evt.description) + '</p>' : '') +
+        '<div class="event-actions">' +
+          (av ? '<a class="event-btn-wa" href="https://wa.me/2290197998546?text=' + waMsg + '" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Je viens vous voir</a>' : '') +
+          (evt.lien ? '<a class="event-btn-lien" href="' + esc(evt.lien) + '" target="_blank" rel="noopener"><i class="fas fa-arrow-up-right-from-square"></i> Plus d\'infos</a>' : '') +
+        '</div>' +
+      '</div>' +
+    '</div>';
   }
 
   function renderEmpty(el, msg){
-    el.innerHTML=`<div class="events-empty" style="grid-column:1/-1"><i class="fas fa-calendar-xmark"></i><p>${msg}</p></div>`;
+    el.innerHTML='<div class="events-empty" style="grid-column:1/-1"><i class="fas fa-calendar-xmark"></i><p>' + esc(msg) + '</p></div>';
   }
 
   function startCountdown(dateStr){
