@@ -35,6 +35,8 @@ const path     = require('path');
 
 const db     = require('./db');
 const mailer = require('./mailer');
+const { createClient } = require('@supabase/supabase-js');
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
 
 const app  = express();
 const PORT = process.env.PORT || 3001;
@@ -82,6 +84,8 @@ const emailLimiter = rateLimit({
 const allowedOrigins = [
   process.env.FRONTEND_URL || 'http://127.0.0.1:5500',
   'http://localhost:5500',
+  'https://artisan-nomade.vercel.app',
+  'https://artisan-nomade-mts2u4ej1-tropicana-pio-pio.vercel.app',
   'http://127.0.0.1:5501',
   'http://localhost:5501',
   // Ajoute ton domaine ici en production :
@@ -224,28 +228,38 @@ const SEED_PRODUITS = [
 ];
 
 /** Charge le catalogue, et le crée à partir du seed s'il est vide (1er démarrage) */
-function getProduits() {
-  let produits = db.findAll('produits');
+async function getProduits() {
+  let produits = await db.findAll('produits');
   if (!produits.length) {
     produits = SEED_PRODUITS;
-    db.writeCollection('produits', produits);
+    await db.writeCollection('produits', produits);
   }
   return produits;
 }
 
-app.get('/api/produits', (req, res) => {
-  const { categorie } = req.query;
-  const all = getProduits();
-  const results = categorie && categorie !== 'all'
-    ? all.filter(p => p.categorie === categorie)
-    : all;
-  res.json({ success: true, count: results.length, produits: results });
+app.get('/api/produits', async (req, res) => {
+  try {
+    const { categorie } = req.query;
+    const all = await getProduits();
+    const results = categorie && categorie !== 'all'
+      ? all.filter(p => p.categorie === categorie)
+      : all;
+    res.json({ success: true, count: results.length, produits: results });
+  } catch (err) {
+    console.error('Erreur produits:', err);
+    res.status(500).json({ success: false, message: 'Erreur serveur' });
+  }
 });
 
-app.get('/api/produits/:id', (req, res) => {
-  const produit = getProduits().find(p => p.id === req.params.id);
-  if (!produit) return res.status(404).json({ success: false, message: 'Produit introuvable' });
-  res.json({ success: true, produit });
+app.get('/api/produits/:id', async (req, res) => {
+  try {
+    const produit = await db.findOne('produits', 'id', req.params.id);
+    if (!produit) return res.status(404).json({ success: false, message: 'Produit introuvable' });
+    res.json({ success: true, produit });
+  } catch (err) {
+    console.error('Erreur produit:', err);
+    res.status(500).json({ success: false, message: 'Erreur serveur' });
+  }
 });
 
 // ============================================================
@@ -316,7 +330,7 @@ app.post('/api/commandes', validate(commandeValidation), async (req, res) => {
       updatedAt: new Date().toISOString(),
     };
 
-    db.insertOne('commandes', commande);
+    await db.insertOne('commandes', commande);
 
     // Notifications email (non-bloquantes)
     mailer.sendOrderNotification(commande).catch(console.error);
@@ -349,24 +363,23 @@ app.get('/api/commandes/:reference',
     param('reference')
       .matches(/^AN-\d{4}-\d{4}$/).withMessage('Format de référence invalide (ex: AN-2025-1234)'),
   ]),
-  (req, res) => {
-    const commande = db.findOne('commandes', 'reference', req.params.reference.toUpperCase());
+  async (req, res) => {
+    const commande = await db.findOne('commandes', 'reference', req.params.reference.toUpperCase());
     if (!commande) {
       return res.status(404).json({ success: false, message: 'Commande introuvable. Vérifiez la référence.' });
     }
 
-    // Ne retourner que les infos publiques (pas l'email complet)
     res.json({
       success: true,
       commande: {
         reference: commande.reference,
         statut: commande.statut,
-        statutLabel: commande.statutLabel,
-        historiqueStatut: commande.historiqueStatut,
+        statutLabel: commande.statut_label || commande.statutLabel,
+        historiqueStatut: commande.historique_statut || commande.historiqueStatut,
         produits: commande.produits.map(p => ({ nom: p.nom, quantite: p.quantite })),
         livraison: commande.livraison,
-        createdAt: commande.createdAt,
-        updatedAt: commande.updatedAt,
+        createdAt: commande.created_at || commande.createdAt,
+        updatedAt: commande.updated_at || commande.updatedAt,
       },
     });
   }
@@ -386,7 +399,8 @@ app.post('/api/newsletter',
     const { email, nom } = req.body;
 
     // Anti-doublon
-    if (db.emailExists('newsletter', email)) {
+    const exists = await db.emailExists('newsletter', email);
+    if (exists) {
       return res.status(409).json({
         success: false,
         message: 'Cet email est déjà inscrit à la newsletter.',
@@ -398,10 +412,10 @@ app.post('/api/newsletter',
       email,
       nom: nom?.trim() || '',
       source: new URL(req.headers.referer || 'http://unknown').hostname || 'direct',
-      createdAt: new Date().toISOString(),
+      created_at: new Date().toISOString(),
     };
 
-    db.insertOne('newsletter', abonne);
+    await db.insertOne('newsletter', abonne);
     mailer.sendNewsletterWelcome(email).catch(console.error);
 
     res.status(201).json({
@@ -435,10 +449,10 @@ app.post('/api/contact',
       sujet: sujet || 'Autre',
       message,
       lu: false,
-      createdAt: new Date().toISOString(),
+      created_at: new Date().toISOString(),
     };
 
-    db.insertOne('contacts', contact);
+    await db.insertOne('contacts', contact);
 
     // Notifier l'admin (via le mailer existant)
     const contactNotification = {
@@ -464,8 +478,8 @@ app.post('/api/contact',
 // ============================================================
 
 /** Liste toutes les commandes */
-app.get('/api/admin/commandes', adminAuth, (req, res) => {
-  const commandes = db.findAll('commandes');
+app.get('/api/admin/commandes', adminAuth, async (req, res) => {
+  const commandes = await db.findAll('commandes');
   res.json({ success: true, count: commandes.length, commandes });
 });
 
@@ -479,46 +493,15 @@ const STATUTS_VALIDES = {
   annule:         'Annulé',
 };
 
-app.patch('/api/admin/commandes/:id/statut', adminAuth,
-  validate([
-    body('statut').isIn(Object.keys(STATUTS_VALIDES)).withMessage('Statut invalide'),
-  ]),
-  (req, res) => {
-    const { statut } = req.body;
-    const label = STATUTS_VALIDES[statut];
-
-    const commandes = db.findAll('commandes');
-    const idx = commandes.findIndex(c => c.id === req.params.id);
-    if (idx === -1) return res.status(404).json({ success: false, message: 'Commande introuvable' });
-
-    commandes[idx].statut = statut;
-    commandes[idx].statutLabel = label;
-    commandes[idx].updatedAt = new Date().toISOString();
-    commandes[idx].historiqueStatut = commandes[idx].historiqueStatut || [];
-    commandes[idx].historiqueStatut.push({ statut, label, date: new Date().toISOString() });
-
-    const { insertOne, ...rest } = require('./db');
-    const fs = require('fs');
-    const path = require('path');
-    fs.writeFileSync(
-      path.join(__dirname, 'data', 'commandes.json'),
-      JSON.stringify(commandes, null, 2)
-    );
-
-    logAdminAction(req, 'commande.statut', { commandeId: req.params.id, nouveauStatut: statut });
-    res.json({ success: true, message: `Statut mis à jour : ${label}`, commande: commandes[idx] });
-  }
-);
-
 /** Liste abonnés newsletter */
-app.get('/api/admin/newsletter', adminAuth, (req, res) => {
-  const abonnes = db.findAll('newsletter');
+app.get('/api/admin/newsletter', adminAuth, async (req, res) => {
+  const abonnes = await db.findAll('newsletter');
   res.json({ success: true, count: abonnes.length, abonnes });
 });
 
 /** Liste messages de contact */
-app.get('/api/admin/contacts', adminAuth, (req, res) => {
-  const contacts = db.findAll('contacts');
+app.get('/api/admin/contacts', adminAuth, async (req, res) => {
+  const contacts = await db.findAll('contacts');
   res.json({ success: true, count: contacts.length, contacts });
 });
 
@@ -527,16 +510,16 @@ app.patch('/api/admin/contacts/:id/lu', adminAuth,
   validate([
     body('lu').isBoolean().withMessage('Le champ lu doit être un booléen'),
   ]),
-  (req, res) => {
-    const updated = db.updateById('contacts', req.params.id, { lu: req.body.lu });
+  async (req, res) => {
+    const updated = await db.updateById('contacts', req.params.id, { lu: req.body.lu });
     if (!updated) return res.status(404).json({ success: false, message: 'Message introuvable' });
     res.json({ success: true, contact: updated });
   }
 );
 
 /** Liste produits (vue admin, identique à la vue publique) */
-app.get('/api/admin/produits', adminAuth, (req, res) => {
-  const produits = getProduits();
+app.get('/api/admin/produits', adminAuth, async (req, res) => {
+  const produits = await getProduits();
   res.json({ success: true, count: produits.length, produits });
 });
 
@@ -546,29 +529,24 @@ app.patch('/api/admin/produits/:id', adminAuth,
     body('prix').optional().isFloat({ min: 0, max: 999999999 }).withMessage('Le prix doit être un nombre positif'),
     body('badge').optional({ checkFalsy: true }).trim().isLength({ max: 30 }),
   ]),
-  (req, res) => {
-    const produits = getProduits();
-    const idx = produits.findIndex(p => p.id === req.params.id);
-    if (idx === -1) return res.status(404).json({ success: false, message: 'Produit introuvable' });
+  async (req, res) => {
+    const updates = {};
+    if (req.body.prix !== undefined) updates.prix = Math.round(Number(req.body.prix));
+    if (req.body.badge !== undefined) updates.badge = req.body.badge || null;
 
-    if (req.body.prix !== undefined) produits[idx].prix = Math.round(Number(req.body.prix));
-    if (req.body.badge !== undefined) produits[idx].badge = req.body.badge || undefined;
+    const updated = await db.updateById('produits', req.params.id, updates);
+    if (!updated) return res.status(404).json({ success: false, message: 'Produit introuvable' });
 
-    db.writeCollection('produits', produits);
     logAdminAction(req, 'produit.modifier', { produitId: req.params.id, nouveauPrix: req.body.prix });
-    res.json({ success: true, produit: produits[idx] });
+    res.json({ success: true, produit: updated });
   }
 );
 
-// ============================================================
-// CMS – CONTENU DES PAGES (textes, infos de contact, avis)
-// ============================================================
-
-function getContenu() {
+async function getContenu() {
   try {
-    // Lit depuis contenu-live.json (fichier runtime, ne conflicte pas avec le seed)
-    const data = db.findAll('contenu-live');
-    if (data.length) return data[0];
+    const { data, error } = await supabase.from('contenu').select('*').eq('id', 1).limit(1);
+    if (error) { console.error('getContenu error:', error.message); return {}; }
+    if (data && data.length > 0) return data[0].data;
     // 1er démarrage : charger le seed depuis backend/data/contenu.json
     const seedPath = path.join(__dirname, 'data', 'contenu.json');
     if (fs.existsSync(seedPath)) {
@@ -576,7 +554,7 @@ function getContenu() {
         const raw = JSON.parse(fs.readFileSync(seedPath, 'utf-8'));
         const seed = Array.isArray(raw) ? (raw[0] || {}) : raw;
         if (seed && Object.keys(seed).length) {
-          db.writeCollection('contenu-live', [seed]);
+          await supabase.from('contenu').upsert({ id: 1, data: seed }).select().single();
           return seed;
         }
       } catch (e) { console.warn('Seed parse error:', e.message); }
@@ -584,20 +562,20 @@ function getContenu() {
     return {};
   } catch (e) { console.error('getContenu error:', e); return {}; }
 }
-function saveContenu(contenu) {
-  db.writeCollection('contenu-live', [contenu]);
+async function saveContenu(contenu) {
+  await supabase.from('contenu').upsert({ id: 1, data: contenu, updated_at: new Date().toISOString() });
 }
 
 /** Route publique – le frontend lit le contenu */
-app.get('/api/contenu', (req, res) => {
-  const contenu = getContenu();
-  if (!contenu) return res.status(404).json({ success: false, message: 'Contenu non initialisé' });
+app.get('/api/contenu', async (req, res) => {
+  const contenu = await getContenu();
+  if (!contenu || !Object.keys(contenu).length) return res.status(404).json({ success: false, message: 'Contenu non initialisé' });
   res.json({ success: true, contenu });
 });
 
 /** Admin – lire le contenu complet */
-app.get('/api/admin/contenu', adminAuth, (req, res) => {
-  const contenu = getContenu();
+app.get('/api/admin/contenu', adminAuth, async (req, res) => {
+  const contenu = await getContenu();
   res.json({ success: true, contenu: contenu || {} });
 });
 
@@ -607,12 +585,11 @@ app.patch('/api/admin/contenu', adminAuth,
     body('section').notEmpty().withMessage('La section est requise'),
     body('data').isObject().withMessage('data doit être un objet'),
   ]),
-  (req, res) => {
+  async (req, res) => {
     const { section, data } = req.body;
-    const contenu = getContenu() || {};
-    // Merge profond de la section
+    const contenu = await getContenu() || {};
     contenu[section] = { ...(contenu[section] || {}), ...data };
-    saveContenu(contenu);
+    await saveContenu(contenu);
     res.json({ success: true, section, contenu: contenu[section] });
   }
 );
@@ -623,27 +600,16 @@ app.put('/api/admin/contenu/array', adminAuth,
     body('key').notEmpty().withMessage('La clé est requise'),
     body('data').isArray().withMessage('data doit être un tableau'),
   ]),
-  (req, res) => {
+  async (req, res) => {
     const { key, data } = req.body;
     const ALLOWED_ARRAYS = ['slides','galerie','services','faq','valeurs','equipe','partenaires_liste','avis'];
     if (!ALLOWED_ARRAYS.includes(key)) {
       return res.status(400).json({ success: false, message: 'Clé de tableau non autorisée' });
     }
-    const contenu = getContenu() || {};
+    const contenu = await getContenu() || {};
     contenu[key] = data;
-    saveContenu(contenu);
+    await saveContenu(contenu);
     res.json({ success: true, key, count: data.length });
-  }
-);
-
-/** Admin – mettre à jour les avis clients (rétrocompatibilité) */
-app.put('/api/admin/contenu/avis', adminAuth,
-  validate([body('avis').isArray().withMessage('avis doit être un tableau')]),
-  (req, res) => {
-    const contenu = getContenu() || {};
-    contenu.avis = req.body.avis;
-    saveContenu(contenu);
-    res.json({ success: true, avis: contenu.avis });
   }
 );
 
@@ -651,16 +617,15 @@ app.put('/api/admin/contenu/avis', adminAuth,
 // ÉVÉNEMENTS & MARCHÉS
 // ============================================================
 
-function getEvenements() {
+async function getEvenements() {
   try {
-    const data = db.findAll('evenements');
+    const data = await db.findAll('evenements');
     if (data.length) return data;
-    // Seed depuis evenements.json
     const seedPath = path.join(__dirname, 'data', 'evenements.json');
     if (fs.existsSync(seedPath)) {
       const seed = JSON.parse(fs.readFileSync(seedPath, 'utf-8'));
       if (seed.length) {
-        db.writeCollection('evenements', seed);
+        await db.writeCollection('evenements', seed);
         return seed;
       }
     }
@@ -669,22 +634,18 @@ function getEvenements() {
 }
 
 /** Route publique – liste des événements (triés par date) */
-app.get('/api/evenements', (req, res) => {
-  const all = getEvenements();
+app.get('/api/evenements', async (req, res) => {
+  const all = await getEvenements();
   const now = new Date().toISOString().slice(0, 10);
-  // Mettre à jour automatiquement le statut selon la date
-  const updated = all.map(e => ({
-    ...e,
-    statut: e.date < now ? 'passe' : 'a_venir'
-  }));
+  const updated = all.map(e => ({ ...e, statut: e.date < now ? 'passe' : 'a_venir' }));
   const avenir = updated.filter(e => e.statut === 'a_venir').sort((a,b) => a.date.localeCompare(b.date));
   const passes = updated.filter(e => e.statut === 'passe').sort((a,b) => b.date.localeCompare(a.date));
   res.json({ success: true, avenir, passes, total: all.length });
 });
 
 /** Admin – tous les événements */
-app.get('/api/admin/evenements', adminAuth, (req, res) => {
-  const all = getEvenements();
+app.get('/api/admin/evenements', adminAuth, async (req, res) => {
+  const all = await getEvenements();
   res.json({ success: true, evenements: all });
 });
 
@@ -694,7 +655,7 @@ app.post('/api/admin/evenements', adminAuth,
     body('titre').notEmpty().trim().withMessage('Le titre est requis'),
     body('date_debut').notEmpty().withMessage('La date de début est requise'),
   ]),
-  (req, res) => {
+  async (req, res) => {
     const { titre, date_debut, date_fin, heure, lieu, ville, description, image } = req.body;
     const now = new Date().toISOString().slice(0, 10);
     const date = date_debut;
@@ -706,44 +667,33 @@ app.post('/api/admin/evenements', adminAuth,
       description: description || '',
       image: image || '', photo: image || '',
       statut: date < now ? 'passe' : 'a_venir',
-      createdAt: new Date().toISOString()
+      created_at: new Date().toISOString()
     };
-    const all = getEvenements();
-    all.push(evt);
-    db.writeCollection('evenements', all);
+    await db.insertOne('evenements', evt);
     res.status(201).json({ success: true, evenement: evt });
   }
 );
 
 /** Admin – modifier un événement */
-app.patch('/api/admin/evenements/:id', adminAuth, (req, res) => {
-    const all = getEvenements();
-    const idx = all.findIndex(e => e.id === req.params.id);
-    if (idx === -1) return res.status(404).json({ success: false, message: 'Événement introuvable' });
+app.patch('/api/admin/evenements/:id', adminAuth, async (req, res) => {
     const allowed = ['titre','date_debut','date_fin','date','heure','lieu','ville','description','image','photo','statut'];
-    allowed.forEach(k => { if (req.body[k] !== undefined) all[idx][k] = req.body[k]; });
-    // Sync date ↔ date_debut
-    if (req.body.date_debut) { all[idx].date = req.body.date_debut; all[idx].photo = all[idx].image || all[idx].photo; }
-    // Recalcul statut auto
+    const updates = {};
+    allowed.forEach(k => { if (req.body[k] !== undefined) updates[k] = req.body[k]; });
+    if (req.body.date_debut) updates.date = req.body.date_debut;
     const now = new Date().toISOString().slice(0, 10);
-    if (!req.body.statut) all[idx].statut = all[idx].date < now ? 'passe' : 'a_venir';
-    db.writeCollection('evenements', all);
-    res.json({ success: true, evenement: all[idx] });
+    if (!req.body.statut) updates.statut = (updates.date || '') < now ? 'passe' : 'a_venir';
+    const updated = await db.updateById('evenements', req.params.id, updates);
+    if (!updated) return res.status(404).json({ success: false, message: 'Événement introuvable' });
+    res.json({ success: true, evenement: updated });
   }
 );
 
 /** Admin – supprimer un événement */
-app.delete('/api/admin/evenements/:id', adminAuth, (req, res) => {
-  const all = getEvenements();
-  const filtered = all.filter(e => e.id !== req.params.id);
-  if (filtered.length === all.length) return res.status(404).json({ success: false, message: 'Événement introuvable' });
-  db.writeCollection('evenements', filtered);
+app.delete('/api/admin/evenements/:id', adminAuth, async (req, res) => {
+  const { error } = await supabase.from('evenements').delete().eq('id', req.params.id);
+  if (error) return res.status(500).json({ success: false, message: 'Erreur lors de la suppression' });
   res.json({ success: true, message: 'Événement supprimé' });
 });
-
-// ============================================================
-// GESTION 404 & ERREURS
-// ============================================================
 
 app.use((req, res) => {
   res.status(404).json({ success: false, message: 'Route introuvable' });
