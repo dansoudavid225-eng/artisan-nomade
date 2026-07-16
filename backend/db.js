@@ -1,104 +1,82 @@
-/**
- * db.js – Base de données JSON légère (remplace SQLite)
- * Stocke les données dans /data/*.json
- * Parfait pour démarrer – migrer vers PostgreSQL en production si nécessaire
- */
+const { createClient } = require('@supabase/supabase-js');
 
-const fs = require('fs');
-const path = require('path');
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
 
-const DATA_DIR = path.join(__dirname, 'data');
-
-// Créer le dossier data s'il n'existe pas
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
+if (!supabaseUrl || !supabaseKey) {
+  console.error('SUPABASE_URL et SUPABASE_SERVICE_KEY doivent être définis dans .env');
+  process.exit(1);
 }
 
-/**
- * Lire une collection JSON
- * @param {string} name – ex: 'commandes', 'newsletter', 'contacts'
- */
-function readCollection(name) {
-  const filePath = path.join(DATA_DIR, `${name}.json`);
-  if (!fs.existsSync(filePath)) {
-    fs.writeFileSync(filePath, JSON.stringify([], null, 2));
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+async function findAll(collection) {
+  const { data, error } = await supabase.from(collection).select('*');
+  if (error) {
+    console.error(`Supabase findAll(${collection}) error:`, error.message);
     return [];
   }
-  try {
-    return JSON.parse(fs.readFileSync(filePath, 'utf8'));
-  } catch {
-    return [];
+  return data || [];
+}
+
+async function findOne(collection, field, value) {
+  const { data, error } = await supabase.from(collection).select('*').eq(field, value).limit(1);
+  if (error) {
+    console.error(`Supabase findOne(${collection}) error:`, error.message);
+    return null;
+  }
+  return data?.[0] || null;
+}
+
+async function insertOne(collection, doc) {
+  const { data, error } = await supabase.from(collection).insert(doc).select().single();
+  if (error) {
+    console.error(`Supabase insertOne(${collection}) error:`, error.message);
+    return null;
+  }
+  return data;
+}
+
+async function updateById(collection, id, updates) {
+  updates.updated_at = new Date().toISOString();
+  const { data, error } = await supabase.from(collection).update(updates).eq('id', id).select().single();
+  if (error) {
+    console.error(`Supabase updateById(${collection}) error:`, error.message);
+    return null;
+  }
+  return data;
+}
+
+async function emailExists(collection, email) {
+  const { data, error } = await supabase.from(collection).select('id').eq('email', email).limit(1);
+  if (error) {
+    console.error(`Supabase emailExists(${collection}) error:`, error.message);
+    return false;
+  }
+  return data && data.length > 0;
+}
+
+async function writeCollection(collection, docs) {
+  // Delete all then re-insert (for seed/reset operations)
+  const { error: delErr } = await supabase.from(collection).delete().neq('id', '_');
+  if (delErr) {
+    console.error(`Supabase writeCollection(${collection}) delete error:`, delErr.message);
+    return;
+  }
+  if (docs.length > 0) {
+    const { error: insErr } = await supabase.from(collection).insert(docs);
+    if (insErr) console.error(`Supabase writeCollection(${collection}) insert error:`, insErr.message);
   }
 }
 
-/**
- * Écrire une collection JSON (avec backup automatique)
- */
-const MAX_BACKUPS = 5;
-
-function writeCollection(name, data) {
-  const filePath = path.join(DATA_DIR, `${name}.json`);
-  // Backup du fichier existant avant écrasement
-  if (fs.existsSync(filePath)) {
-    const backupDir = path.join(DATA_DIR, 'backups');
-    if (!fs.existsSync(backupDir)) fs.mkdirSync(backupDir, { recursive: true });
-    const ts = new Date().toISOString().replace(/[:.]/g, '-');
-    fs.copyFileSync(filePath, path.join(backupDir, `${name}-${ts}.json`));
-    // Nettoyer les vieux backups
-    try {
-      const backups = fs.readdirSync(backupDir)
-        .filter(f => f.startsWith(name + '-'))
-        .sort()
-        .reverse();
-      backups.slice(MAX_BACKUPS).forEach(f => fs.unlinkSync(path.join(backupDir, f)));
-    } catch {}
+async function updateByField(collection, field, value, updates) {
+  updates.updated_at = new Date().toISOString();
+  const { data, error } = await supabase.from(collection).update(updates).eq(field, value).select().single();
+  if (error) {
+    console.error(`Supabase updateByField(${collection}) error:`, error.message);
+    return null;
   }
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+  return data;
 }
 
-/**
- * Ajouter un document à une collection
- */
-function insertOne(collection, doc) {
-  const data = readCollection(collection);
-  data.push(doc);
-  writeCollection(collection, data);
-  return doc;
-}
-
-/**
- * Trouver par champ
- */
-function findOne(collection, field, value) {
-  const data = readCollection(collection);
-  return data.find(item => item[field] === value) || null;
-}
-
-/**
- * Tous les documents
- */
-function findAll(collection) {
-  return readCollection(collection);
-}
-
-/**
- * Mettre à jour par ID
- */
-function updateById(collection, id, updates) {
-  const data = readCollection(collection);
-  const idx = data.findIndex(item => item.id === id);
-  if (idx === -1) return null;
-  data[idx] = { ...data[idx], ...updates, updatedAt: new Date().toISOString() };
-  writeCollection(collection, data);
-  return data[idx];
-}
-
-/**
- * Vérifier si un email existe déjà dans une collection
- */
-function emailExists(collection, email) {
-  const data = readCollection(collection);
-  return data.some(item => item.email === email);
-}
-
-module.exports = { insertOne, findOne, findAll, updateById, emailExists, writeCollection };
+module.exports = { insertOne, findOne, findAll, updateById, updateByField, emailExists, writeCollection };

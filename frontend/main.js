@@ -261,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function getImages() {
       // Collecte toutes les images cliquables : produits + galerie
       const imgs = [];
-      document.querySelectorAll('.product-photo, .gallery-slide img, .apropos-img-block img').forEach(img => {
+      document.querySelectorAll('.product-photo, .gallery-slide img').forEach(img => {
         if (img.src && !img.src.includes('placeholder')) {
           imgs.push({ src: img.src, alt: img.alt || '' });
         }

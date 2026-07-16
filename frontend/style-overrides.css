@@ -818,7 +818,7 @@ body {
   .contact-container { grid-template-columns: 1fr !important; }
 
   /* Grille à propos */
-  .apropos-grid { grid-template-columns: 1fr !important; }
+
 
   /* Section principale : moins de padding */
   .section-block { padding: 48px 20px !important; }

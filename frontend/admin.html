@@ -239,6 +239,13 @@
   .prix-edit span{color:var(--gris);font-size:0.78rem;}
   .save-prix{display:none;}
   .save-prix.visible{display:inline-flex;}
+  .save-produit{display:none;}
+  .save-produit.visible{display:inline-flex;}
+  .pr-field{width:100%;padding:7px 9px;border:1px solid var(--ivoire-dark);border-radius:6px;font-family:inherit;font-size:0.86rem;background:var(--ivoire);color:var(--terre);min-width:120px;}
+  .pr-field:focus{outline:none;border-color:var(--or);}
+  .pr-field-nom{min-width:160px;}
+  .pr-field-select{width:100%;padding:7px 9px;border:1px solid var(--ivoire-dark);border-radius:6px;font-family:inherit;font-size:0.86rem;background:var(--blanc);color:var(--terre);cursor:pointer;}
+  .pr-field-select:focus{outline:none;border-color:var(--or);}
   .toast{
     position:fixed;bottom:24px;right:24px;background:var(--terre);color:var(--ivoire);
     padding:13px 20px;border-radius:8px;font-size:0.88rem;box-shadow:var(--shadow);
@@ -513,7 +520,45 @@
             <option value="accessoire">Accessoires</option>
           </select>
         </div>
+        <button class="btn btn-sm" id="pr-add-open"><i class="fas fa-plus"></i> Nouveau produit</button>
       </div>
+
+      <!-- Formulaire ajout/édition produit -->
+      <div class="panel" id="pr-form-panel" style="display:none;padding:24px;margin-bottom:18px;">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;margin-bottom:18px;" id="pr-form-title">Nouveau produit</h3>
+        <div class="cms-fields">
+          <div class="cms-field cms-field-full"><label>Nom *</label><input type="text" id="pr-nom" placeholder="Nom du produit"/></div>
+          <div class="cms-field"><label>Catégorie *</label>
+            <select id="pr-categorie">
+              <option value="parure">Parure</option>
+              <option value="collier">Collier</option>
+              <option value="bracelet">Bracelet</option>
+              <option value="boucle">Boucle</option>
+              <option value="accessoire">Accessoire</option>
+            </select>
+          </div>
+          <div class="cms-field"><label>Prix (FCFA) *</label><input type="number" id="pr-prix" min="0" step="500" placeholder="5000"/></div>
+          <div class="cms-field"><label>Badge <small>(optionnel)</small></label>
+            <select id="pr-badge">
+              <option value="">Aucun</option>
+              <option value="Bestseller">Bestseller</option>
+              <option value="Nouveau">Nouveau</option>
+              <option value="Traditionnel">Traditionnel</option>
+              <option value="Naturel">Naturel</option>
+              <option value="Collection">Collection</option>
+              <option value="Coup de cœur">Coup de cœur</option>
+              <option value="Unique">Unique</option>
+            </select>
+          </div>
+          <div class="cms-field cms-field-full"><label>URL image <small>(optionnelle)</small></label><input type="text" id="pr-image" placeholder="photos/p17.jpg ou https://..."/></div>
+        </div>
+        <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;">
+          <button class="btn" id="pr-save-btn"><i class="fas fa-save"></i> Enregistrer</button>
+          <button class="btn btn-ghost btn-sm" id="pr-cancel-btn"><i class="fas fa-times"></i> Annuler</button>
+        </div>
+        <input type="hidden" id="pr-edit-id"/>
+      </div>
+
       <div class="panel">
         <div class="table-scroll">
           <table>
@@ -588,7 +633,6 @@
         <button class="cms-tab-btn" data-cms-section="apropos"><i class="fas fa-info-circle"></i> À propos</button>
         <button class="cms-tab-btn" data-cms-section="equipe"><i class="fas fa-users"></i> Équipe</button>
         <button class="cms-tab-btn" data-cms-section="culture"><i class="fas fa-landmark"></i> Culture</button>
-        <button class="cms-tab-btn" data-cms-section="partenaires"><i class="fas fa-handshake"></i> Partenaires</button>
         <button class="cms-tab-btn" data-cms-section="avis"><i class="fas fa-star"></i> Avis clients</button>
       </div>
 
@@ -796,26 +840,6 @@
             <div class="cms-field"><label>Fabrication – titre</label><input type="text" id="cu-fabrication_titre"/></div>
           </div>
           <button class="btn cms-save-btn" data-section="culture" data-fields="hero_tag,intro_tag,intro_titre,intro_texte,symbolisme_tag,symbolisme_titre,fabrication_tag,fabrication_titre"><i class="fas fa-save"></i> Enregistrer</button>
-        </div>
-      </div>
-
-      <!-- ── PARTENAIRES ── -->
-      <div class="cms-panel" id="cms-partenaires" style="display:none;">
-        <div class="cms-card">
-          <h3 class="cms-card-title"><i class="fas fa-handshake"></i> Textes de la page Partenaires</h3>
-          <div class="cms-fields">
-            <div class="cms-field"><label>Hero – étiquette</label><input type="text" id="pt-hero_tag"/></div>
-            <div class="cms-field"><label>Hero – titre</label><input type="text" id="pt-hero_titre"/></div>
-            <div class="cms-field"><label>Section – étiquette</label><input type="text" id="pt-section_tag"/></div>
-            <div class="cms-field"><label>Section – titre</label><input type="text" id="pt-section_titre"/></div>
-          </div>
-          <button class="btn cms-save-btn" data-section="partenaires" data-fields="hero_tag,hero_titre,section_tag,section_titre"><i class="fas fa-save"></i> Enregistrer</button>
-        </div>
-        <div class="cms-card">
-          <h3 class="cms-card-title"><i class="fas fa-building"></i> Liste des partenaires</h3>
-          <div id="partenaires-list"></div>
-          <button class="btn btn-ghost btn-sm" id="partenaires-add-btn" style="margin-top:14px;"><i class="fas fa-plus"></i> Ajouter un partenaire</button>
-          <div style="margin-top:20px;"><button class="btn cms-save-array-btn" data-array="partenaires_liste"><i class="fas fa-save"></i> Enregistrer</button></div>
         </div>
       </div>
 
@@ -1163,55 +1187,156 @@
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td data-label=""><img class="pr-thumb" src="${escapeHtml(p.image)}" alt="" onerror="this.style.visibility='hidden'"/></td>
-        <td data-label="Produit">${escapeHtml(p.nom)}</td>
-        <td data-label="Catégorie"><span class="badge-cat">${CATEGORIES_LABELS[p.categorie] || escapeHtml(p.categorie)}</span></td>
-        <td data-label="Badge"><span class="muted">${escapeHtml(p.badge) || '–'}</span></td>
+        <td data-label="Produit"><input type="text" value="${escapeHtml(p.nom)}" data-id="${p.id}" data-field="nom" class="pr-field pr-field-nom"/></td>
+        <td data-label="Catégorie">
+          <select data-id="${p.id}" data-field="categorie" class="pr-field-select">
+            ${Object.entries(CATEGORIES_LABELS).map(([val, label]) => `<option value="${val}" ${p.categorie===val?'selected':''}>${label}</option>`).join('')}
+          </select>
+        </td>
+        <td data-label="Badge"><input type="text" value="${escapeHtml(p.badge || '')}" data-id="${p.id}" data-field="badge" class="pr-field pr-field-badge" placeholder="–"/></td>
         <td data-label="Prix">
           <div class="prix-edit">
-            <input type="number" min="0" step="500" value="${p.prix}" data-id="${p.id}" class="prix-input"/>
+            <input type="number" min="0" step="500" value="${p.prix}" data-id="${p.id}" data-field="prix" class="pr-field pr-field-prix"/>
             <span>FCFA</span>
           </div>
         </td>
-        <td data-label=""><button class="link-btn save-prix" data-id="${p.id}"><i class="fas fa-check"></i> Enregistrer</button></td>`;
+        <td data-label=""><div class="row-actions"><button class="link-btn save-produit" data-id="${p.id}"><i class="fas fa-check"></i> Enregistrer</button></div></td>`;
       tbody.appendChild(tr);
     });
 
     $('pr-loading').style.display = 'none';
   }
 
+  function getProduitFormData() {
+    return {
+      nom: $('pr-nom').value.trim(),
+      categorie: $('pr-categorie').value,
+      prix: Number($('pr-prix').value),
+      badge: $('pr-badge').value || null,
+      image: $('pr-image').value.trim(),
+    };
+  }
+
+  function resetProduitForm() {
+    $('pr-nom').value = '';
+    $('pr-categorie').value = 'parure';
+    $('pr-prix').value = '';
+    $('pr-badge').value = '';
+    $('pr-image').value = '';
+    $('pr-edit-id').value = '';
+    $('pr-form-title').textContent = 'Nouveau produit';
+  }
+
+  $('pr-add-open').addEventListener('click', () => {
+    resetProduitForm();
+    $('pr-form-panel').style.display = 'block';
+    $('pr-nom').focus();
+  });
+
+  $('pr-cancel-btn').addEventListener('click', () => {
+    $('pr-form-panel').style.display = 'none';
+  });
+
+  $('pr-save-btn').addEventListener('click', async () => {
+    const data = getProduitFormData();
+    if (!data.nom || !data.prix || data.prix < 0) {
+      showToast('Nom et prix valides sont requis.', true);
+      return;
+    }
+
+    const editId = $('pr-edit-id').value;
+    $('pr-save-btn').disabled = true;
+    $('pr-save-btn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sauvegarde...';
+
+    const res = editId
+      ? await apiCall('PATCH', `/admin/produits/${editId}`, data)
+      : await apiCall('POST', '/admin/produits', data);
+
+    $('pr-save-btn').disabled = false;
+    $('pr-save-btn').innerHTML = '<i class="fas fa-save"></i> Enregistrer';
+
+    if (res.ok) {
+      if (editId) {
+        const idx = DATA.produits.findIndex(p => p.id === editId);
+        if (idx > -1) DATA.produits[idx] = res.data.produit;
+      } else {
+        DATA.produits.push(res.data.produit);
+      }
+      renderProduits();
+      $('pr-form-panel').style.display = 'none';
+      showToast(editId ? 'Produit mis à jour !' : 'Produit ajouté !');
+    } else {
+      showToast(res.data.message || 'Erreur lors de la sauvegarde.', true);
+    }
+  });
+
   $('pr-tbody').addEventListener('input', e => {
-    const input = e.target.closest('.prix-input');
+    const input = e.target.closest('.pr-field');
     if (!input) return;
     const row = input.closest('tr');
-    row.querySelector('.save-prix').classList.add('visible');
+    row.querySelector('.save-produit').classList.add('visible');
+  });
+
+  $('pr-tbody').addEventListener('change', e => {
+    const sel = e.target.closest('.pr-field-select');
+    if (!sel) return;
+    const row = sel.closest('tr');
+    row.querySelector('.save-produit').classList.add('visible');
   });
 
   $('pr-tbody').addEventListener('click', async e => {
-    const btn = e.target.closest('.save-prix');
+    const btn = e.target.closest('.save-produit');
     if (!btn) return;
     const id = btn.dataset.id;
     const row = btn.closest('tr');
-    const input = row.querySelector('.prix-input');
-    const newPrix = Number(input.value);
 
-    if (!newPrix || newPrix < 0) { showToast('Prix invalide.', true); return; }
+    const nom = row.querySelector('.pr-field-nom').value.trim();
+    const categorie = row.querySelector('[data-field="categorie"]').value;
+    const badge = row.querySelector('.pr-field-badge').value.trim();
+    const prix = Number(row.querySelector('.pr-field-prix').value);
+
+    if (!nom) { showToast('Le nom du produit est requis.', true); return; }
+    if (!prix || prix < 0) { showToast('Prix invalide.', true); return; }
+
+    const updates = { nom, categorie, badge: badge || null, prix };
 
     btn.disabled = true;
-    const result = await apiCall('PATCH', `/admin/produits/${id}`, { prix: newPrix });
+    const result = await apiCall('PATCH', `/admin/produits/${id}`, updates);
     btn.disabled = false;
 
     if (result.ok) {
       const idx = DATA.produits.findIndex(p => p.id === id);
-      if (idx > -1) DATA.produits[idx].prix = result.data.produit.prix;
+      if (idx > -1) DATA.produits[idx] = result.data.produit;
       btn.classList.remove('visible');
-      showToast('Prix mis à jour : ' + new Intl.NumberFormat('fr-FR').format(result.data.produit.prix) + ' FCFA');
+      renderStats();
+      renderProduits();
+      showToast('Produit mis à jour !');
     } else {
-      showToast(result.data.message || 'Erreur lors de la mise à jour du prix.', true);
+      showToast(result.data.message || 'Erreur lors de la mise à jour.', true);
     }
   });
 
   $('pr-search').addEventListener('input', renderProduits);
   $('pr-filter-cat').addEventListener('change', renderProduits);
+
+  // Éditer un produit depuis la table (double-clic ou bouton modifier)
+  $('pr-tbody').addEventListener('dblclick', e => {
+    const row = e.target.closest('tr');
+    if (!row) return;
+    const id = row.querySelector('.save-produit')?.dataset.id;
+    if (!id) return;
+    const p = DATA.produits.find(pr => pr.id === id);
+    if (!p) return;
+    $('pr-form-title').textContent = 'Modifier le produit';
+    $('pr-edit-id').value = p.id;
+    $('pr-nom').value = p.nom || '';
+    $('pr-categorie').value = p.categorie || 'parure';
+    $('pr-prix').value = p.prix || '';
+    $('pr-badge').value = p.badge || '';
+    $('pr-image').value = p.image || '';
+    $('pr-form-panel').style.display = 'block';
+    $('pr-form-panel').scrollIntoView({ behavior:'smooth' });
+  });
 
 
   // ---------- NEWSLETTER ----------
@@ -1423,7 +1548,7 @@
   // Préfixes des champs simples (section → préfixe des input ids)
   const CMS_PREFIX = {
     global:'g', accueil:'a', boutique:'b', contact:'c',
-    apropos:'ap', culture:'cu', partenaires:'pt'
+    apropos:'ap', culture:'cu'
   };
 
   // Schémas des tableaux éditables
@@ -1456,13 +1581,6 @@
       { key:'role', label:'Rôle', placeholder:'Artisan Nomade' },
       { key:'photo', label:'URL photo', placeholder:'https://... (optionnel)' },
       { key:'description', label:'Description courte', type:'textarea', placeholder:'(optionnel)' }
-    ],
-    partenaires_liste: [
-      { key:'nom', label:'Nom', placeholder:'Perles du Bénin' },
-      { key:'description', label:'Description', type:'textarea', placeholder:'Fournisseur de...' },
-      { key:'badge', label:'Badge', placeholder:'Fournisseur' },
-      { key:'logo', label:'URL logo', placeholder:'https://... (optionnel)' },
-      { key:'lien', label:'URL lien', placeholder:'https://... (optionnel)' }
     ],
     avis: [
       { key:'texte', label:'Texte de l\'avis', type:'textarea', placeholder:'Des bijoux magnifiques...' },

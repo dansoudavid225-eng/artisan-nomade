@@ -18,7 +18,6 @@
           <li><a href="evenements.html">Événements</a></li>
           <li><a href="apropos.html">À propos</a></li>
           <li><a href="culture.html">Histoire & Culture</a></li>
-          <li><a href="partenaires.html">Partenaires</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
       </div>

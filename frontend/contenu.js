@@ -214,22 +214,6 @@
       });
     }
 
-    // ── PARTENAIRES ──
-    if (contenu.partenaires_liste?.length) {
-      const grid = document.getElementById('partenaires-grid');
-      if (grid) {
-        grid.innerHTML = contenu.partenaires_liste.map(p =>
-          '<div class="partenaire-card reveal">' +
-            (p.logo
-              ? '<img src="' + escapeHtml(p.logo) + '" alt="' + escapeHtml(p.nom) + '" style="width:64px;height:64px;object-fit:contain;margin-bottom:12px;border-radius:8px;"/>'
-              : '<div class="partenaire-logo"><i class="fas fa-store"></i></div>') +
-            '<h3>' + escapeHtml(p.nom) + '</h3>' +
-            '<p>' + escapeHtml(p.description) + '</p>' +
-            '<span class="product-badge" style="position:static;display:inline-block;margin-bottom:16px;">' + escapeHtml(p.badge) + '</span><br/>' +
-            '<a href="' + escapeHtml(p.lien || 'contact.html') + '" class="partenaire-link">Nous contacter <i class="fas fa-arrow-right"></i></a>' +
-          '</div>').join('');
-      }
-    }
   }
 
   fetch(BASE_URL + '/contenu')

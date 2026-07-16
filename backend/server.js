@@ -523,22 +523,62 @@ app.get('/api/admin/produits', adminAuth, async (req, res) => {
   res.json({ success: true, count: produits.length, produits });
 });
 
-/** Modifier le prix (et éventuellement le badge) d'un produit */
+/** Modifier un produit (nom, prix, badge, catégorie, image) */
 app.patch('/api/admin/produits/:id', adminAuth,
   validate([
+    body('nom').optional().trim().isLength({ min: 1, max: 200 }).withMessage('Le nom doit faire entre 1 et 200 caractères'),
     body('prix').optional().isFloat({ min: 0, max: 999999999 }).withMessage('Le prix doit être un nombre positif'),
     body('badge').optional({ checkFalsy: true }).trim().isLength({ max: 30 }),
+    body('categorie').optional().trim().isIn(['parure','collier','bracelet','boucle','accessoire']).withMessage('Catégorie invalide'),
+    body('image').optional().trim().isLength({ max: 500 }),
   ]),
   async (req, res) => {
     const updates = {};
+    if (req.body.nom !== undefined) updates.nom = req.body.nom.trim();
     if (req.body.prix !== undefined) updates.prix = Math.round(Number(req.body.prix));
     if (req.body.badge !== undefined) updates.badge = req.body.badge || null;
+    if (req.body.categorie !== undefined) updates.categorie = req.body.categorie;
+    if (req.body.image !== undefined) updates.image = req.body.image;
 
     const updated = await db.updateById('produits', req.params.id, updates);
     if (!updated) return res.status(404).json({ success: false, message: 'Produit introuvable' });
 
-    logAdminAction(req, 'produit.modifier', { produitId: req.params.id, nouveauPrix: req.body.prix });
+    logAdminAction(req, 'produit.modifier', { produitId: req.params.id, ...updates });
     res.json({ success: true, produit: updated });
+  }
+);
+
+/** Créer un nouveau produit */
+app.post('/api/admin/produits', adminAuth,
+  validate([
+    body('nom').trim().notEmpty().withMessage('Le nom est requis').isLength({ max: 200 }),
+    body('categorie').trim().isIn(['parure','collier','bracelet','boucle','accessoire']).withMessage('Catégorie invalide'),
+    body('prix').isFloat({ min: 0, max: 999999999 }).withMessage('Le prix doit être un nombre positif'),
+    body('badge').optional({ checkFalsy: true }).trim().isLength({ max: 30 }),
+    body('image').optional().trim().isLength({ max: 500 }),
+  ]),
+  async (req, res) => {
+    const { nom, categorie, prix, badge, image } = req.body;
+
+    const all = await getProduits();
+    const lastId = all.reduce((max, p) => {
+      const num = parseInt(p.id.replace('pr-', ''), 10);
+      return num > max ? num : max;
+    }, 0);
+    const newId = 'pr-' + String(lastId + 1).padStart(3, '0');
+
+    const produit = {
+      id: newId,
+      nom: nom.trim(),
+      categorie,
+      image: image || 'placeholder.svg',
+      badge: badge || null,
+      prix: Math.round(Number(prix)),
+    };
+
+    await db.insertOne('produits', produit);
+    logAdminAction(req, 'produit.creer', produit);
+    res.status(201).json({ success: true, produit });
   }
 );
 
@@ -602,7 +642,7 @@ app.put('/api/admin/contenu/array', adminAuth,
   ]),
   async (req, res) => {
     const { key, data } = req.body;
-    const ALLOWED_ARRAYS = ['slides','galerie','services','faq','valeurs','equipe','partenaires_liste','avis'];
+    const ALLOWED_ARRAYS = ['slides','galerie','services','faq','valeurs','equipe','avis'];
     if (!ALLOWED_ARRAYS.includes(key)) {
       return res.status(400).json({ success: false, message: 'Clé de tableau non autorisée' });
     }

@@ -446,16 +446,6 @@ ul { list-style: none; }
 /* ================================
    PARTENAIRES
 ================================ */
-.partenaires-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 28px; margin-bottom: 50px; }
-.partenaire-card { border: 1px solid var(--card-border); padding: 40px 28px; text-align: center; transition: all var(--transition); background: var(--card-bg); }
-.partenaire-card:hover { border-color: var(--or); box-shadow: var(--shadow); transform: translateY(-4px); }
-.partenaire-logo { width: 70px; height: 70px; border-radius: 50%; background: var(--surface); border: 2px solid var(--or); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: var(--or); margin: 0 auto 20px; }
-.partenaire-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; margin-bottom: 8px; }
-.partenaire-card p { font-size: 0.8rem; color: var(--gris); margin-bottom: 20px; }
-.partenaire-link { font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; color: var(--or); display: inline-flex; align-items: center; gap: 6px; transition: gap var(--transition); }
-.partenaire-link:hover { gap: 12px; }
-.partenaires-cta { text-align: center; }
-.partenaires-cta p { font-size: 0.9rem; color: var(--gris); margin-bottom: 16px; }
 
 /* ================================
    CULTURE TABS
@@ -479,10 +469,7 @@ ul { list-style: none; }
 /* ================================
    A PROPOS
 ================================ */
-.apropos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-.apropos-visual { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.apropos-img-block { background: var(--surface); height: 220px; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: var(--or); opacity: 0.5; border: 1px solid var(--card-border); }
-.apropos-img-block.tall { height: 280px; }
+.apropos-grid { max-width: 800px; margin: 0 auto; }
 .apropos-text p { font-size: 0.9rem; color: var(--gris); line-height: 2; margin-bottom: 20px; }
 .apropos-values { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 40px; }
 .value-item { padding: 20px; border-left: 2px solid var(--or); }
@@ -550,7 +537,7 @@ ul { list-style: none; }
    RESPONSIVE
 ================================ */
 @media (max-width: 1024px) {
-  .culture-content, .apropos-grid, .contact-container { grid-template-columns: 1fr; gap: 50px; }
+  .culture-content, .contact-container { grid-template-columns: 1fr; gap: 50px; }
   .footer-top { grid-template-columns: 1fr 1fr; }
   .avis-card { min-width: calc(50% - 14px); }
 }
@@ -571,7 +558,7 @@ ul { list-style: none; }
   .avis-card { min-width: 100%; }
   .hero-title { font-size: clamp(2.5rem, 12vw, 4rem); }
   .hero-scroll { display: none; }
-  .apropos-visual { grid-template-columns: 1fr; }
+
   .culture-visual { grid-template-columns: 1fr 1fr; }
 }
 

@@ -20,7 +20,6 @@
       <li><a href="evenements.html" class="nav-link ${currentPage === 'evenements.html' ? 'active-page' : ''}">Événements</a></li>
       <li><a href="apropos.html" class="nav-link ${currentPage === 'apropos.html' ? 'active-page' : ''}">À propos</a></li>
       <li><a href="culture.html" class="nav-link ${currentPage === 'culture.html' ? 'active-page' : ''}">Histoire & Culture</a></li>
-      <li><a href="partenaires.html" class="nav-link ${currentPage === 'partenaires.html' ? 'active-page' : ''}">Partenaires</a></li>
       <li><a href="contact.html" class="nav-link ${currentPage === 'contact.html' ? 'active-page' : ''}">Contact</a></li>
     </ul>
     <div class="nav-actions">

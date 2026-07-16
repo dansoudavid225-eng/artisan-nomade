@@ -87,74 +87,63 @@ python3 -m http.server 5500
 
 ---
 
-## 🌐 Déployer sur GitHub + voir en ligne GRATUITEMENT
+## 🌐 Déploiement – Frontend Vercel + Backend Render + Base Supabase
 
-### Étape 1 – Créer le dépôt GitHub
+### 1. Créer le projet Supabase (base de données)
 
-```bash
-cd artisan-nomade-fullstack
+1. Va sur [supabase.com](https://supabase.com) → **New project**
+2. Choisis un nom (ex: `artisan-nomade`), note le mot de passe de la DB
+3. Une fois créé, va dans **Settings** → **API** et note :
+   - `Project URL` (ex: `https://xxx.supabase.co`)
+   - `Service Role Key` (secret, ne pas partager)
+4. Va dans **SQL Editor**, colle le contenu de `backend/supabase-schema.sql` et exécute
 
-# Initialiser Git
-git init
-git add .
-git commit -m "🎉 Artisan Nomade – version fullstack v5"
+### 2. Déployer le frontend sur Vercel
 
-# Créer le repo sur github.com (bouton "New repository")
-# Puis lier et pousser :
-git remote add origin https://github.com/TON_UTILISATEUR/artisan-nomade.git
-git branch -M main
-git push -u origin main
-```
+1. Va sur [vercel.com](https://vercel.com) → **Add New** → **Project**
+2. Importe le repo `dansoudavid225-eng/artisan-nomade`
+3. **Root Directory** : `frontend`
+4. **Framework Preset** : `Other`
+5. Clique **Deploy**
 
-### Étape 2 – Frontend sur GitHub Pages (GRATUIT)
+### 3. Déployer le backend sur Render
 
-⚠️ **Important** : GitHub Pages ne permet PAS de choisir un dossier personnalisé comme
-`/frontend` dans son interface (seulement `/ (root)` ou `/docs`). Comme ce projet est un
-monorepo (`frontend/` + `backend/`), on utilise un **workflow GitHub Actions** fourni dans
-`.github/workflows/deploy-pages.yml` : il publie automatiquement le contenu de `frontend/`
-à chaque push sur `main`.
-
-1. Aller sur ton repo GitHub → **Settings** → **Pages**
-2. Sous **Source**, choisir **GitHub Actions** (pas "Deploy from a branch")
-3. Pousse ton code (`git push`) → l'onglet **Actions** du repo lance le déploiement automatiquement
-4. Ton site sera en ligne sur :
-   `https://TON_UTILISATEUR.github.io/artisan-nomade`
-
-> Délai : 1-3 minutes après le push. Tu peux suivre la progression dans l'onglet **Actions**.
-
-### Étape 3 – Backend sur Render.com (GRATUIT)
-
-1. Créer un compte sur [render.com](https://render.com)
-2. **New** → **Web Service**
-3. Connecter ton repo GitHub → sélectionner `artisan-nomade`
-4. Configurer :
+1. Va sur [render.com](https://render.com) → **New** → **Web Service**
+2. Connecte ton repo GitHub `dansoudavid225-eng/artisan-nomade`
+3. Configure :
    - **Name** : `artisan-nomade-api`
    - **Root Directory** : `backend`
    - **Build Command** : `npm install`
    - **Start Command** : `npm start`
-5. Dans **Environment Variables**, ajouter :
+4. Dans **Environment Variables**, ajoute :
    ```
    NODE_ENV=production
-   FRONTEND_URL=https://TON_UTILISATEUR.github.io
+   SUPABASE_URL=https://TON_PROJECT.supabase.co
+   SUPABASE_SERVICE_KEY=TON_SERVICE_ROLE_KEY
+   FRONTEND_URL=https://artisan-nomade.vercel.app
    EMAIL_USER=artisannomade1@gmail.com
-   EMAIL_PASS=TON_MOT_DE_PASSE_APP
+   EMAIL_PASS=TON_MOT_DE_PASSE_APP_GMAIL
    ADMIN_EMAIL=artisannomade1@gmail.com
    WHATSAPP_NUMBER=2290197998546
    ADMIN_TOKEN=CHOISIS_UN_TOKEN_SOLIDE_ET_SECRET
    ```
-   ⚠️ Ne laisse jamais `ADMIN_TOKEN` vide en production : sans cette variable, le serveur
-   retombe sur une valeur par défaut connue (visible dans le code), ce qui rend la page
-   `/admin.html` accessible à n'importe qui.
-6. Cliquer **Create Web Service**
-7. Ton API sera sur : `https://artisan-nomade-api.onrender.com`
+5. Clique **Create Web Service**
+6. Ton API sera sur : `https://artisan-nomade-api.onrender.com`
 
-### Étape 4 – Connecter frontend → backend en prod
+### Étape 4 – Mettre à jour config.js
 
-Deux fichiers pointent vers l'URL de l'API et doivent être mis à jour avec ton URL Render :
-- `frontend/api.js` (repère le commentaire `← remplacer par votre URL Render`)
-- `frontend/admin.html` (repère le commentaire `ONRENDER_URL`)
+Le fichier `frontend/config.js` pointe déjà vers `https://artisan-nomade-api.onrender.com/api`.  
+Si Render te donne une autre URL, change-la dans ce fichier.
 
-Commit + push → GitHub Pages se met à jour automatiquement.
+### Étape 5 – Pousser sur GitHub
+
+```bash
+git add .
+git commit -m "Migration Supabase + Vercel"
+git push
+```
+
+Vercel détecte automatiquement le push et redéploie le frontend.
 
 ---
 
