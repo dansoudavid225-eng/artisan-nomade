@@ -8,7 +8,7 @@ const CONFIG = (function () {
   return {
     API_BASE_URL: isLocal
       ? 'http://localhost:3001/api'
-      : 'https://artisan-nomade-api.onrender.com/api',
+      : 'https://artisan-nomade.onrender.com/api',
     WHATSAPP_NUMBER: '2290197998546',
   };
 })();
