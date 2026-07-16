@@ -911,12 +911,123 @@ body {
   filter: brightness(0) invert(1);
 }
 
-/* Cercles couleurs – signification des perles */
+
 .color-dot {
   display: inline-block;
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  border: 3px solid rgba(255,255,255,0.15);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  border: 3px solid var(--or);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3), 0 0 20px rgba(201,168,76,0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+.color-dot:hover {
+  transform: scale(1.15);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.4), 0 0 30px rgba(201,168,76,0.3);
+}
+
+.service-icon .color-dot { border-color: var(--or) !important; }
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+/* Ripple effect */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(201,168,76,0.4);
+  transform: scale(0);
+  animation: ripple-anim 0.6s ease-out;
+  pointer-events: none;
+}
+@keyframes ripple-anim {
+  to { transform: scale(3); opacity: 0; }
+}
+
+/* Reveal variants */
+.reveal-up { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal-up.visible { opacity: 1; transform: translateY(0); }
+
+.reveal-scale { opacity: 0; transform: scale(0.85); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal-scale.visible { opacity: 1; transform: scale(1); }
+
+.reveal-left { opacity: 0; transform: translateX(-40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal-left.visible { opacity: 1; transform: translateX(0); }
+
+.reveal-right { opacity: 0; transform: translateX(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+/* Stagger animation pour les grilles */
+.services-grid > *, .products-grid > *, .team-grid > *, .culture-visual > * {
+  transition-delay: calc(var(--index, 0) * 80ms);
+}
+
+/* Hero content parallax fix */
+.page-hero, .hero {
+  will-change: transform;
+  overflow: hidden;
+}
+
+/* Smooth reveal original amélioré */
+.reveal { transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+
+/* Floating beads animation (hero bg) */
+@keyframes float-up {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.3; }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+}
+
+/* Product card hover glow */
+.product-card:hover, .service-card:hover, .team-card:hover {
+  box-shadow: 0 12px 40px rgba(201,168,76,0.15) !important;
+}
+
+/* Button magnetic base */
+.btn, .btn-primary, .btn-ghost {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+/* Animated title line */
+.title-line {
+  height: 2px;
+  width: 60px;
+  background: linear-gradient(90deg, var(--or), transparent);
+  margin: 16px auto 0;
+  animation: line-grow 1s ease-out forwards;
+  transform-origin: left;
+}
+@keyframes line-grow {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* Shimmer loading effect */
+.img-loading {
+  background: linear-gradient(90deg, var(--ivoire) 25%, var(--ivoire-dark) 50%, var(--ivoire) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Typing cursor animation pour les héros si besoin */
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Particles canvas sizing */
+.particles-canvas { width: 100% !important; height: 100% !important; }
+
+/* Scrollbar styling amélioré */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--ivoire); }
+::-webkit-scrollbar-thumb { background: var(--or); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--or-dark); }

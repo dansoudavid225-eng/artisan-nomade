@@ -361,4 +361,176 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // ============================================
+  // ANIMATIONS AVANCÉES
+  // ============================================
+
+  // ── 1. Smooth scroll pour tous les ancres ──
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href');
+      if (id === '#') return;
+      const target = document.querySelector(id);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // ── 2. Ripple effect sur les boutons ──
+  document.querySelectorAll('.btn, .btn-primary, .btn-ghost, .link-btn, .btn-primary-ghost').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      const ripple = document.createElement('span');
+      ripple.className = 'ripple';
+      const rect = this.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      ripple.style.width = ripple.style.height = size + 'px';
+      ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+      ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+      this.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 600);
+    });
+  });
+
+  // ── 3. Magnetic hover sur les boutons ──
+  document.querySelectorAll('.btn, .btn-primary, .btn-ghost').forEach(btn => {
+    btn.addEventListener('mousemove', function(e) {
+      const rect = this.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      this.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+    });
+    btn.addEventListener('mouseleave', function() {
+      this.style.transform = '';
+    });
+  });
+
+  // ── 4. 3D Tilt sur les cartes ──
+  document.querySelectorAll('.service-card, .product-card, .team-card, .culture-card').forEach(card => {
+    card.addEventListener('mousemove', function(e) {
+      const rect = this.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      this.style.transform = `perspective(1000px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`;
+    });
+    card.addEventListener('mouseleave', function() {
+      this.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg)';
+      this.style.transition = 'transform 0.5s ease';
+    });
+  });
+
+  // ── 5. Particules flottantes (perles) dans le hero ──
+  (function() {
+    const hero = document.querySelector('.hero, .page-hero');
+    if (!hero || hero.querySelector('.particles-canvas')) return;
+    const canvas = document.createElement('canvas');
+    canvas.className = 'particles-canvas';
+    canvas.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:0;';
+    hero.style.position = 'relative';
+    hero.prepend(canvas);
+    const ctx = canvas.getContext('2d');
+    let w, h, particles = [];
+
+    function resize() {
+      w = canvas.width = hero.offsetWidth;
+      h = canvas.height = hero.offsetHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const colors = ['#C9A84C', '#E2C47A', '#F5EDD8', '#8A7A6A'];
+    for (let i = 0; i < 20; i++) {
+      particles.push({
+        x: Math.random() * w, y: Math.random() * h,
+        r: 2 + Math.random() * 4,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: -0.2 - Math.random() * 0.3,
+        alpha: 0.2 + Math.random() * 0.3,
+      });
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, w, h);
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.y + p.r < 0) { p.y = h + p.r; p.x = Math.random() * w; }
+        if (p.x < -p.r) p.x = w + p.r;
+        if (p.x > w + p.r) p.x = -p.r;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.alpha + Math.sin(Date.now() * 0.002 + p.x) * 0.1;
+        ctx.fill();
+      });
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(animate);
+    }
+    animate();
+  })();
+
+  // ── 6. Parallax doux sur les sections hero ──
+  window.addEventListener('scroll', () => {
+    document.querySelectorAll('.page-hero, .hero').forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        const y = rect.top * 0.3;
+        const content = el.querySelector('.page-hero-content, .hero-content');
+        if (content) content.style.transform = `translateY(${y}px)`;
+      }
+    });
+  }, { passive: true });
+
+  // ── 7. Compteur amélioré avec easing ──
+  const countObservers = new Map();
+  document.querySelectorAll('.stat-number').forEach(el => {
+    const target = parseInt(el.getAttribute('data-target'));
+    el.textContent = '0';
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !countObservers.get(el)) {
+          countObservers.set(el, true);
+          let start = 0;
+          const duration = 2000;
+          const startTime = performance.now();
+          function tick(now) {
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const ease = 1 - Math.pow(1 - progress, 3);
+            start = Math.floor(ease * target);
+            el.textContent = start;
+            if (progress < 1) requestAnimationFrame(tick);
+            else el.textContent = target;
+          }
+          requestAnimationFrame(tick);
+        }
+      });
+    }, { threshold: 0.3 });
+    observer.observe(el);
+  });
+
+  // ── 8. Reveal amélioré avec différentes classes ──
+  function revealEnhanced() {
+    document.querySelectorAll('.reveal-up, .reveal-scale, .reveal-left, .reveal-right, .reveal').forEach((el, i) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 60) {
+        setTimeout(() => el.classList.add('visible'), i * 60);
+      }
+    });
+  }
+  window.addEventListener('scroll', revealEnhanced);
+  revealEnhanced();
+
+  // ── 9. Glow au survol des liens ──
+  document.querySelectorAll('a[href], .nav-link').forEach(el => {
+    el.addEventListener('mouseenter', function() {
+      this.style.textShadow = '0 0 12px rgba(201,168,76,0.4)';
+    });
+    el.addEventListener('mouseleave', function() {
+      this.style.textShadow = '';
+    });
+  });
+
 });
