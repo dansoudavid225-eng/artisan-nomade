@@ -905,8 +905,3 @@ body {
   .hero-title { font-size: 6rem !important; }
 }
 
-/* Logo navbar – fond transparent pour se fondre avec la navbar */
-.logo-img {
-  mix-blend-mode: multiply;
-  filter: brightness(0) invert(1);
-}
