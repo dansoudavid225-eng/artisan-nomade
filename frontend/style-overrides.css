@@ -910,3 +910,13 @@ body {
   mix-blend-mode: multiply;
   filter: brightness(0) invert(1);
 }
+
+/* Cercles couleurs – signification des perles */
+.color-dot {
+  display: inline-block;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.15);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
