@@ -905,8 +905,7 @@ body {
   .hero-title { font-size: 6rem !important; }
 }
 
-/* Logo navbar – filtre retiré : le nouveau logo a un fond blanc opaque,
-   il n'a plus besoin d'être transformé en silhouette blanche */
+/* Logo navbar */
 
 
 .color-dot {

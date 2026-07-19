@@ -109,13 +109,17 @@ ul { list-style: none; }
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
-  border: 1.5px solid rgba(201,168,76,0.4);
-  box-shadow: 0 0 0 3px rgba(201,168,76,0.15);
+  border: 2px solid var(--or);
+  box-shadow: 0 0 0 3px rgba(201,168,76,0.15), 0 2px 8px rgba(0,0,0,0.1);
   flex-shrink: 0;
-  background: #fff;
+  background: var(--bg-page);
+  padding: 4px;
   transition: box-shadow var(--transition), transform var(--transition);
+}
+[data-theme="dark"] .logo-img {
+  background: var(--surface);
 }
 .logo-img:hover {
   box-shadow: 0 0 0 4px rgba(201,168,76,0.35);
