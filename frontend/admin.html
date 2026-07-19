@@ -102,6 +102,80 @@
   .stat-card.alert{border-bottom-color:var(--danger);}
   .stat-card.alert .num{color:var(--danger);}
 
+  /* ---------- SIDEBAR ---------- */
+  .admin-shell{display:flex;min-height:100vh;width:100%;}
+  .sidebar{
+    width:250px;flex-shrink:0;background:linear-gradient(180deg,var(--nuit) 0%,var(--terre) 100%);
+    color:var(--ivoire);display:flex;flex-direction:column;padding:22px 0 16px;
+    position:sticky;top:0;height:100vh;overflow-y:auto;z-index:30;
+  }
+  .sidebar-brand{
+    display:flex;align-items:center;gap:12px;padding:0 20px 20px;
+    border-bottom:1px solid rgba(245,237,216,0.12);margin-bottom:14px;
+  }
+  .sidebar-brand img{width:38px;height:38px;border-radius:50%;object-fit:cover;background:#fff;flex-shrink:0;}
+  .sidebar-brand span{display:block;font-family:'Cormorant Garamond',serif;font-size:1.08rem;letter-spacing:0.5px;}
+  .sidebar-brand small{display:block;font-size:0.66rem;color:var(--or-light);letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
+  .sidebar-group-label{
+    padding:16px 20px 8px;font-size:0.66rem;letter-spacing:1.4px;color:var(--or-light);
+    text-transform:uppercase;opacity:0.85;
+  }
+  .sidebar-nav{display:flex;flex-direction:column;}
+  .sidebar .tab-btn, .sidebar .cms-tab-btn{
+    background:none;border:none;font-family:inherit;font-size:0.85rem;color:rgba(245,237,216,0.78);
+    padding:10px 20px;cursor:pointer;display:flex;align-items:center;gap:10px;text-align:left;width:100%;
+    border-left:3px solid transparent;border-bottom:none;margin-bottom:0;transition:background .15s,color .15s;
+  }
+  .sidebar .tab-btn i, .sidebar .cms-tab-btn i{width:16px;text-align:center;flex-shrink:0;font-size:0.85rem;}
+  .sidebar .tab-btn:hover, .sidebar .cms-tab-btn:hover{background:rgba(245,237,216,0.07);color:var(--ivoire);}
+  .sidebar .tab-btn.active, .sidebar .cms-tab-btn.active{
+    background:rgba(201,168,76,0.14);color:var(--or-light);border-left-color:var(--or);font-weight:600;
+  }
+  .sidebar .tab-btn .pill{
+    margin-left:auto;background:var(--danger);color:#fff;font-size:0.65rem;border-radius:10px;padding:1px 7px;line-height:1.4;
+  }
+  .sidebar-footer{margin-top:auto;padding:16px 20px 4px;font-size:0.68rem;color:rgba(245,237,216,0.4);}
+  .main-area{flex:1;min-width:0;}
+  .menu-toggle-btn{display:none;}
+  .sidebar-overlay{display:none;}
+
+  @media (max-width:900px){
+    .sidebar{
+      position:fixed;left:0;top:0;transform:translateX(-100%);transition:transform .25s ease;
+      box-shadow:0 0 40px rgba(0,0,0,0.3);
+    }
+    .admin-shell.sidebar-open .sidebar{transform:translateX(0);}
+    .sidebar-overlay{
+      display:none;position:fixed;inset:0;background:rgba(13,8,5,0.55);z-index:25;
+    }
+    .admin-shell.sidebar-open .sidebar-overlay{display:block;}
+    .menu-toggle-btn{display:flex;}
+  }
+
+  .dash-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:20px;flex-wrap:wrap;gap:8px;}
+  .dash-title{font-size:1.7rem;}
+  .dash-sub{color:var(--gris);font-size:0.85rem;margin-top:2px;}
+  .dash-date{font-size:0.8rem;color:var(--gris);text-transform:capitalize;}
+
+  .dash-charts-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:6px;}
+  @media (max-width:900px){.dash-charts-row{grid-template-columns:1fr;}}
+  .dash-chart-card{padding:24px;}
+
+  .donut-wrap{display:flex;gap:26px;align-items:center;flex-wrap:wrap;}
+  .donut{position:relative;width:150px;height:150px;border-radius:50%;flex-shrink:0;background:var(--ivoire-dark);}
+  .donut-center{
+    position:absolute;inset:16px;background:var(--blanc);border-radius:50%;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+  }
+  .donut-center span{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;color:var(--terre);line-height:1;}
+  .donut-center small{font-size:0.63rem;color:var(--gris);text-transform:uppercase;letter-spacing:0.5px;margin-top:3px;}
+  .donut-legend{display:flex;flex-direction:column;gap:9px;flex:1;min-width:150px;}
+  .donut-legend-item{display:flex;align-items:center;gap:8px;font-size:0.82rem;color:var(--terre-light);}
+  .donut-legend-item .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+  .donut-legend-item .legend-val{margin-left:auto;font-weight:600;color:var(--terre);}
+
+  .weekly-svg{width:100%;height:200px;display:block;}
+
   .tabs{display:flex;gap:6px;border-bottom:2px solid var(--ivoire-dark);margin-bottom:20px;flex-wrap:wrap;}
   .tab-btn{
     background:none;border:none;font-family:inherit;font-size:0.92rem;color:var(--gris);
@@ -393,42 +467,104 @@
 
 <!-- ============ TABLEAU DE BORD ============ -->
 <div id="dashboard">
-  <div class="topbar">
-    <div class="topbar-brand">
-      <img src="logo.png" alt="Artisan Nomade"/>
-      <div>
-        <span>Artisan Nomade</span>
-        <small>Espace administration</small>
+  <div class="admin-shell" id="admin-shell">
+
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- ============ SIDEBAR ============ -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <img src="logo.png" alt="Artisan Nomade"/>
+        <div>
+          <span>Artisan Nomade</span>
+          <small>Administration</small>
+        </div>
       </div>
-    </div>
-    <div class="topbar-actions">
-      <a href="index.html" class="icon-btn" title="Voir le site" target="_blank" rel="noopener"><i class="fas fa-arrow-up-right-from-square"></i></a>
-      <button class="icon-btn" id="refresh-btn" title="Actualiser"><i class="fas fa-rotate"></i></button>
-      <button class="icon-btn" id="logout-btn" title="Déconnexion"><i class="fas fa-power-off"></i></button>
-    </div>
-  </div>
 
-  <div class="wrap">
+      <nav class="sidebar-nav">
+        <div class="sidebar-group-label">Général</div>
+        <button class="tab-btn active" data-tab="tab-dashboard"><i class="fas fa-gauge-high"></i> Dashboard</button>
+        <button class="tab-btn" data-tab="tab-commandes"><i class="fas fa-box"></i> Commandes</button>
+        <button class="tab-btn" data-tab="tab-produits"><i class="fas fa-tags"></i> Produits</button>
+        <button class="tab-btn" data-tab="tab-evenements"><i class="fas fa-tent"></i> Événements</button>
+        <button class="tab-btn" data-tab="tab-messages"><i class="fas fa-envelope"></i> Messages <span class="pill" id="pill-messages" style="display:none;"></span></button>
+        <button class="tab-btn" data-tab="tab-newsletter"><i class="fas fa-users"></i> Newsletter</button>
 
-    <div class="stats-row">
-      <div class="stat-card"><div class="num" id="stat-total-commandes">–</div><div class="label">Commandes</div></div>
-      <div class="stat-card" id="stat-en-attente-card"><div class="num" id="stat-en-attente">–</div><div class="label">En attente</div></div>
-      <div class="stat-card" id="stat-messages-card"><div class="num" id="stat-messages-non-lus">–</div><div class="label">Messages non lus</div></div>
-      <div class="stat-card"><div class="num" id="stat-newsletter">–</div><div class="label">Abonnés newsletter</div></div>
-      <div class="stat-card"><div class="num" id="stat-produits">–</div><div class="label">Produits au catalogue</div></div>
-    </div>
+        <div class="sidebar-group-label">Modifier le site</div>
+        <button class="cms-tab-btn" data-cms-section="global"><i class="fas fa-globe"></i> Infos générales</button>
+        <button class="cms-tab-btn" data-cms-section="accueil"><i class="fas fa-home"></i> Accueil</button>
+        <button class="cms-tab-btn" data-cms-section="slider"><i class="fas fa-images"></i> Slider photos</button>
+        <button class="cms-tab-btn" data-cms-section="galerie"><i class="fas fa-th"></i> Galerie</button>
+        <button class="cms-tab-btn" data-cms-section="services"><i class="fas fa-concierge-bell"></i> Services</button>
+        <button class="cms-tab-btn" data-cms-section="boutique"><i class="fas fa-store"></i> Boutique</button>
+        <button class="cms-tab-btn" data-cms-section="contact"><i class="fas fa-address-card"></i> Contact</button>
+        <button class="cms-tab-btn" data-cms-section="faq"><i class="fas fa-circle-question"></i> FAQ</button>
+        <button class="cms-tab-btn" data-cms-section="apropos"><i class="fas fa-info-circle"></i> À propos</button>
+        <button class="cms-tab-btn" data-cms-section="equipe"><i class="fas fa-users"></i> Équipe</button>
+        <button class="cms-tab-btn" data-cms-section="culture"><i class="fas fa-landmark"></i> Culture</button>
+        <button class="cms-tab-btn" data-cms-section="avis"><i class="fas fa-star"></i> Avis clients</button>
+      </nav>
 
-    <div class="tabs">
-      <button class="tab-btn active" data-tab="tab-commandes"><i class="fas fa-box"></i> Commandes</button>
-      <button class="tab-btn" data-tab="tab-messages"><i class="fas fa-envelope"></i> Messages <span class="pill" id="pill-messages" style="display:none;"></span></button>
-      <button class="tab-btn" data-tab="tab-newsletter"><i class="fas fa-users"></i> Newsletter</button>
-      <button class="tab-btn" data-tab="tab-produits"><i class="fas fa-tags"></i> Produits</button>
-      <button class="tab-btn" data-tab="tab-evenements"><i class="fas fa-tent"></i> Événements</button>
-      <button class="tab-btn" data-tab="tab-contenu"><i class="fas fa-pen-to-square"></i> Contenu</button>
+      <div class="sidebar-footer">Artisan Nomade &middot; Porto-Novo</div>
+    </aside>
+
+    <!-- ============ ZONE PRINCIPALE ============ -->
+    <div class="main-area">
+      <div class="topbar">
+        <div class="topbar-brand">
+          <button class="icon-btn menu-toggle-btn" id="menu-toggle-btn" title="Menu"><i class="fas fa-bars"></i></button>
+          <img src="logo.png" alt="Artisan Nomade"/>
+          <div>
+            <span>Artisan Nomade</span>
+            <small>Espace administration</small>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <a href="index.html" class="icon-btn" title="Voir le site" target="_blank" rel="noopener"><i class="fas fa-arrow-up-right-from-square"></i></a>
+          <button class="icon-btn" id="refresh-btn" title="Actualiser"><i class="fas fa-rotate"></i></button>
+          <button class="icon-btn" id="logout-btn" title="Déconnexion"><i class="fas fa-power-off"></i></button>
+        </div>
+      </div>
+
+      <div class="wrap">
+
+    <!-- ---- DASHBOARD ---- -->
+    <div class="tab-panel" id="tab-dashboard">
+      <div class="dash-header">
+        <div>
+          <h2 class="dash-title">Tableau de bord</h2>
+          <p class="dash-sub">Vue d'ensemble de votre boutique</p>
+        </div>
+        <div class="dash-date" id="dash-date"></div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card"><div class="num" id="stat-total-commandes">–</div><div class="label">Commandes</div></div>
+        <div class="stat-card" id="stat-en-attente-card"><div class="num" id="stat-en-attente">–</div><div class="label">En attente</div></div>
+        <div class="stat-card" id="stat-messages-card"><div class="num" id="stat-messages-non-lus">–</div><div class="label">Messages non lus</div></div>
+        <div class="stat-card"><div class="num" id="stat-newsletter">–</div><div class="label">Abonnés newsletter</div></div>
+        <div class="stat-card"><div class="num" id="stat-produits">–</div><div class="label">Produits au catalogue</div></div>
+      </div>
+
+      <div class="dash-charts-row">
+        <div class="panel dash-chart-card">
+          <h3 class="cms-card-title" style="margin-bottom:18px;"><i class="fas fa-chart-pie"></i> Statut des commandes</h3>
+          <div class="donut-wrap">
+            <div class="donut" id="donut-chart">
+              <div class="donut-center"><span id="donut-total">0</span><small>commandes</small></div>
+            </div>
+            <div class="donut-legend" id="donut-legend"></div>
+          </div>
+        </div>
+        <div class="panel dash-chart-card">
+          <h3 class="cms-card-title" style="margin-bottom:18px;"><i class="fas fa-chart-line"></i> Commandes des 7 derniers jours</h3>
+          <svg id="weekly-chart-svg" class="weekly-svg" viewBox="0 0 560 200"></svg>
+        </div>
+      </div>
     </div>
 
     <!-- ---- COMMANDES ---- -->
-    <div class="tab-panel" id="tab-commandes">
+    <div class="tab-panel" id="tab-commandes" style="display:none;">
       <div class="toolbar">
         <div class="toolbar-filters">
           <input type="search" id="cmd-search" placeholder="Recherche : référence, nom, ville..."/>
@@ -620,21 +756,6 @@
 
     <!-- ---- CONTENU CMS ---- -->
     <div class="tab-panel" id="tab-contenu" style="display:none;">
-
-      <div class="cms-nav" id="cms-nav">
-        <button class="cms-tab-btn active" data-cms-section="global"><i class="fas fa-globe"></i> Infos générales</button>
-        <button class="cms-tab-btn" data-cms-section="accueil"><i class="fas fa-home"></i> Accueil</button>
-        <button class="cms-tab-btn" data-cms-section="slider"><i class="fas fa-images"></i> Slider photos</button>
-        <button class="cms-tab-btn" data-cms-section="galerie"><i class="fas fa-th"></i> Galerie</button>
-        <button class="cms-tab-btn" data-cms-section="services"><i class="fas fa-concierge-bell"></i> Services</button>
-        <button class="cms-tab-btn" data-cms-section="boutique"><i class="fas fa-store"></i> Boutique</button>
-        <button class="cms-tab-btn" data-cms-section="contact"><i class="fas fa-address-card"></i> Contact</button>
-        <button class="cms-tab-btn" data-cms-section="faq"><i class="fas fa-circle-question"></i> FAQ</button>
-        <button class="cms-tab-btn" data-cms-section="apropos"><i class="fas fa-info-circle"></i> À propos</button>
-        <button class="cms-tab-btn" data-cms-section="equipe"><i class="fas fa-users"></i> Équipe</button>
-        <button class="cms-tab-btn" data-cms-section="culture"><i class="fas fa-landmark"></i> Culture</button>
-        <button class="cms-tab-btn" data-cms-section="avis"><i class="fas fa-star"></i> Avis clients</button>
-      </div>
 
       <div class="cms-loading" id="cms-loading"><i class="fas fa-spinner fa-spin"></i> Chargement du contenu...</div>
 
@@ -855,6 +976,9 @@
       </div>
 
     </div>
+
+      </div>
+    </div>
   </div>
 </div>
 
@@ -933,7 +1057,7 @@
       // Sauvegarder aussi dans sessionStorage pour les rechargements de page
       sessionStorage.setItem(TOKEN_KEY, token);
       $('login-screen').style.display = 'none';
-      $('dashboard').style.display = 'block';
+      $('dashboard').style.display = 'flex';
       loadAll();
     } else {
       sessionStorage.removeItem(TOKEN_KEY);
@@ -1007,6 +1131,89 @@
 
     if (nonLus > 0) { $('pill-messages').style.display = 'inline-block'; $('pill-messages').textContent = nonLus; }
     else { $('pill-messages').style.display = 'none'; }
+
+    renderDashboardCharts();
+  }
+
+  // ---------- DASHBOARD : DATE + GRAPHIQUES ----------
+  if ($('dash-date')) {
+    $('dash-date').textContent = new Date().toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  }
+
+  const STATUT_COLORS = {
+    recu:'#4A7A8C', en_fabrication:'#C9A84C', pret:'#9B7A2E',
+    expedie:'#2C1A0E', livre:'#25D366', annule:'#C85A3A'
+  };
+
+  function renderDashboardCharts(){
+    // ---- Donut : statut des commandes ----
+    const counts = {};
+    Object.keys(STATUTS).forEach(s => counts[s] = 0);
+    DATA.commandes.forEach(c => { if (counts[c.statut] !== undefined) counts[c.statut]++; });
+    const total = DATA.commandes.length;
+
+    let gradientParts = [];
+    let acc = 0;
+    const legendHTML = [];
+    Object.keys(STATUTS).forEach(s => {
+      const val = counts[s];
+      if (!val) return;
+      const pct = total ? (val / total) * 100 : 0;
+      gradientParts.push(`${STATUT_COLORS[s]} ${acc}% ${acc + pct}%`);
+      acc += pct;
+      legendHTML.push(`<div class="donut-legend-item"><span class="dot" style="background:${STATUT_COLORS[s]}"></span>${STATUTS[s]}<span class="legend-val">${val}</span></div>`);
+    });
+
+    const donutEl = $('donut-chart');
+    if (donutEl) donutEl.style.background = total ? `conic-gradient(${gradientParts.join(',')})` : 'var(--ivoire-dark)';
+    if ($('donut-total')) $('donut-total').textContent = total;
+    if ($('donut-legend')) $('donut-legend').innerHTML = legendHTML.join('') || '<div style="font-size:0.8rem;color:var(--gris);">Aucune commande</div>';
+
+    // ---- Graphique hebdo : commandes des 7 derniers jours ----
+    const dayLabels = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+    const days = [];
+    const now = new Date();
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(now);
+      d.setDate(now.getDate() - i);
+      d.setHours(0,0,0,0);
+      days.push(d);
+    }
+    const values = days.map(d => {
+      const next = new Date(d);
+      next.setDate(d.getDate() + 1);
+      return DATA.commandes.filter(c => {
+        const cd = new Date(c.createdAt);
+        return cd >= d && cd < next;
+      }).length;
+    });
+    renderWeeklySvg(days.map(d => dayLabels[d.getDay()]), values);
+  }
+
+  function renderWeeklySvg(labels, values){
+    const svgEl = $('weekly-chart-svg');
+    if (!svgEl) return;
+    const w = 560, h = 200, padL = 30, padB = 26, padT = 14, padR = 14;
+    const max = Math.max(5, ...values);
+    const stepX = (w - padL - padR) / Math.max(1, labels.length - 1);
+    const scaleY = (h - padT - padB) / max;
+
+    const points = values.map((v, i) => [padL + i * stepX, h - padB - v * scaleY]);
+    const pathD = points.map((p, i) => (i === 0 ? 'M' : 'L') + p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
+
+    const yTicks = 5;
+    let gridSvg = '';
+    for (let t = 0; t <= yTicks; t++) {
+      const val = Math.round(max * t / yTicks);
+      const y = h - padB - val * scaleY;
+      gridSvg += `<line x1="${padL}" y1="${y}" x2="${w - padR}" y2="${y}" stroke="#E8D8B4" stroke-dasharray="3,4"/>`;
+      gridSvg += `<text x="${padL - 8}" y="${y + 4}" font-size="10" fill="#8A7A6A" text-anchor="end">${val}</text>`;
+    }
+    const dotsSvg = points.map(p => `<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="#C9A84C" stroke="#FDFAF4" stroke-width="2"/>`).join('');
+    const xLabelsSvg = labels.map((l, i) => `<text x="${padL + i * stepX}" y="${h - 6}" font-size="10" fill="#8A7A6A" text-anchor="middle">${l}</text>`).join('');
+
+    svgEl.setAttribute('viewBox', `0 0 ${w} ${h}`);
+    svgEl.innerHTML = `${gridSvg}<path d="${pathD}" fill="none" stroke="#C9A84C" stroke-width="2.5"/>${dotsSvg}${xLabelsSvg}`;
   }
 
   // ---------- COMMANDES ----------
@@ -1721,35 +1928,49 @@
     }
   });
 
-  // Navigation sous-onglets CMS
-  document.querySelectorAll('.cms-tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.cms-tab-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.cms-panel').forEach(p => p.style.display = 'none');
-      btn.classList.add('active');
-      const panel = $(`cms-${btn.dataset.cmsSection}`);
-      if (panel) panel.style.display = 'flex';
-    });
-  });
+  // ---------- NAVIGATION SIDEBAR (tab-btn "Général" + cms-tab-btn "Modifier le site") ----------
+  function closeMobileSidebar(){
+    $('admin-shell').classList.remove('sidebar-open');
+  }
 
-  // Charger le CMS au 1er clic sur l'onglet Contenu
-  document.querySelector('[data-tab="tab-contenu"]').addEventListener('click', () => {
-    if (!Object.keys(CMS_DATA).length) loadCMS();
-    document.querySelectorAll('.cms-panel').forEach(p => p.style.display = 'none');
-    const active = document.querySelector('.cms-tab-btn.active');
-    if (active) { const p = $(`cms-${active.dataset.cmsSection}`); if (p) p.style.display = 'flex'; }
-    else { if ($('cms-global')) $('cms-global').style.display = 'flex'; }
-  });
+  function showMainPanel(tabId){
+    document.querySelectorAll('.tab-panel').forEach(p => p.style.display = 'none');
+    const panel = $(tabId);
+    if (panel) panel.style.display = 'block';
+  }
 
-  // ---------- TABS ----------
+  function setActiveNav(activeBtn){
+    document.querySelectorAll('.sidebar .tab-btn, .sidebar .cms-tab-btn').forEach(b => b.classList.remove('active'));
+    if (activeBtn) activeBtn.classList.add('active');
+  }
+
+  // Liens généraux (Dashboard, Commandes, Produits, Événements, Messages, Newsletter)
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.tab-panel').forEach(p => p.style.display = 'none');
-      btn.classList.add('active');
-      $(btn.dataset.tab).style.display = 'block';
+      setActiveNav(btn);
+      showMainPanel(btn.dataset.tab);
+      closeMobileSidebar();
     });
   });
+
+  // Liens "Modifier le site" (sections CMS) — affichent le panneau Contenu + la bonne sous-section
+  document.querySelectorAll('.cms-tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      setActiveNav(btn);
+      showMainPanel('tab-contenu');
+      document.querySelectorAll('.cms-panel').forEach(p => p.style.display = 'none');
+      const panel = $(`cms-${btn.dataset.cmsSection}`);
+      if (panel) panel.style.display = 'flex';
+      if (!Object.keys(CMS_DATA).length) loadCMS();
+      closeMobileSidebar();
+    });
+  });
+
+  // ---------- MENU MOBILE ----------
+  $('menu-toggle-btn')?.addEventListener('click', () => {
+    $('admin-shell').classList.toggle('sidebar-open');
+  });
+  $('sidebar-overlay')?.addEventListener('click', closeMobileSidebar);
 
   // ---------- AUTO-LOGIN si token déjà enregistré (sessionStorage) ----------
   window.addEventListener('DOMContentLoaded', () => {
