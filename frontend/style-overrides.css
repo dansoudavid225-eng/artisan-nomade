@@ -905,11 +905,8 @@ body {
   .hero-title { font-size: 6rem !important; }
 }
 
-/* Logo navbar – fond transparent pour se fondre avec la navbar */
-.logo-img {
-  mix-blend-mode: multiply;
-  filter: brightness(0) invert(1);
-}
+/* Logo navbar – filtre retiré : le nouveau logo a un fond blanc opaque,
+   il n'a plus besoin d'être transformé en silhouette blanche */
 
 
 .color-dot {
