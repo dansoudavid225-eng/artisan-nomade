@@ -557,7 +557,7 @@
           </div>
         </div>
         <div class="panel dash-chart-card">
-          <h3 class="cms-card-title" style="margin-bottom:18px;"><i class="fas fa-chart-line"></i> Commandes des 7 derniers jours</h3>
+          <h3 class="cms-card-title" style="margin-bottom:18px;"><i class="fas fa-chart-line"></i> Commandes par mois</h3>
           <svg id="weekly-chart-svg" class="weekly-svg" viewBox="0 0 560 200"></svg>
         </div>
       </div>
@@ -1169,25 +1169,22 @@
     if ($('donut-total')) $('donut-total').textContent = total;
     if ($('donut-legend')) $('donut-legend').innerHTML = legendHTML.join('') || '<div style="font-size:0.8rem;color:var(--gris);">Aucune commande</div>';
 
-    // ---- Graphique hebdo : commandes des 7 derniers jours ----
-    const dayLabels = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
-    const days = [];
+    // ---- Graphique : commandes par mois (12 derniers mois) ----
+    const monthLabels = ['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Août','Sep','Oct','Nov','Déc'];
+    const months = [];
     const now = new Date();
-    for (let i = 6; i >= 0; i--) {
-      const d = new Date(now);
-      d.setDate(now.getDate() - i);
-      d.setHours(0,0,0,0);
-      days.push(d);
+    for (let i = 11; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      months.push(d);
     }
-    const values = days.map(d => {
-      const next = new Date(d);
-      next.setDate(d.getDate() + 1);
+    const values = months.map(m => {
+      const next = new Date(m.getFullYear(), m.getMonth() + 1, 1);
       return DATA.commandes.filter(c => {
         const cd = new Date(c.createdAt);
-        return cd >= d && cd < next;
+        return cd >= m && cd < next;
       }).length;
     });
-    renderWeeklySvg(days.map(d => dayLabels[d.getDay()]), values);
+    renderWeeklySvg(months.map(m => monthLabels[m.getMonth()]), values);
   }
 
   function renderWeeklySvg(labels, values){
