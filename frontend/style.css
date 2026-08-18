@@ -562,7 +562,7 @@ ul { list-style: none; }
   .avis-card { min-width: 100%; }
   .hero-title { font-size: clamp(2.5rem, 12vw, 4rem); }
   .hero-scroll { display: none; }
-
+  .hero-slide-label { display: none; }
   .culture-visual { grid-template-columns: 1fr 1fr; }
 }
 
