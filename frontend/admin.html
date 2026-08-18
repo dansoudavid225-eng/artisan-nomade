@@ -530,6 +530,20 @@
   }
   /* Sécurité : contenu jamais plus large que l'écran */
   .panel,.cms-card,.login-card,.dash-chart-card{max-width:100%;}
+  @media (max-width:480px){
+    /* LE bug : table min-width:760px + display:block = débordement horizontal */
+    table{min-width:0 !important;}
+    .table-scroll{overflow-x:auto;}
+    /* Champs et images ne peuvent pas déborder */
+    .cms-field,.cms-fields>*{min-width:0;}
+    .cms-field input,.cms-field textarea,.cms-field select,input,textarea,select{max-width:100%;}
+    img,svg,canvas{max-width:100%;height:auto;}
+    body{overflow-x:hidden;}
+    /* Textes longs coupés proprement (références, emails, adresses) */
+    .ref-code,.muted,td{word-break:break-word;}
+  }
+  /* Écran de connexion : hauteur réelle du mobile (pas de barre du navigateur coupée) */
+  #login-screen{min-height:100vh;min-height:100dvh;}
 </style>
 </head>
 <body>
