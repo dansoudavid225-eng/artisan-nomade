@@ -73,47 +73,11 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         loader.classList.add('hidden');
         document.body.style.overflow = 'auto';
-        revealVisible();
+        revealEnhanced();
       }, 1400);
     });
     document.body.style.overflow = 'hidden';
   }
-
-  // REVEAL ON SCROLL
-  function revealVisible() {
-    document.querySelectorAll('.reveal').forEach((el, i) => {
-      const rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight - 60) {
-        setTimeout(() => el.classList.add('visible'), i * 80);
-      }
-    });
-  }
-  window.addEventListener('scroll', revealVisible);
-  revealVisible();
-
-  // COMPTEUR STATS
-  const statNumbers = document.querySelectorAll('.stat-number');
-  let counted = false;
-  function countUp() {
-    if (counted || !statNumbers.length) return;
-    const statsEl = document.querySelector('.stats');
-    if (!statsEl) return;
-    if (statsEl.getBoundingClientRect().top < window.innerHeight) {
-      counted = true;
-      statNumbers.forEach(el => {
-        const target = parseInt(el.getAttribute('data-target'));
-        let current = 0;
-        const step = target / 120;
-        const timer = setInterval(() => {
-          current += step;
-          if (current >= target) { current = target; clearInterval(timer); }
-          el.textContent = Math.floor(current);
-        }, 16);
-      });
-    }
-  }
-  window.addEventListener('scroll', countUp);
-  countUp();
 
   // TABS
   document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -183,44 +147,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', () => { visibleCount = getVisible(); createDots(); goTo(0); });
   }
 
-  // FORMULAIRE CONTACT – Formspree AJAX
-  const form = document.getElementById('contact-form');
-  if (form) {
-    form.addEventListener('submit', async e => {
-      e.preventDefault();
-      const btn = document.getElementById('cf-submit');
-      const successEl = document.getElementById('form-success');
-      const errorEl = document.getElementById('form-error');
-      if (successEl) successEl.classList.remove('show');
-      if (errorEl) errorEl.classList.remove('show');
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours...';
-      btn.disabled = true;
-      try {
-        const data = new FormData(form);
-        const res = await fetch(form.action, {
-          method: 'POST',
-          body: data,
-          headers: { 'Accept': 'application/json' }
-        });
-        if (res.ok) {
-          if (successEl) successEl.classList.add('show');
-          form.reset();
-          setTimeout(() => successEl && successEl.classList.remove('show'), 6000);
-        } else {
-          throw new Error('Erreur serveur');
-        }
-      } catch {
-        if (errorEl) errorEl.classList.add('show');
-        setTimeout(() => errorEl && errorEl.classList.remove('show'), 6000);
-      } finally {
-        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Envoyer le message';
-        btn.disabled = false;
-      }
-    });
-  }
-
-  // BOUTONS WHATSAPP PRODUITS
-  document.querySelectorAll('.btn-whatsapp, .btn-add').forEach(btn => {
+  // BOUTONS WHATSAPP PRODUITS (le bouton "Personnaliser" ouvre la modale via api.js)
+  document.querySelectorAll('.btn-whatsapp').forEach(btn => {
     btn.addEventListener('click', e => {
       e.stopPropagation();
       const card = btn.closest('.product-card');
@@ -334,32 +262,6 @@ document.addEventListener('DOMContentLoaded', () => {
       img.style.cursor = 'zoom-in';
     });
   })();
-
-  // NEWSLETTER – soumission AJAX
-  const nlForm = document.getElementById('newsletter-form');
-  if (nlForm) {
-    nlForm.addEventListener('submit', async e => {
-      e.preventDefault();
-      const btn = document.getElementById('nl-btn');
-      const successEl = document.getElementById('nl-success');
-      btn.textContent = '...';
-      btn.disabled = true;
-      try {
-        const res = await fetch(nlForm.action, {
-          method: 'POST',
-          body: new FormData(nlForm),
-          headers: { Accept: 'application/json' }
-        });
-        if (res.ok) {
-          nlForm.style.display = 'none';
-          if (successEl) successEl.classList.add('show');
-        } else throw new Error();
-      } catch {
-        btn.textContent = 'Réessayer';
-        btn.disabled = false;
-      }
-    });
-  }
 
   // ============================================
   // ANIMATIONS AVANCÉES

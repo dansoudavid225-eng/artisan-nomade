@@ -488,6 +488,48 @@
     .sidebar{width:270px;}
     .login-card{padding:28px 18px;}
   }
+
+  /* ── FINITIONS MOBILE ADMIN ── */
+  @media (max-width:680px){
+    /* Boutons de toolbar pleine largeur */
+    .toolbar > .btn,.toolbar > button{width:100%;justify-content:center;}
+    .toolbar > .btn{order:2;}
+    .toolbar .toolbar-filters{order:1;width:100%;}
+    .toolbar-filters input[type="search"]{max-width:100%;}
+
+    /* Graphiques compactés */
+    .dash-chart-card{padding:16px;}
+    .donut{width:118px;height:118px;}
+    .donut-center{inset:12px;}
+    .donut-center span{font-size:1.4rem;}
+    .weekly-svg{height:170px;}
+
+    /* Éditeurs CMS pleine largeur */
+    .cms-fields{grid-template-columns:1fr;}
+    .cms-card{padding:16px;}
+
+    /* Topbar : plus compact, texte réduit */
+    .topbar{padding:10px 12px;}
+    .topbar-brand small{display:none;}
+    .topbar-brand span{font-size:1.05rem;}
+
+    /* Panneaux : marges confortables */
+    .panel{padding:14px;}
+    .wrap{padding:16px 12px 44px;}
+  }
+  @media (max-width:480px){
+    /* Tables en cartes : cellules pleine largeur */
+    tbody td{flex-direction:column;}
+    tbody td::before{min-width:0;width:100%;margin-bottom:2px;}
+    tbody td[data-label=""]::before{display:none;}
+    .row-actions .link-btn{min-width:0;width:100%;}
+  }
+  @media (max-width:360px){
+    .dash-title{font-size:1.2rem;}
+    .stat-card .num{font-size:1.3rem;}
+  }
+  /* Sécurité : contenu jamais plus large que l'écran */
+  .panel,.cms-card,.login-card,.dash-chart-card{max-width:100%;}
 </style>
 </head>
 <body>
