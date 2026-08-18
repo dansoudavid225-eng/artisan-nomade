@@ -112,12 +112,39 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
 
           <div class="modal-form-group">
-            <label for="mf-livraison">Mode de livraison *</label>
-            <select id="mf-livraison">
-              <option value="local">Retrait / Livraison Porto-Novo</option>
-              <option value="national">Livraison nationale – Bénin</option>
-              <option value="international">Livraison internationale</option>
-            </select>
+            <label>Mode de livraison *</label>
+            <div class="deliv-options" id="mf-deliv-options">
+              <label class="deliv-card" data-deliv="retrait">
+                <input type="radio" name="mf-deliv" value="retrait" checked/>
+                <span class="deliv-icone">🏪</span>
+                <span class="deliv-infos"><strong>Retrait à l'atelier</strong><small>Porto-Novo · gratuit</small></span>
+                <span class="deliv-delai">Aujourd'hui</span>
+              </label>
+              <label class="deliv-card" data-deliv="local">
+                <input type="radio" name="mf-deliv" value="local"/>
+                <span class="deliv-icone">🛵</span>
+                <span class="deliv-infos"><strong>Porto-Novo / Cotonou</strong><small>Livraison express · 1 000 FCFA</small></span>
+                <span class="deliv-delai">24h</span>
+              </label>
+              <label class="deliv-card" data-deliv="national">
+                <input type="radio" name="mf-deliv" value="national"/>
+                <span class="deliv-icone">🚚</span>
+                <span class="deliv-infos"><strong>Partout au Bénin</strong><small>Parakou, Abomey-Calavi… · 2 000 FCFA</small></span>
+                <span class="deliv-delai">48-72h</span>
+              </label>
+              <label class="deliv-card" data-deliv="international">
+                <input type="radio" name="mf-deliv" value="international"/>
+                <span class="deliv-icone">✈️</span>
+                <span class="deliv-infos"><strong>International</strong><small>Afrique, Europe, Canada · tarif selon destination</small></span>
+                <span class="deliv-delai">5-10 jours</span>
+              </label>
+            </div>
+            <div class="deliv-estim" id="mf-deliv-estim"></div>
+          </div>
+
+          <div class="modal-form-group" id="mf-adresse-wrap" style="display:none;">
+            <label for="mf-adresse">Adresse de livraison *</label>
+            <input id="mf-adresse" type="text" placeholder="Quartier, rue, point de repère..." autocomplete="street-address"/>
           </div>
 
           <div class="modal-form-group">
@@ -144,6 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
           Notez cette référence pour suivre votre commande.<br>
           Nous vous contacterons très prochainement via WhatsApp.
         </p>
+        <p id="modal-success-deliv" style="font-size:0.82rem;color:#8A7A6A;margin-top:10px;line-height:1.6;"></p>
         <a href="https://wa.me/2290197998546" class="btn-order-api" target="_blank" rel="noopener" style="margin-top:24px;">
           <i class="fab fa-whatsapp"></i> WhatsApp
         </a>
@@ -161,12 +189,50 @@ document.addEventListener('DOMContentLoaded', () => {
   // ─── État de la modale ───
   let currentProduct = null;
 
+  // ─── Sélecteur de livraison dynamique ───
+  const DELIV_MODES = {
+    retrait:       { label: 'Retrait à l\'atelier (Porto-Novo)', frais: 'Gratuit',     jours: 0 },
+    local:         { label: 'Livraison Porto-Novo / Cotonou',    frais: '1 000 FCFA',  jours: 1 },
+    national:      { label: 'Livraison nationale (Bénin)',       frais: '2 000 FCFA',  jours: 3 },
+    international: { label: 'Livraison internationale',          frais: 'selon destination', jours: 7 },
+  };
+  const fmtDate = d => new Intl.DateTimeFormat('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }).format(d);
+
+  function dateEstimee(mode) {
+    const d = new Date();
+    d.setDate(d.getDate() + DELIV_MODES[mode].jours);
+    return fmtDate(d);
+  }
+
+  function delivActuel() {
+    const radio = document.querySelector('input[name="mf-deliv"]:checked');
+    return (radio && DELIV_MODES[radio.value]) ? radio.value : 'retrait';
+  }
+
+  function majLivraison() {
+    const mode = delivActuel();
+    const info = DELIV_MODES[mode];
+    const adresseWrap = document.getElementById('mf-adresse-wrap');
+    if (adresseWrap) adresseWrap.style.display = mode === 'retrait' ? 'none' : '';
+    const estim = document.getElementById('mf-deliv-estim');
+    if (estim) {
+      estim.innerHTML = mode === 'retrait'
+        ? '<i class="fas fa-store"></i> Disponible <strong>aujourd\'hui</strong> à l\'atelier – ' + info.frais
+        : '<i class="fas fa-truck-fast"></i> Livraison estimée : <strong>' + dateEstimee(mode) + '</strong> · ' + info.frais;
+    }
+  }
+
+  document.getElementById('mf-deliv-options').addEventListener('change', majLivraison);
+
   function openModal(productName, productId) {
     currentProduct = { nom: productName, id: productId || '' };
     document.getElementById('modal-product-name').textContent = productName ? `– ${productName}` : '';
     document.getElementById('modal-form-wrap').style.display = '';
     document.getElementById('modal-success').style.display = 'none';
     document.getElementById('modal-error').style.display = 'none';
+    const radioRetrait = document.querySelector('input[name="mf-deliv"][value="retrait"]');
+    if (radioRetrait) radioRetrait.checked = true;
+    majLivraison();
     document.getElementById('order-modal').classList.add('open');
     document.body.style.overflow = 'hidden';
     setTimeout(() => document.getElementById('mf-nom').focus(), 400);
@@ -205,7 +271,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const email   = document.getElementById('mf-email').value.trim();
     const ville   = document.getElementById('mf-ville').value.trim();
     const pays    = document.getElementById('mf-pays').value;
-    const livraison = document.getElementById('mf-livraison').value;
+    const livraison = delivActuel();
+    const adresse = document.getElementById('mf-adresse').value.trim();
     const message = document.getElementById('mf-message').value.trim();
     const errEl   = document.getElementById('modal-error');
     const errTxt  = document.getElementById('modal-error-text');
@@ -216,6 +283,11 @@ document.addEventListener('DOMContentLoaded', () => {
       errEl.style.display = '';
       return;
     }
+    if (livraison !== 'retrait' && !adresse) {
+      errTxt.textContent = 'Merci d\'indiquer votre adresse de livraison.';
+      errEl.style.display = '';
+      return;
+    }
     errEl.style.display = 'none';
 
     const btn = document.getElementById('modal-submit');
@@ -223,7 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi en cours...';
 
     const result = await API.commander({
-      client: { nom, telephone: tel, email, ville, pays },
+      client: { nom, telephone: tel, email, ville, pays, adresse: livraison === 'retrait' ? '' : adresse },
       produits: [{ nom: currentProduct.nom, id: currentProduct.id, quantite: 1 }],
       message,
       livraison,
@@ -235,6 +307,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (result.ok && result.data.success) {
       document.getElementById('modal-form-wrap').style.display = 'none';
       document.getElementById('modal-ref-code').textContent = result.data.reference;
+      const delivLine = document.getElementById('modal-success-deliv');
+      if (delivLine) {
+        delivLine.innerHTML = livraison === 'retrait'
+          ? '<i class="fas fa-store"></i> Retrait à l\'atelier (Porto-Novo) – disponible aujourd\'hui'
+          : '<i class="fas fa-truck-fast"></i> ' + DELIV_MODES[livraison].label + ' – estimée le <strong>' + dateEstimee(livraison) + '</strong>';
+      }
       document.getElementById('modal-success').style.display = '';
     } else {
       const msg = result.data?.errors?.[0]?.msg || result.data?.message || 'Erreur. Réessayez ou contactez via WhatsApp.';

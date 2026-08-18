@@ -1,145 +1,324 @@
 {
-  "global": {
-    "nom_boutique": "Artisan Nomade",
-    "logo_url": "logo.png",
-    "slogan": "Bijoux & Accessoires Artisanaux",
-    "telephone": "+229 01 97 99 85 46",
-    "whatsapp": "2290197998546",
-    "email": "artisannomade1@gmail.com",
-    "adresse": "Porto-Novo Oganla, Bénin",
-    "horaires": "Lun – Sam : 8h00 – 18h00",
-    "facebook": "https://www.facebook.com/artisannomade",
-    "instagram": "https://www.instagram.com/artisannomade",
-    "tiktok": "",
-    "copyright": "© 2025 Artisan Nomade · Porto-Novo, Bénin"
+ "global": {
+  "nom_boutique": "Artisan Nomade",
+  "logo_url": "logo.png",
+  "slogan": "Bijoux & Accessoires Artisanaux",
+  "telephone": "+229 01 97 99 85 46",
+  "whatsapp": "2290197998546",
+  "email": "artisannomade1@gmail.com",
+  "adresse": "Porto-Novo Oganla, Bénin",
+  "horaires": "Lun – Sam : 8h00 – 18h00",
+  "facebook": "https://www.facebook.com/artisannomade",
+  "instagram": "https://www.instagram.com/artisannomade",
+  "tiktok": "",
+  "copyright": "© 2025 Artisan Nomade · Porto-Novo, Bénin"
+ },
+ "accueil": {
+  "hero_brand": "Porto-Novo, Bénin · Depuis 2010",
+  "hero_titre_1": "L'Art des",
+  "hero_titre_em": "Perles",
+  "hero_titre_2": "Africaines",
+  "hero_desc": "Bijoux artisanaux tissés à la main,\nporteurs d'histoire et de culture.",
+  "hero_btn_1": "Découvrir la boutique",
+  "hero_btn_2": "Notre histoire",
+  "stat_1_val": "15",
+  "stat_1_unite": "ans",
+  "stat_1_label": "d'expertise artisanale",
+  "stat_2_val": "500",
+  "stat_2_unite": "+",
+  "stat_2_label": "créations uniques",
+  "stat_3_val": "30",
+  "stat_3_unite": "+",
+  "stat_3_label": "pays livrés",
+  "galerie_tag": "Galerie",
+  "galerie_titre": "Nos créations en images",
+  "selection_tag": "Nos créations",
+  "selection_titre": "Sélection du moment",
+  "selection_btn": "Voir toute la boutique",
+  "services_tag": "Simple & sécurisé",
+  "services_titre": "Commander chez nous",
+  "avis_tag": "Ils nous font confiance",
+  "avis_titre": "Avis Clients",
+  "newsletter_tag": "Restez connecté",
+  "newsletter_titre": "Rejoignez notre liste VIP",
+  "newsletter_desc": "Nouveautés, offres exclusives et coulisses de l'atelier – directement dans votre boîte mail."
+ },
+ "slides": [
+  {
+   "image": "slide1.jpg",
+   "tag": "Parure complète",
+   "titre": "Parure Royale Bleue & Or",
+   "sous_titre": "Collier multicouches, bracelet & boucles – cristaux bleus et dorures"
   },
-  "accueil": {
-    "hero_brand": "Porto-Novo, Bénin · Depuis 2010",
-    "hero_titre_1": "L'Art des",
-    "hero_titre_em": "Perles",
-    "hero_titre_2": "Africaines",
-    "hero_desc": "Bijoux artisanaux tissés à la main,\nporteurs d'histoire et de culture.",
-    "hero_btn_1": "Découvrir la boutique",
-    "hero_btn_2": "Notre histoire",
-    "stat_1_val": "15", "stat_1_unite": "ans", "stat_1_label": "d'expertise artisanale",
-    "stat_2_val": "500", "stat_2_unite": "+", "stat_2_label": "créations uniques",
-    "stat_3_val": "30", "stat_3_unite": "+", "stat_3_label": "pays livrés",
-    "galerie_tag": "Galerie",
-    "galerie_titre": "Nos créations en images",
-    "selection_tag": "Nos créations",
-    "selection_titre": "Sélection du moment",
-    "selection_btn": "Voir toute la boutique",
-    "services_tag": "Simple & sécurisé",
-    "services_titre": "Commander chez nous",
-    "avis_tag": "Ils nous font confiance",
-    "avis_titre": "Avis Clients",
-    "newsletter_tag": "Restez connecté",
-    "newsletter_titre": "Rejoignez notre liste VIP",
-    "newsletter_desc": "Nouveautés, offres exclusives et coulisses de l'atelier – directement dans votre boîte mail."
+  {
+   "image": "slide2.jpg",
+   "tag": "Collection corail",
+   "titre": "Grand Collier Corail Doré",
+   "sous_titre": "3 rangs de perles corail naturelles et sphères dorées"
   },
-  "slides": [
-    { "image": "slide1.jpg", "tag": "Parure complète", "titre": "Parure Royale Bleue & Or", "sous_titre": "Collier multicouches, bracelet & boucles – cristaux bleus et dorures" },
-    { "image": "slide2.jpg", "tag": "Collection corail", "titre": "Grand Collier Corail Doré", "sous_titre": "3 rangs de perles corail naturelles et sphères dorées" },
-    { "image": "b5.jpg", "tag": "Boucles d'oreilles", "titre": "Boucles Grappes de Nacre", "sous_titre": "Cascade de perles blanches multi-tailles, élégance intemporelle" },
-    { "image": "Slide4.jpg", "tag": "Bracelets cristal", "titre": "Collection Éclats de Couleurs", "sous_titre": "6 coloris disponibles – noir, vert, rouge, bleu, turquoise, cristal" },
-    { "image": "slide5.jpg", "tag": "Parure tissée", "titre": "Parure Ivoire Tissée", "sous_titre": "Collier, bracelet et boucles – perles blanches entièrement tissées main" },
-    { "image": "photos/p29.jpg", "tag": "Accessoires kente", "titre": "Ensemble Kente Africain", "sous_titre": "Sac cabas, chapeau de soleil et sandales – tissu kente traditionnel" }
-  ],
-  "galerie": [
-    { "image": "photos/p17.jpg", "caption": "Parure Royale Bleue & Or" },
-    { "image": "photos/p12.jpg", "caption": "Grand Collier Corail Doré" },
-    { "image": "photos/p05.jpg", "caption": "Boucles Grappes de Nacre" },
-    { "image": "photos/p04.jpg", "caption": "Parure Perles & Rubis" },
-    { "image": "photos/p11.jpg", "caption": "Collection Éclats de Couleurs" },
-    { "image": "photos/p13.jpg", "caption": "Bracelet Amour Rouge & Or" },
-    { "image": "photos/p16.jpg", "caption": "Parure Ivoire Tissée" },
-    { "image": "photos/p21.jpg", "caption": "Collection Boucles Cristal" },
-    { "image": "photos/p29.jpg", "caption": "Ensemble Kente" },
-    { "image": "photos/p14.jpg", "caption": "Parure Or & Nacre" }
-  ],
-  "services": [
-    { "icone": "fas fa-mobile-alt", "titre": "Mobile Money", "texte": "Paiement sécurisé via MTN, Moov et autres opérateurs" },
-    { "icone": "fas fa-truck", "titre": "Livraison locale", "texte": "Livraison rapide à Porto-Novo et dans tout le Bénin" },
-    { "icone": "fas fa-globe", "titre": "Livraison internationale", "texte": "Expédition dans le monde entier avec suivi" },
-    { "icone": "fas fa-paint-brush", "titre": "Personnalisation", "texte": "Toutes nos créations sont personnalisables" }
-  ],
-  "boutique": {
-    "hero_tag": "Notre collection",
-    "hero_titre": "Notre Boutique",
-    "hero_btn_1": "Voir les créations",
-    "hero_btn_2": "Commander"
+  {
+   "image": "b5.jpg",
+   "tag": "Boucles d'oreilles",
+   "titre": "Boucles Grappes de Nacre",
+   "sous_titre": "Cascade de perles blanches multi-tailles, élégance intemporelle"
   },
-  "contact": {
-    "hero_tag": "Parlons-nous",
-    "hero_titre_em": "Contactez",
-    "hero_titre_suite": "-nous",
-    "section_tag": "Nos coordonnées",
-    "section_titre": "On est là pour vous",
-    "faq_tag": "Questions fréquentes",
-    "faq_titre": "FAQ"
+  {
+   "image": "Slide4.jpg",
+   "tag": "Bracelets cristal",
+   "titre": "Collection Éclats de Couleurs",
+   "sous_titre": "6 coloris disponibles – noir, vert, rouge, bleu, turquoise, cristal"
   },
-  "faq": [
-    { "question": "Comment passer une commande ?", "reponse": "Contactez-nous via WhatsApp ou le formulaire ci-dessus. Nous vous guidons dans le choix et la personnalisation de votre création." },
-    { "question": "Quel est le délai de fabrication ?", "reponse": "Selon la complexité de la pièce, le délai varie de quelques jours à 4 semaines. Nous vous informons dès le devis." },
-    { "question": "Livrez-vous à l'international ?", "reponse": "Oui, nous livrons dans plus de 30 pays. Les frais et délais varient selon la destination. Contactez-nous pour un devis." },
-    { "question": "Comment fonctionne le paiement ?", "reponse": "Nous acceptons le paiement par Mobile Money (MTN, Moov). Un acompte est demandé à la commande, le solde à la livraison." },
-    { "question": "Comment suivre ma commande ?", "reponse": "Gardez la référence reçue par WhatsApp et écrivez-nous directement en l'indiquant. On vous donne l'avancement en quelques minutes." }
-  ],
-  "apropos": {
-    "hero_tag": "Qui sommes-nous",
-    "hero_titre_em": "À propos",
-    "histoire_tag": "Notre histoire",
-    "histoire_titre": "Artisan Nomade, 15 ans de passion",
-    "histoire_texte_1": "Fondée en 2010 à Porto-Novo Oganla au Bénin, Artisan Nomade est née de la passion profonde d'une artisane pour les perles traditionnelles de son pays. Ce qui a commencé comme un modeste atelier familial est devenu au fil des années une marque reconnue et célébrée à l'international.",
-    "histoire_texte_2": "Aujourd'hui, nos créations voyagent dans plus de 30 pays à travers le monde, portant avec elles les couleurs, les symboles et l'âme de la culture béninoise.",
-    "histoire_texte_3": "Notre mission est simple : préserver et valoriser les techniques ancestrales de joaillerie en perles, tout en les adaptant aux goûts contemporains.",
-    "histoire_image": "photos/p04.jpg",
-    "equipe_tag": "Les artisanes",
-    "equipe_titre": "Notre équipe"
+  {
+   "image": "slide5.jpg",
+   "tag": "Parure tissée",
+   "titre": "Parure Ivoire Tissée",
+   "sous_titre": "Collier, bracelet et boucles – perles blanches entièrement tissées main"
   },
-  "valeurs": [
-    { "titre": "Authenticité", "texte": "Matériaux naturels, techniques traditionnelles transmises de génération en génération." },
-    { "titre": "Excellence", "texte": "Chaque pièce est soigneusement contrôlée avant d'être livrée à nos clients." },
-    { "titre": "Durabilité", "texte": "Nous privilégions des matériaux locaux et des pratiques respectueuses de l'environnement." },
-    { "titre": "Unicité", "texte": "Aucune création n'est identique. Chaque bijou est une pièce unique." }
-  ],
-  "equipe": [
-    { "nom": "Fondatrice", "role": "Artisan Nomade", "photo": "", "description": "" },
-    { "nom": "Artisane principale", "role": "Joaillerie en perles", "photo": "", "description": "" },
-    { "nom": "Créatrice textile", "role": "Sacs & accessoires", "photo": "", "description": "" },
-    { "nom": "Responsable export", "role": "Livraisons internationales", "photo": "", "description": "" }
-  ],
-  "culture": {
-    "hero_tag": "Patrimoine & traditions",
-    "hero_titre_em": "Histoire",
-    "hero_titre_suite": "& Culture",
-    "intro_tag": "Notre âme",
-    "intro_titre": "La Perle, bien plus qu'un bijou",
-    "intro_texte": "Depuis 2010, Artisan Nomade perpétue l'art ancestral de la joaillerie en perles du Bénin. Chaque création raconte une histoire, un symbole, une tradition transmise de génération en génération à Porto-Novo.",
-    "tab_histoire": "Fondée en 2010 à Porto-Novo, Artisan Nomade est née de la passion d'une artisane pour les perles traditionnelles béninoises. Ce qui a commencé comme un atelier familial est devenu une marque reconnue à l'international, livrant ses créations dans plus de 30 pays.",
-    "tab_perles": "Les perles utilisées par Artisan Nomade sont sélectionnées selon des traditions séculaires. Chaque couleur, chaque forme possède une signification spirituelle et culturelle propre à la civilisation du Bénin.",
-    "tab_fabrication": "Chaque pièce est entièrement réalisée à la main par nos artisanes qualifiées. Du choix des perles au tissage final, le processus peut prendre de quelques heures à plusieurs semaines.",
-    "symbolisme_tag": "Symbolisme",
-    "symbolisme_titre": "La signification des perles",
-    "fabrication_tag": "Savoir-faire",
-    "fabrication_titre": "Le processus de fabrication"
+  {
+   "image": "photos/p29.jpg",
+   "tag": "Accessoires kente",
+   "titre": "Ensemble Kente Africain",
+   "sous_titre": "Sac cabas, chapeau de soleil et sandales – tissu kente traditionnel"
+  }
+ ],
+ "galerie": [
+  {
+   "image": "photos/p17.jpg",
+   "caption": "Parure Royale Bleue & Or"
   },
-  "partenaires": {
-    "hero_tag": "Écosystème artisanal",
-    "hero_titre_em": "Nos",
-    "hero_titre_suite": " Partenaires",
-    "section_tag": "Ils nous accompagnent",
-    "section_titre_html": "Nos fournisseurs <em>& alliés</em>"
+  {
+   "image": "photos/p12.jpg",
+   "caption": "Grand Collier Corail Doré"
   },
-  "partenaires_liste": [
-    { "nom": "Perles du Bénin", "description": "Fournisseur principal de perles naturelles et traditionnelles", "badge": "Fournisseur", "logo": "", "lien": "" },
-    { "nom": "Atelier Textile Oganla", "description": "Artisan textile traditionnel – sacs et accessoires en tissu", "badge": "Artisan", "logo": "", "lien": "" },
-    { "nom": "Éco Matériaux Bénin", "description": "Fournisseur de matériaux naturels et durables issus du Bénin", "badge": "Fournisseur", "logo": "", "lien": "" }
-  ],
-  "avis": [
-    { "texte": "Des bijoux d'une beauté exceptionnelle. La livraison a été rapide et l'emballage soigné. Je recommande vivement !", "auteur": "Marie D.", "origine": "France", "note": 5 },
-    { "texte": "Artisan Nomade incarne parfaitement la richesse de la culture béninoise. Mes bracelets sont magnifiques !", "auteur": "Kofi A.", "origine": "Ghana", "note": 5 },
-    { "texte": "J'ai commandé un sac personnalisé et le résultat dépasse toutes mes attentes. Un vrai bijou de savoir-faire !", "auteur": "Sophie L.", "origine": "Canada", "note": 5 },
-    { "texte": "Service client exceptionnel, produits authentiques. J'achète régulièrement pour offrir en cadeau.", "auteur": "Ama B.", "origine": "Bénin", "note": 5 }
-  ]
+  {
+   "image": "photos/p05.jpg",
+   "caption": "Boucles Grappes de Nacre"
+  },
+  {
+   "image": "photos/p04.jpg",
+   "caption": "Parure Perles & Rubis"
+  },
+  {
+   "image": "photos/p11.jpg",
+   "caption": "Collection Éclats de Couleurs"
+  },
+  {
+   "image": "photos/p13.jpg",
+   "caption": "Bracelet Amour Rouge & Or"
+  },
+  {
+   "image": "photos/p16.jpg",
+   "caption": "Parure Ivoire Tissée"
+  },
+  {
+   "image": "photos/p21.jpg",
+   "caption": "Collection Boucles Cristal"
+  },
+  {
+   "image": "photos/p29.jpg",
+   "caption": "Ensemble Kente"
+  },
+  {
+   "image": "photos/p14.jpg",
+   "caption": "Parure Or & Nacre"
+  }
+ ],
+ "services": [
+  {
+   "icone": "fas fa-mobile-alt",
+   "titre": "Mobile Money",
+   "texte": "Payez en un clic par MTN MoMo, Moov Money ou Celtiis — à la commande ou à la livraison."
+  },
+  {
+   "icone": "fas fa-truck",
+   "titre": "Livraison locale",
+   "texte": "En 24 h à Porto-Novo & Cotonou, 48–72 h partout au Bénin. Commande avant midi ? Livrée le jour même !"
+  },
+  {
+   "icone": "fas fa-globe",
+   "titre": "Livraison internationale",
+   "texte": "Europe, Amériques, Afrique… Expédition sous 3–5 jours avec numéro de suivi et emballage cadeau."
+  },
+  {
+   "icone": "fas fa-paint-brush",
+   "titre": "Personnalisation",
+   "texte": "Tissé main à votre image : couleurs, longueur, initiales. Dites-nous tout, on s'en occupe !"
+  }
+ ],
+ "boutique": {
+  "hero_tag": "Notre collection",
+  "hero_titre": "Notre Boutique",
+  "hero_btn_1": "Voir les créations",
+  "hero_btn_2": "Commander"
+ },
+ "contact": {
+  "hero_tag": "Parlons-nous",
+  "hero_titre_em": "Contactez",
+  "hero_titre_suite": "-nous",
+  "section_tag": "Nos coordonnées",
+  "section_titre": "On est là pour vous",
+  "faq_tag": "Questions fréquentes",
+  "faq_titre": "FAQ"
+ },
+ "faq": [
+  {
+   "question": "Comment passer une commande ?",
+   "reponse": "Contactez-nous via WhatsApp ou le formulaire ci-dessus. Nous vous guidons dans le choix et la personnalisation de votre création."
+  },
+  {
+   "question": "Quel est le délai de fabrication ?",
+   "reponse": "Selon la complexité de la pièce, le délai varie de quelques jours à 4 semaines. Nous vous informons dès le devis."
+  },
+  {
+   "question": "Livrez-vous à l'international ?",
+   "reponse": "Oui, nous livrons dans plus de 30 pays. Les frais et délais varient selon la destination. Contactez-nous pour un devis."
+  },
+  {
+   "question": "Comment fonctionne le paiement ?",
+   "reponse": "Nous acceptons le paiement par Mobile Money (MTN, Moov). Un acompte est demandé à la commande, le solde à la livraison."
+  },
+  {
+   "question": "Comment suivre ma commande ?",
+   "reponse": "Gardez la référence reçue par WhatsApp et écrivez-nous directement en l'indiquant. On vous donne l'avancement en quelques minutes."
+  }
+ ],
+ "apropos": {
+  "hero_tag": "Qui sommes-nous",
+  "hero_titre_em": "À propos",
+  "histoire_tag": "Notre histoire",
+  "histoire_titre": "Artisan Nomade, 15 ans de passion",
+  "histoire_texte_1": "Fondée en 2010 à Porto-Novo Oganla au Bénin, Artisan Nomade est née de la passion profonde d'une artisane pour les perles traditionnelles de son pays. Ce qui a commencé comme un modeste atelier familial est devenu au fil des années une marque reconnue et célébrée à l'international.",
+  "histoire_texte_2": "Aujourd'hui, nos créations voyagent dans plus de 30 pays à travers le monde, portant avec elles les couleurs, les symboles et l'âme de la culture béninoise.",
+  "histoire_texte_3": "Notre mission est simple : préserver et valoriser les techniques ancestrales de joaillerie en perles, tout en les adaptant aux goûts contemporains.",
+  "histoire_image": "photos/p04.jpg",
+  "equipe_tag": "Les artisanes",
+  "equipe_titre": "Notre équipe"
+ },
+ "valeurs": [
+  {
+   "titre": "Authenticité",
+   "texte": "Matériaux naturels, techniques traditionnelles transmises de génération en génération."
+  },
+  {
+   "titre": "Excellence",
+   "texte": "Chaque pièce est soigneusement contrôlée avant d'être livrée à nos clients."
+  },
+  {
+   "titre": "Durabilité",
+   "texte": "Nous privilégions des matériaux locaux et des pratiques respectueuses de l'environnement."
+  },
+  {
+   "titre": "Unicité",
+   "texte": "Aucune création n'est identique. Chaque bijou est une pièce unique."
+  }
+ ],
+ "equipe": [
+  {
+   "nom": "Fondatrice",
+   "role": "Artisan Nomade",
+   "photo": "",
+   "description": ""
+  },
+  {
+   "nom": "Artisane principale",
+   "role": "Joaillerie en perles",
+   "photo": "",
+   "description": ""
+  },
+  {
+   "nom": "Créatrice textile",
+   "role": "Sacs & accessoires",
+   "photo": "",
+   "description": ""
+  },
+  {
+   "nom": "Responsable export",
+   "role": "Livraisons internationales",
+   "photo": "",
+   "description": ""
+  }
+ ],
+ "culture": {
+  "hero_tag": "Patrimoine & traditions",
+  "hero_titre_em": "Histoire",
+  "hero_titre_suite": "& Culture",
+  "intro_tag": "Notre âme",
+  "intro_titre": "La Perle, bien plus qu'un bijou",
+  "intro_texte": "Depuis 2010, Artisan Nomade perpétue l'art ancestral de la joaillerie en perles du Bénin. Chaque création raconte une histoire, un symbole, une tradition transmise de génération en génération à Porto-Novo.",
+  "tab_histoire": "Fondée en 2010 à Porto-Novo, Artisan Nomade est née de la passion d'une artisane pour les perles traditionnelles béninoises. Ce qui a commencé comme un atelier familial est devenu une marque reconnue à l'international, livrant ses créations dans plus de 30 pays.",
+  "tab_perles": "Les perles utilisées par Artisan Nomade sont sélectionnées selon des traditions séculaires. Chaque couleur, chaque forme possède une signification spirituelle et culturelle propre à la civilisation du Bénin.",
+  "tab_fabrication": "Chaque pièce est entièrement réalisée à la main par nos artisanes qualifiées. Du choix des perles au tissage final, le processus peut prendre de quelques heures à plusieurs semaines.",
+  "symbolisme_tag": "Symbolisme",
+  "symbolisme_titre": "La signification des perles",
+  "fabrication_tag": "Savoir-faire",
+  "fabrication_titre": "Le processus de fabrication"
+ },
+ "partenaires": {
+  "hero_tag": "Écosystème artisanal",
+  "hero_titre_em": "Nos",
+  "hero_titre_suite": " Partenaires",
+  "section_tag": "Ils nous accompagnent",
+  "section_titre_html": "Nos fournisseurs <em>& alliés</em>"
+ },
+ "partenaires_liste": [
+  {
+   "nom": "Perles du Bénin",
+   "description": "Fournisseur principal de perles naturelles et traditionnelles",
+   "badge": "Fournisseur",
+   "logo": "",
+   "lien": ""
+  },
+  {
+   "nom": "Atelier Textile Oganla",
+   "description": "Artisan textile traditionnel – sacs et accessoires en tissu",
+   "badge": "Artisan",
+   "logo": "",
+   "lien": ""
+  },
+  {
+   "nom": "Éco Matériaux Bénin",
+   "description": "Fournisseur de matériaux naturels et durables issus du Bénin",
+   "badge": "Fournisseur",
+   "logo": "",
+   "lien": ""
+  }
+ ],
+ "avis": [
+  {
+   "texte": "Mes boucles d'oreilles sont encore plus belles en vrai ! Livraison le jour même à Cotonou et emballage cadeau soigné. Je recommande à toutes mes copines d'Akpakpa !",
+   "auteur": "Grâce Dossou",
+   "origine": "Cotonou, Akpakpa",
+   "note": 5
+  },
+  {
+   "texte": "J'ai offert la parure à ma femme pour nos 10 ans de mariage : elle est aux anges ! Un savoir-faire qui fait honneur à notre Porto-Novo natal.",
+   "auteur": "Esaïe Hounkpatin",
+   "origine": "Porto-Novo, Oganla",
+   "note": 5
+  },
+  {
+   "texte": "Commande livrée en 48 h ici à Parakou, bien protégée et accompagnée d'un petit mot. Les perles sont authentiques, on sent vraiment le fait main.",
+   "auteur": "Rachida Bio",
+   "origine": "Parakou",
+   "note": 5
+  },
+  {
+   "texte": "Mon collier corail attire tous les regards à la maison. Deux de mes invitées m'ont demandé votre adresse ! Merci Artisan Nomade.",
+   "auteur": "Mariane Adjovi",
+   "origine": "Cotonou, Cadjèhoun",
+   "note": 5
+  },
+  {
+   "texte": "J'ai commandé pour ma sœur à Cotonou : paiement par MTN MoMo, livraison rapide et sourire garanti. Le meilleur souvenir du Bénin !",
+   "auteur": "Prudence Tchibozo",
+   "origine": "Porto-Novo, Ouando",
+   "note": 5
+  },
+  {
+   "texte": "Un bracelet personnalisé avec mes initiales, tissé main sous mes yeux à l'atelier. Une expérience inoubliable et un produit d'une finesse incroyable.",
+   "auteur": "Yasmine Soglo",
+   "origine": "Parakou, Titirou",
+   "note": 5
+  }
+ ]
 }

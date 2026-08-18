@@ -26,3 +26,10 @@ logs/
 
 # Backups auto
 backend/data/backups/
+
+# Photos uploadées + journal admin (backend)
+backend/data/uploads/
+backend/data/admin-log.ndjson
+
+# Résidus locaux
+backup_tropicana.dump

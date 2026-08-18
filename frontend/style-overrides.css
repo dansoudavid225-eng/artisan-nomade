@@ -615,6 +615,52 @@ body {
   opacity: 0.6;
   cursor: not-allowed;
 }
+/* ── Sélecteur de livraison dynamique ── */
+.deliv-options { display: grid; gap: 10px; }
+.deliv-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--card-border);
+  background: var(--surface);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+}
+.deliv-card:hover { border-color: var(--corail-light); }
+.deliv-card input { display: none; }
+.deliv-card:has(input:checked) {
+  border-color: var(--corail);
+  background: rgba(200, 90, 58, 0.06);
+  box-shadow: 0 0 0 3px rgba(200, 90, 58, 0.12);
+}
+.deliv-icone { font-size: 1.3rem; width: 30px; text-align: center; flex-shrink: 0; }
+.deliv-infos { flex: 1; min-width: 0; }
+.deliv-infos strong { display: block; font-size: 0.85rem; color: var(--text-page); font-weight: 600; }
+.deliv-infos small { font-size: 0.75rem; color: var(--gris); }
+.deliv-delai {
+  flex-shrink: 0;
+  font-size: 0.68rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--corail);
+  font-weight: 600;
+}
+.deliv-estim {
+  margin-top: 12px;
+  padding: 11px 14px;
+  font-size: 0.8rem;
+  color: var(--text-page);
+  background: var(--ivoire);
+  border-left: 3px solid var(--corail);
+  line-height: 1.5;
+}
+.deliv-estim i { color: var(--corail); margin-right: 6px; }
+@media (max-width: 480px) {
+  .deliv-card { flex-wrap: wrap; }
+  .deliv-delai { margin-left: 44px; }
+}
 .modal-success {
   text-align: center;
   padding: 40px 32px;
@@ -1026,4 +1072,63 @@ body {
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: var(--ivoire); }
 ::-webkit-scrollbar-thumb { background: var(--or); border-radius: 4px; }
+
+/* ============================================================
+   FINITIONS MOBILE – téléphone & petites tablettes
+   ============================================================ */
+
+html { -webkit-text-size-adjust: 100%; }
+
+/* Évite le zoom automatique iOS quand on tape dans un champ */
+@media (max-width: 680px) {
+  input, select, textarea { font-size: 16px !important; }
+
+  .section-header { margin-bottom: 36px !important; }
+  .section-title  { font-size: clamp(1.7rem, 8vw, 2.4rem) !important; }
+  .section-tag    { letter-spacing: 3px !important; }
+
+  .product-info  { padding: 14px 14px 16px !important; }
+  .product-info h3 { font-size: 1.05rem !important; margin-bottom: 4px !important; }
+  .product-info p  { font-size: 0.72rem !important; line-height: 1.6; margin-bottom: 10px !important; }
+  .product-badge { top: 10px !important; left: 10px !important; font-size: 0.55rem !important; padding: 3px 8px !important; }
+  .btn-add       { padding: 10px 16px !important; font-size: 0.66rem !important; letter-spacing: 1.5px !important; }
+  .btn-whatsapp  { width: 32px !important; height: 32px !important; font-size: 0.9rem !important; }
+
+  .service-card { padding: 26px 16px !important; }
+  .service-card p { font-size: 0.78rem !important; }
+
+  .avis-card     { padding: 26px 20px !important; }
+  .avis-card > p { font-size: 0.84rem !important; }
+  .slider-controls { margin-top: 28px !important; }
+
+  .stats .stat-number { font-size: 2.2rem !important; }
+  .stats p { font-size: 0.78rem !important; }
+
+  .newsletter-title { font-size: clamp(1.6rem, 7.5vw, 2.2rem) !important; }
+  .newsletter-desc  { font-size: 0.85rem !important; }
+
+  .gallery-slide-caption { font-size: 0.72rem !important; padding: 10px 12px !important; }
+
+  .hs-brand { letter-spacing: 2px !important; font-size: 0.6rem !important; }
+  .hs-desc  { font-size: 0.8rem !important; }
+  .hs-cta .btn-primary, .hs-cta .btn-ghost { width: 100% !important; text-align: center !important; font-size: 0.68rem !important; padding: 13px 18px !important; }
+
+  .team-card h4 { font-size: 1rem !important; }
+  .event-card .event-body { padding: 18px 16px !important; }
+}
+
+/* Grille produits : 1 colonne sous 520px (les cartes à 2 colonnes
+   deviennent illisibles sur les téléphones en portrait) */
+@media (max-width: 520px) {
+  .products-grid { grid-template-columns: 1fr !important; }
+  .product-img   { height: 230px !important; }
+}
+
+/* Toucher : zone cliquable plus généreuse sur mobile */
+@media (max-width: 680px) {
+  .slider-btn { width: 44px !important; height: 44px !important; }
+  .gallery-btn-prev, .gallery-btn-next { width: 38px !important; height: 38px !important; }
+  .hero-scroll { display: none !important; }
+  .newsletter-form .newsletter-btn { padding: 14px 16px !important; }
+}
 ::-webkit-scrollbar-thumb:hover { background: var(--or-dark); }

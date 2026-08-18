@@ -5,6 +5,13 @@
 
 const nodemailer = require('nodemailer');
 
+const LIVRAISON_LABELS = {
+  retrait:       'Retrait à l\'atelier (Porto-Novo)',
+  local:         'Porto-Novo / Cotonou (24h)',
+  national:      'Nationale Bénin (48-72h)',
+  international: 'Internationale (5-10 jours)',
+};
+
 // Créer le transporteur (lazy init pour éviter crash si pas configuré)
 function getTransporter() {
   return nodemailer.createTransport({
@@ -58,6 +65,10 @@ ${produitsList}
 
 MESSAGE
 ${order.message || 'Aucun message'}
+
+LIVRAISON
+${LIVRAISON_LABELS[order.livraison] || order.livraison || 'Non précisée'}
+${order.client.adresse ? 'Adresse : ' + order.client.adresse : ''}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━
 Répondre via WhatsApp :

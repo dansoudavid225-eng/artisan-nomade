@@ -50,7 +50,7 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false,
 }));
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
-app.use(express.json({ limit: '10kb' }));
+app.use(express.json({ limit: '25mb' }));
 
 // Rate limiting globaux – protection anti-brute-force
 const apiLimiter = rateLimit({
@@ -113,6 +113,22 @@ function generateReference() {
   const year = new Date().getFullYear();
   const rand = Math.floor(1000 + Math.random() * 9000);
   return `AN-${year}-${rand}`;
+}
+
+/** Uniformiser une commande (compatibilité camelCase/snake_case entre code et Supabase) */
+function normalizeCommande(c) {
+  if (!c) return c;
+  return {
+    ...c,
+    statutLabel: c.statutLabel || c.statut_label,
+    statut_label: c.statut_label || c.statutLabel,
+    historiqueStatut: c.historiqueStatut || c.historique_statut,
+    historique_statut: c.historique_statut || c.historiqueStatut,
+    createdAt: c.createdAt || c.created_at,
+    created_at: c.created_at || c.createdAt,
+    updatedAt: c.updatedAt || c.updated_at,
+    updated_at: c.updated_at || c.updatedAt,
+  };
 }
 
 /** Middleware de validation Express-validator */
@@ -284,6 +300,9 @@ const commandeValidation = [
     .isArray({ min: 1 }).withMessage('Au moins un produit est requis'),
   body('produits.*.nom')
     .trim().notEmpty().withMessage('Nom du produit requis'),
+  body('livraison')
+    .optional()
+    .isIn(['retrait', 'local', 'national', 'international']).withMessage('Mode de livraison invalide'),
 ];
 
 app.post('/api/commandes', validate(commandeValidation), async (req, res) => {
@@ -296,7 +315,7 @@ app.post('/api/commandes', validate(commandeValidation), async (req, res) => {
     do {
       reference = generateReference();
       attempts++;
-    } while (db.findOne('commandes', 'reference', reference) && attempts < 10);
+    } while (await db.findOne('commandes', 'reference', reference) && attempts < 10);
 
     const commande = {
       id: uuidv4(),
@@ -316,21 +335,25 @@ app.post('/api/commandes', validate(commandeValidation), async (req, res) => {
         personnalisation: p.personnalisation?.trim() || '',
       })),
       message: message?.trim() || '',
-      livraison: livraison || 'local', // 'local' | 'national' | 'international'
+      livraison: livraison || 'local', // 'retrait' | 'local' | 'national' | 'international'
       statut: 'recu',      // recu → en_fabrication → expedie → livre
-      statutLabel: 'Commande reçue',
-      historiqueStatut: [
+      statut_label: 'Commande reçue',
+      historique_statut: [
         {
           statut: 'recu',
           label: 'Commande reçue',
           date: new Date().toISOString(),
         }
       ],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     };
 
-    await db.insertOne('commandes', commande);
+    const inserted = await db.insertOne('commandes', commande);
+    if (!inserted) {
+      console.error('Échec de l\'enregistrement de la commande');
+      return res.status(500).json({ success: false, message: 'Erreur serveur. Réessayez.' });
+    }
 
     // Notifications email (non-bloquantes)
     mailer.sendOrderNotification(commande).catch(console.error);
@@ -345,9 +368,9 @@ app.post('/api/commandes', validate(commandeValidation), async (req, res) => {
       commande: {
         reference: commande.reference,
         statut: commande.statut,
-        statutLabel: commande.statutLabel,
+        statutLabel: commande.statut_label,
         client: { nom: commande.client.nom },
-        createdAt: commande.createdAt,
+        createdAt: commande.created_at,
       },
     });
 
@@ -411,11 +434,21 @@ app.post('/api/newsletter',
       id: uuidv4(),
       email,
       nom: nom?.trim() || '',
-      source: new URL(req.headers.referer || 'http://unknown').hostname || 'direct',
+      source: (() => {
+        try {
+          return new URL(req.headers.referer || 'http://unknown').hostname || 'direct';
+        } catch {
+          return 'direct';
+        }
+      })(),
       created_at: new Date().toISOString(),
     };
 
-    await db.insertOne('newsletter', abonne);
+    const inserted = await db.insertOne('newsletter', abonne);
+    if (!inserted) {
+      console.error('Échec de l\'inscription newsletter');
+      return res.status(500).json({ success: false, message: 'Erreur serveur. Réessayez.' });
+    }
     mailer.sendNewsletterWelcome(email).catch(console.error);
 
     res.status(201).json({
@@ -452,7 +485,11 @@ app.post('/api/contact',
       created_at: new Date().toISOString(),
     };
 
-    await db.insertOne('contacts', contact);
+    const inserted = await db.insertOne('contacts', contact);
+    if (!inserted) {
+      console.error('Échec de l\'enregistrement du message');
+      return res.status(500).json({ success: false, message: 'Erreur serveur. Réessayez.' });
+    }
 
     // Notifier l'admin (via le mailer existant)
     const contactNotification = {
@@ -479,7 +516,7 @@ app.post('/api/contact',
 
 /** Liste toutes les commandes */
 app.get('/api/admin/commandes', adminAuth, async (req, res) => {
-  const commandes = await db.findAll('commandes');
+  const commandes = (await db.findAll('commandes')).map(normalizeCommande);
   res.json({ success: true, count: commandes.length, commandes });
 });
 
@@ -493,16 +530,64 @@ const STATUTS_VALIDES = {
   annule:         'Annulé',
 };
 
+app.patch('/api/admin/commandes/:id/statut', adminAuth,
+  validate([
+    param('id').notEmpty().withMessage('Identifiant requis'),
+    body('statut').trim().isIn(Object.keys(STATUTS_VALIDES)).withMessage('Statut invalide'),
+  ]),
+  async (req, res) => {
+    const commande = await db.findOne('commandes', 'id', req.params.id);
+    if (!commande) return res.status(404).json({ success: false, message: 'Commande introuvable' });
+
+    const statut = req.body.statut;
+    const label = STATUTS_VALIDES[statut];
+    const historique = commande.historique_statut || commande.historiqueStatut || [];
+    const updated = await db.updateById('commandes', req.params.id, {
+      statut,
+      statut_label: label,
+      historique_statut: [...historique, { statut, label, date: new Date().toISOString() }],
+    });
+    if (!updated) return res.status(500).json({ success: false, message: 'Erreur lors de la mise à jour' });
+
+    logAdminAction(req, 'commande.statut', { commandeId: req.params.id, statut });
+    res.json({ success: true, commande: normalizeCommande(updated) });
+  }
+);
+
+/** Supprimer une commande */
+app.delete('/api/admin/commandes/:id', adminAuth, async (req, res) => {
+  const ok = await db.deleteById('commandes', req.params.id);
+  if (!ok) return res.status(404).json({ success: false, message: 'Commande introuvable' });
+  logAdminAction(req, 'commande.supprimer', { commandeId: req.params.id });
+  res.json({ success: true, message: 'Commande supprimée' });
+});
+
 /** Liste abonnés newsletter */
 app.get('/api/admin/newsletter', adminAuth, async (req, res) => {
   const abonnes = await db.findAll('newsletter');
   res.json({ success: true, count: abonnes.length, abonnes });
 });
 
+/** Supprimer un abonné newsletter */
+app.delete('/api/admin/newsletter/:id', adminAuth, async (req, res) => {
+  const ok = await db.deleteById('newsletter', req.params.id);
+  if (!ok) return res.status(404).json({ success: false, message: 'Abonné introuvable' });
+  logAdminAction(req, 'newsletter.supprimer', { abonneId: req.params.id });
+  res.json({ success: true, message: 'Abonné supprimé' });
+});
+
 /** Liste messages de contact */
 app.get('/api/admin/contacts', adminAuth, async (req, res) => {
   const contacts = await db.findAll('contacts');
   res.json({ success: true, count: contacts.length, contacts });
+});
+
+/** Supprimer un message de contact */
+app.delete('/api/admin/contacts/:id', adminAuth, async (req, res) => {
+  const ok = await db.deleteById('contacts', req.params.id);
+  if (!ok) return res.status(404).json({ success: false, message: 'Message introuvable' });
+  logAdminAction(req, 'contact.supprimer', { contactId: req.params.id });
+  res.json({ success: true, message: 'Message supprimé' });
 });
 
 /** Marquer un message de contact comme lu / non lu */
@@ -581,6 +666,85 @@ app.post('/api/admin/produits', adminAuth,
     res.status(201).json({ success: true, produit });
   }
 );
+
+/** Supprimer un produit */
+app.delete('/api/admin/produits/:id', adminAuth, async (req, res) => {
+  const ok = await db.deleteById('produits', req.params.id);
+  if (!ok) return res.status(404).json({ success: false, message: 'Produit introuvable' });
+  logAdminAction(req, 'produit.supprimer', { produitId: req.params.id });
+  res.json({ success: true, message: 'Produit supprimé' });
+});
+
+// ============================================================
+// UPLOAD DE PHOTOS (admin)
+// ============================================================
+
+const UPLOAD_DIR = path.join(__dirname, 'data', 'uploads');
+const uploadsLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 60,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: 'Trop d\'uploads. Réessayez dans 15 minutes.' },
+});
+
+// Servir les images uploadées localement (fallback si Supabase Storage indisponible)
+app.use('/uploads', express.static(UPLOAD_DIR));
+
+function extensionFromMime(mime) {
+  const map = { 'image/jpeg': '.jpg', 'image/png': '.png', 'image/webp': '.webp', 'image/gif': '.gif', 'image/svg+xml': '.svg', 'image/avif': '.avif' };
+  return map[mime] || '.jpg';
+}
+
+/**
+ * POST /api/admin/upload – reçoit { nom, mime, dataBase64 }
+ * 1. Essaie Supabase Storage (bucket public "photos", créé automatiquement)
+ * 2. Sinon, sauvegarde en local dans backend/data/uploads/ (servi via /uploads/...)
+ * Retourne { url } à coller dans les champs image.
+ */
+app.post('/api/admin/upload', adminAuth, uploadsLimiter, async (req, res) => {
+  const { nom, mime, dataBase64 } = req.body;
+  if (!nom || !dataBase64) {
+    return res.status(422).json({ success: false, message: 'Fichier ou contenu manquant' });
+  }
+  const base64 = String(dataBase64).replace(/^data:[^;]+;base64,/, '');
+  if (!/^[A-Za-z0-9+/=]+$/.test(base64) || base64.length > 15 * 1024 * 1024) {
+    return res.status(422).json({ success: false, message: 'Contenu d\'image invalide ou trop lourd (max 15 Mo)' });
+  }
+  const buffer = Buffer.from(base64, 'base64');
+  const ext = extensionFromMime(mime) || path.extname(nom) || '.jpg';
+  const cleanBase = nom.replace(/\.[^.]+$/, '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9-_]/g, '-').toLowerCase().slice(0, 40) || 'photo';
+  const storageName = `${Date.now()}-${cleanBase}${ext}`;
+
+  // 1) Supabase Storage
+  try {
+    const { data: buckets } = await supabase.storage.listBuckets();
+    if (!buckets?.some(b => b.name === 'photos')) {
+      await supabase.storage.createBucket('photos', { public: true });
+    }
+    const { error: upErr } = await supabase.storage.from('photos').upload(storageName, buffer, { contentType: mime || 'image/jpeg', upsert: false });
+    if (!upErr) {
+      const { data: pub } = supabase.storage.from('photos').getPublicUrl(storageName);
+      logAdminAction(req, 'upload', { dest: 'supabase', file: storageName });
+      return res.json({ success: true, url: pub.publicUrl });
+    }
+    console.warn('Supabase upload échoué, fallback local:', upErr.message);
+  } catch (e) {
+    console.warn('Supabase storage indisponible, fallback local:', e.message);
+  }
+
+  // 2) Fallback local
+  try {
+    fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+    fs.writeFileSync(path.join(UPLOAD_DIR, storageName), buffer);
+    const base = `${req.protocol}://${req.get('host')}`;
+    logAdminAction(req, 'upload', { dest: 'local', file: storageName });
+    return res.json({ success: true, url: `${base}/uploads/${storageName}` });
+  } catch (e) {
+    console.error('Upload local échoué:', e.message);
+    return res.status(500).json({ success: false, message: 'Impossible d\'enregistrer l\'image' });
+  }
+});
 
 async function getContenu() {
   try {

@@ -292,6 +292,18 @@
   .avis-del-btn:hover{opacity:1;}
   .cms-loading{padding:48px 24px;text-align:center;color:var(--gris);}
 
+  /* Upload de photos */
+  .photo-upload-btn{
+    display:inline-flex;align-items:center;gap:7px;cursor:pointer;
+    padding:6px 12px;border:1px dashed var(--or);border-radius:6px;
+    font-size:0.8rem;color:var(--terre);background:var(--blanc);
+    transition:all .2s;flex-shrink:0;
+  }
+  .photo-upload-btn:hover{background:var(--ivoire);}
+  .photo-upload-btn input{display:none;}
+  .cms-field-photo{display:flex;gap:8px;align-items:center;}
+  .cms-field-photo input{flex:1;}
+
   @media(max-width:600px){
     .cms-nav{gap:4px;}
     .cms-tab-btn{padding:8px 10px;font-size:0.78rem;}
@@ -445,6 +457,36 @@
     .stats-row{grid-template-columns:1fr;gap:6px;}
     .tab-btn .tab-label{display:none;}  /* texte caché, icônes seulement */
     table{font-size:0.78rem;}
+  }
+
+  /* ── FINITIONS MOBILE ── */
+  html{-webkit-text-size-adjust:100%;}
+  @media(max-width:680px){
+    input,select,textarea{font-size:16px !important;} /* anti-zoom iOS */
+    .wrap{padding:18px 12px 46px;}
+    .cms-card{padding:16px;}
+    .cms-note{font-size:0.76rem;flex-wrap:wrap;}
+    .cms-field-photo{flex-direction:column;align-items:stretch;}
+    .photo-upload-btn{width:100%;justify-content:center;padding:9px 12px;}
+    .dash-title{font-size:1.45rem;}
+    .dash-sub{font-size:0.8rem;}
+  }
+  @media(max-width:480px){
+    /* Tables en cartes : champs et contrôles pleine largeur */
+    .pr-field,.pr-field-nom,.pr-field-select,.statut-select{min-width:0 !important;width:100% !important;}
+    .prix-edit input{width:100%;flex:1;}
+    .msg-full{max-width:100%;}
+    .ref-code{font-size:0.9rem;}
+    tbody td::before{min-width:62px;}
+    /* Toolbar : tout en colonne */
+    .toolbar-filters{flex-direction:column;overflow-x:visible;}
+    .toolbar select{width:100%;}
+    .toolbar input[type="search"]{width:100%;max-width:100%;}
+    /* Carte produit : vignette moins large */
+    .pr-thumb{width:38px;height:38px;}
+    /* Sidebar plus large pour taper confortablement */
+    .sidebar{width:270px;}
+    .login-card{padding:28px 18px;}
   }
 </style>
 </head>
@@ -633,7 +675,7 @@
       <div class="panel">
         <div class="table-scroll">
           <table>
-            <thead><tr><th>Email</th><th>Nom</th><th>Source</th><th>Date d'inscription</th></tr></thead>
+            <thead><tr><th>Email</th><th>Nom</th><th>Source</th><th>Date d'inscription</th><th>Actions</th></tr></thead>
             <tbody id="nl-tbody"></tbody>
           </table>
         </div>
@@ -686,7 +728,11 @@
               <option value="Unique">Unique</option>
             </select>
           </div>
-          <div class="cms-field cms-field-full"><label>URL image <small>(optionnelle)</small></label><input type="text" id="pr-image" placeholder="photos/p17.jpg ou https://..."/></div>
+          <div class="cms-field cms-field-full"><label>Image produit <small>(optionnelle)</small></label>
+            <div class="cms-field-photo"><input type="text" id="pr-image" placeholder="photos/p17.jpg ou https://..."/>
+              <label class="photo-upload-btn"><input type="file" class="photo-upload" data-target="pr-image" accept="image/*"/><i class="fas fa-upload"></i> Choisir une photo</label>
+            </div>
+          </div>
         </div>
         <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;">
           <button class="btn" id="pr-save-btn"><i class="fas fa-save"></i> Enregistrer</button>
@@ -732,7 +778,11 @@
           <div class="cms-field"><label>Heure</label><input type="text" id="ev-heure" placeholder="9h00 – 18h00"/></div>
           <div class="cms-field"><label>Lieu précis</label><input type="text" id="ev-lieu" placeholder="Centre Artisanal de Cotonou"/></div>
           <div class="cms-field"><label>Ville / Pays</label><input type="text" id="ev-ville" placeholder="Porto-Novo, Bénin"/></div>
-          <div class="cms-field cms-field-full"><label>URL photo du stand <small>(optionnel)</small></label><input type="text" id="ev-image" placeholder="https://... ou photos/p17.jpg"/></div>
+          <div class="cms-field cms-field-full"><label>Photo du stand <small>(optionnel)</small></label>
+            <div class="cms-field-photo"><input type="text" id="ev-image" placeholder="https://... ou photos/p17.jpg"/>
+              <label class="photo-upload-btn"><input type="file" class="photo-upload" data-target="ev-image" accept="image/*"/><i class="fas fa-upload"></i> Choisir une photo</label>
+            </div>
+          </div>
           <div class="cms-field cms-field-full"><label>Description</label><textarea id="ev-description" rows="3" placeholder="Venez découvrir nos créations artisanales, essayer les bijoux et commander sur place..."></textarea></div>
         </div>
         <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;">
@@ -766,7 +816,7 @@
           <div class="cms-fields">
             <div class="cms-field"><label>Nom de la boutique</label><input type="text" id="g-nom_boutique" placeholder="Artisan Nomade"/></div>
             <div class="cms-field"><label>Slogan</label><input type="text" id="g-slogan" placeholder="Bijoux & Accessoires Artisanaux"/></div>
-            <div class="cms-field cms-field-full"><label>URL du logo <small>(chemin local ex: logo.png, ou lien https://...)</small></label><div class="logo-preview-wrap"><input type="text" id="g-logo_url" placeholder="logo.png"/><img id="logo-preview" class="logo-preview"/></div></div>
+            <div class="cms-field cms-field-full"><label>URL du logo <small>(chemin local ex: logo.png, ou lien https://...)</small></label><div class="logo-preview-wrap"><input type="text" id="g-logo_url" placeholder="logo.png"/><label class="photo-upload-btn" style="border-style:solid;"><input type="file" class="photo-upload" data-target="g-logo_url" accept="image/*"/><i class="fas fa-upload"></i></label><img id="logo-preview" class="logo-preview"/></div></div>
             <div class="cms-field cms-field-full"><label>Description footer</label><textarea id="g-footer_desc" rows="2"></textarea></div>
             <div class="cms-field cms-field-full"><label>Copyright footer</label><input type="text" id="g-footer_copyright" placeholder="© 2025 Artisan Nomade"/></div>
           </div>
@@ -1039,6 +1089,49 @@
     }
   }
 
+  // ---------- UPLOAD DE PHOTOS ----------
+  document.addEventListener('change', async e => {
+    const input = e.target.closest('.photo-upload');
+    if (!input) return;
+    const file = input.files && input.files[0];
+    input.value = '';
+    if (!file) return;
+    if (!['image/jpeg','image/png','image/webp','image/gif'].includes(file.type)) {
+      showToast('Format non supporté : utilisez JPG, PNG, WEBP ou GIF.', true);
+      return;
+    }
+    if (file.size > 15 * 1024 * 1024) {
+      showToast('Image trop lourde (max 15 Mo).', true);
+      return;
+    }
+    const btn = input.closest('.photo-upload-btn');
+    const oldHTML = btn ? btn.innerHTML : '';
+    if (btn) btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi...';
+
+    const reader = new FileReader();
+    reader.onload = async () => {
+      const dataBase64 = String(reader.result).split(',')[1];
+      const res = await apiCall('POST', '/admin/upload', { nom: file.name, mime: file.type, dataBase64 });
+      if (btn) btn.innerHTML = oldHTML;
+      if (res.ok && res.data.url) {
+        const target = $(input.dataset.target);
+        if (target) {
+          target.value = res.data.url;
+          target.dispatchEvent(new Event('input', { bubbles: true }));
+          if (input.dataset.target === 'g-logo_url' && $('logo-preview')) $('logo-preview').src = res.data.url;
+        }
+        showToast('Photo envoyée !');
+      } else {
+        showToast(res.data.message || 'Échec de l\'envoi de la photo.', true);
+      }
+    };
+    reader.onerror = () => {
+      if (btn) btn.innerHTML = oldHTML;
+      showToast('Lecture du fichier impossible.', true);
+    };
+    reader.readAsDataURL(file);
+  });
+
   // ---------- LOGIN ----------
   async function attemptLogin(token){
     const errEl = $('login-error');
@@ -1215,6 +1308,7 @@
 
   // ---------- COMMANDES ----------
   function renderCommandes(){
+    const LIVRAISON_LABELS = { retrait:'Retrait atelier', local:'Porto-Novo / Cotonou', national:'Nationale Bénin', international:'Internationale' };
     const search = $('cmd-search').value.trim().toLowerCase();
     const filterStatut = $('cmd-filter-statut').value;
     let list = DATA.commandes.slice().sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -1241,7 +1335,7 @@
         <td data-label="Référence"><span class="ref-code">${escapeHtml(c.reference)}</span>${c.message ? `<br><span class="msg-toggle" data-msg="${escapeHtml(c.message)}">voir personnalisation</span>` : ''}</td>
         <td data-label="Client">${escapeHtml(c.client?.nom)}<br><span class="muted">${escapeHtml(c.client?.ville)}, ${escapeHtml(c.client?.pays)}</span></td>
         <td data-label="Produits">${produits}</td>
-        <td data-label="Livraison"><span class="muted">${escapeHtml(c.livraison)}</span></td>
+        <td data-label="Livraison"><span class="muted">${escapeHtml(LIVRAISON_LABELS[c.livraison] || c.livraison || '')}</span></td>
         <td data-label="Date"><span class="muted">${fmtDate(c.createdAt)}</span></td>
         <td data-label="Statut">
           <span class="badge badge-${c.statut}">${escapeHtml(c.statutLabel || STATUTS[c.statut] || c.statut)}</span><br>
@@ -1252,6 +1346,7 @@
         <td data-label="Actions">
           <div class="row-actions">
             ${tel ? `<a class="link-btn wa" href="https://wa.me/${tel}?text=${waMsg}" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Contacter</a>` : ''}
+            <button class="link-btn cmd-del-btn" data-id="${c.id}" style="color:var(--danger);" title="Supprimer"><i class="fas fa-trash"></i></button>
           </div>
         </td>`;
       tbody.appendChild(tr);
@@ -1294,6 +1389,23 @@
   $('cmd-search').addEventListener('input', renderCommandes);
   $('cmd-filter-statut').addEventListener('change', renderCommandes);
 
+  // Supprimer une commande
+  $('cmd-tbody').addEventListener('click', async e => {
+    const btn = e.target.closest('.cmd-del-btn');
+    if (!btn) return;
+    const c = DATA.commandes.find(cmd => cmd.id === btn.dataset.id);
+    if (!confirm(`Supprimer définitivement la commande ${c?.reference || ''} ?`)) return;
+    const result = await apiCall('DELETE', `/admin/commandes/${btn.dataset.id}`);
+    if (result.ok) {
+      DATA.commandes = DATA.commandes.filter(cmd => cmd.id !== btn.dataset.id);
+      renderStats();
+      renderCommandes();
+      showToast('Commande supprimée.');
+    } else {
+      showToast(result.data.message || 'Erreur lors de la suppression.', true);
+    }
+  });
+
   // ---------- MESSAGES ----------
   function renderMessages(){
     const search = $('msg-search').value.trim().toLowerCase();
@@ -1330,6 +1442,7 @@
           <div class="row-actions">
             <button class="link-btn toggle-lu" data-id="${c.id}" data-lu="${c.lu ? '1':'0'}"><i class="fas fa-${c.lu ? 'envelope-open' : 'envelope'}"></i> ${c.lu ? 'Marquer non lu' : 'Marquer lu'}</button>
             <a class="link-btn" href="mailto:${escapeHtml(c.email)}"><i class="fas fa-reply"></i> Répondre</a>
+            <button class="link-btn msg-del-btn" data-id="${c.id}" style="color:var(--danger);" title="Supprimer"><i class="fas fa-trash"></i></button>
           </div>
         </td>`;
       tbody.appendChild(tr);
@@ -1372,6 +1485,22 @@
   $('msg-search').addEventListener('input', renderMessages);
   $('msg-filter-lu').addEventListener('change', renderMessages);
 
+  // Supprimer un message
+  $('msg-tbody').addEventListener('click', async e => {
+    const btn = e.target.closest('.msg-del-btn');
+    if (!btn) return;
+    if (!confirm('Supprimer définitivement ce message ?')) return;
+    const result = await apiCall('DELETE', `/admin/contacts/${btn.dataset.id}`);
+    if (result.ok) {
+      DATA.contacts = DATA.contacts.filter(c => c.id !== btn.dataset.id);
+      renderStats();
+      renderMessages();
+      showToast('Message supprimé.');
+    } else {
+      showToast(result.data.message || 'Erreur lors de la suppression.', true);
+    }
+  });
+
   // ---------- PRODUITS ----------
   const CATEGORIES_LABELS = { parure:'Parure', collier:'Collier', bracelet:'Bracelet', boucle:'Boucle', accessoire:'Accessoire' };
 
@@ -1404,7 +1533,7 @@
             <span>FCFA</span>
           </div>
         </td>
-        <td data-label=""><div class="row-actions"><button class="link-btn save-produit" data-id="${p.id}"><i class="fas fa-check"></i> Enregistrer</button></div></td>`;
+        <td data-label=""><div class="row-actions"><button class="link-btn save-produit" data-id="${p.id}"><i class="fas fa-check"></i> Enregistrer</button><button class="link-btn pr-del-btn" data-id="${p.id}" style="color:var(--danger);" title="Supprimer"><i class="fas fa-trash"></i></button></div></td>`;
       tbody.appendChild(tr);
     });
 
@@ -1523,6 +1652,23 @@
   $('pr-search').addEventListener('input', renderProduits);
   $('pr-filter-cat').addEventListener('change', renderProduits);
 
+  // Supprimer un produit
+  $('pr-tbody').addEventListener('click', async e => {
+    const btn = e.target.closest('.pr-del-btn');
+    if (!btn) return;
+    const p = DATA.produits.find(pr => pr.id === btn.dataset.id);
+    if (!confirm(`Supprimer définitivement "${p?.nom || 'ce produit'}" ?`)) return;
+    const result = await apiCall('DELETE', `/admin/produits/${btn.dataset.id}`);
+    if (result.ok) {
+      DATA.produits = DATA.produits.filter(pr => pr.id !== btn.dataset.id);
+      renderStats();
+      renderProduits();
+      showToast('Produit supprimé.');
+    } else {
+      showToast(result.data.message || 'Erreur lors de la suppression.', true);
+    }
+  });
+
   // Éditer un produit depuis la table (double-clic ou bouton modifier)
   $('pr-tbody').addEventListener('dblclick', e => {
     const row = e.target.closest('tr');
@@ -1561,7 +1707,8 @@
         <td data-label="Email">${escapeHtml(a.email)}</td>
         <td data-label="Nom">${escapeHtml(a.nom) || '<span class="muted">–</span>'}</td>
         <td data-label="Source"><span class="muted">${escapeHtml(a.source) || '–'}</span></td>
-        <td data-label="Inscrit le"><span class="muted">${fmtDate(a.createdAt)}</span></td>`;
+        <td data-label="Inscrit le"><span class="muted">${fmtDate(a.createdAt)}</span></td>
+        <td data-label="Actions"><div class="row-actions"><button class="link-btn nl-del-btn" data-id="${a.id}" style="color:var(--danger);" title="Supprimer"><i class="fas fa-trash"></i></button></div></td>`;
       tbody.appendChild(tr);
     });
 
@@ -1569,6 +1716,23 @@
   }
 
   $('nl-search').addEventListener('input', renderNewsletter);
+
+  // Supprimer un abonné newsletter
+  $('nl-tbody').addEventListener('click', async e => {
+    const btn = e.target.closest('.nl-del-btn');
+    if (!btn) return;
+    const a = DATA.newsletter.find(x => x.id === btn.dataset.id);
+    if (!confirm(`Supprimer définitivement l'abonné ${a?.email || ''} ?`)) return;
+    const result = await apiCall('DELETE', `/admin/newsletter/${btn.dataset.id}`);
+    if (result.ok) {
+      DATA.newsletter = DATA.newsletter.filter(x => x.id !== btn.dataset.id);
+      renderStats();
+      renderNewsletter();
+      showToast('Abonné supprimé.');
+    } else {
+      showToast(result.data.message || 'Erreur lors de la suppression.', true);
+    }
+  });
 
   $('nl-export').addEventListener('click', () => {
     if (!DATA.newsletter.length) { showToast('Aucun abonné à exporter.', true); return; }
@@ -1837,9 +2001,16 @@
           ${schema.map(f => {
             const val = escapeHtml(String(item[f.key] || ''));
             const id = `${arrayKey}-${i}-${f.key}`;
-            if (f.type === 'textarea') return `<textarea id="${id}" data-array="${arrayKey}" data-idx="${i}" data-field="${f.key}" placeholder="${f.placeholder}" rows="2">${val}</textarea>`;
-            if (f.type === 'number') return `<input type="number" id="${id}" data-array="${arrayKey}" data-idx="${i}" data-field="${f.key}" value="${val}" min="1" max="5" placeholder="${f.placeholder}"/>`;
-            return `<input type="text" id="${id}" data-array="${arrayKey}" data-idx="${i}" data-field="${f.key}" value="${val}" placeholder="${f.placeholder}"/>`;
+            let fieldHTML;
+            if (f.type === 'textarea') fieldHTML = `<textarea id="${id}" data-array="${arrayKey}" data-idx="${i}" data-field="${f.key}" placeholder="${f.placeholder}" rows="2">${val}</textarea>`;
+            else if (f.type === 'number') fieldHTML = `<input type="number" id="${id}" data-array="${arrayKey}" data-idx="${i}" data-field="${f.key}" value="${val}" min="1" max="5" placeholder="${f.placeholder}"/>`;
+            else fieldHTML = `<input type="text" id="${id}" data-array="${arrayKey}" data-idx="${i}" data-field="${f.key}" value="${val}" placeholder="${f.placeholder}"/>`;
+            if (f.key === 'image' || f.key === 'photo') {
+              fieldHTML = `<div class="cms-field-photo" style="grid-column:1/-1;">${fieldHTML}
+                <label class="photo-upload-btn"><input type="file" class="photo-upload" data-target="${id}" accept="image/*"/><i class="fas fa-upload"></i> Photo</label>
+              </div>`;
+            }
+            return fieldHTML;
           }).join('')}
         </div>
         <div style="font-size:0.72rem;color:var(--gris);margin-top:4px;">Item ${i + 1}</div>`;
